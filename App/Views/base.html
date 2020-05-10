@@ -1,24 +1,77 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE HTML>
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="/css/styles.css" />
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-Ua-Compatible" content="IE=edge">
+	<meta name="description" content="Naucz się zarządzać budżetem domowym i zacznij oszczedzać pieniądze już dziś!"/>	
+	
+	<title>{% block title %}{% endblock %}</title>
+	<meta name="keywords" content="save, money, dreams, goals, home, budget, dreamchaser">
+	<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Monoton&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	
+	<!--[if lt IE 9]>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+	<![endif]-->
+
 </head>
+
+
 <body>
 
-	<div class="container">
-		<nav>
-			<ul>
-				<li><a href="/">Home</a></li>
-					{% if current_user %}
-						<li><a href="/profile/show">Profile</a></li>
-						<li><a href="/logout">Log out</a></li>
-					{% endif %}
-			</ul>
-		</nav>
+	{% if current_user %}
+		<header>
+			<nav class="navbar navbar-dark welcome-message navbar-expand-lg">
+				
+				<a class="navbar-brand" href="strona-glowna"><img src="img/favicon-white.ico" width="30" height="30" class="d-inline-block mr-1 align-bottom" alt="Logo Dreamchaser"><span class="brand-logo">Dreamchaser</span></a>
+				
+				<div class="menu-btn navbar-toggler" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-label="Przełącznik nawigacji">
+					<div class="menu-btn__burger"></div>
+				</div>
+		
+				
+				<div class="collapse navbar-collapse" id="mainmenu">
+					
+					<ul class="navbar-nav ml-auto"> 
+						
+						<li class="nav-item mr-4 active">
+							<a class="nav-link" href="strona-glowna" > Strona główna </a>					
+						</li>
+					
+						<li class="nav-item mr-4">
+							<a class="nav-link" href="dodaj-przychod" > Dodaj przychód </a>					
+						</li>
 
+						<li class="nav-item mr-4">
+							<a class="nav-link" href="dodaj-wydatek"> Dodaj wydatek </a>
+						</li>
+
+						<li class="nav-item mr-4">
+							<a class="nav-link" href="przegladaj-bilans"> Przeglądaj bilans </a>
+						</li>	
+
+						<li class="nav-item mr-4">
+							<a class="nav-link" href="#"> Ustawienia </a>
+						</li>
+
+						<li class="nav-item mr-4">
+							<a class="nav-link" href="logout.php"> Wyloguj </a>
+						</li>					
+					
+					</ul>
+					
+				</div>
+			
+			</nav>
+		
+		</header>
+	{% endif %}
+
+	<div class="container">
 		{% for message in flash_messages %}
 			<!-- <div class="alert"> -->
 			<div class="alert alert-{{ message.type }}">
@@ -34,6 +87,8 @@
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/c41b73fbf8.js" crossorigin="anonymous"></script>
+
 
     {% block footer %}
     {% endblock %}
