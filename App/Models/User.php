@@ -4,7 +4,6 @@ namespace App\Models;
 
 use PDO;
 use \App\Token;
-use \App\Mail;
 use \Core\View;
 
 /**
@@ -49,8 +48,8 @@ class User extends \Core\Model
 
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
 
-            $sql = 'INSERT INTO users (name, email, password_hash)
-                    VALUES (:name, :email, :password_hash)';
+            $sql = 'INSERT INTO users
+                    VALUES (NULL, :name, :password_hash, :email)';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -58,18 +57,67 @@ class User extends \Core\Model
             $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+			
+			$results = $stmt->execute();
+			
+			$newUserId = $this->getNewUserId();	
+			$this->addUserIncomes($newUserId);
+			$this->addUserExpenses($newUserId);
+			$this->addUserPaymentMethods($newUserId);
 
-            return $stmt->execute();
+            return $results;
         }
 
         return false;
     }
+	
+	protected function addUserIncomes($id)
+	{
+		$db = static::getDB();
+		$doDeafultIncomeCategoriesExist = $db->query('SELECT * FROM incomes_categories WHERE id=1');
+		
+		if($doDeafultIncomeCategoriesExist->rowCount() == 0) {
+			$addDeafultIncomeCategories = $db->query("INSERT INTO incomes_categories VALUES (NULL,'Wynagrodzenie'), (NULL,'Odsetki bankowe'), (NULL,'Sprzedaż internetowa'), (NULL,'Inne')");
+		}
+		
+		$addDefaultUserIncomeCategories = $db->query("INSERT INTO incomes_categories_assigned_to_users VALUES (NULL,'$id','Wynagrodzenie'), (NULL,'$id','Odsetki bankowe'), (NULL,'$id','Sprzedaż internetowa'), (NULL,'$id','Inne')");	
+	}	
+	
+	protected function addUserExpenses($id)
+	{
+		$db = static::getDB();
+		$doDeafultExpenseCategoriesExist = $db->query('SELECT * FROM expenses_categories WHERE id=1');
+		
+		if($doDeafultExpenseCategoriesExist->rowCount() == 0) {
+			$addDeafultExpenseCategories = $db->query("INSERT INTO expenses_categories VALUES (NULL,'Jedzenie'),(NULL,'Mieszkanie'),(NULL,'Transport'), (NULL,'Telekomunikacja'),(NULL,'Opieka zdrowotna'),(NULL,'Ubrania'),(NULL,'Rozrywka'),(NULL,'Podróże'),(NULL,'Książki'),(NULL,'Oszczędności'),(NULL,'Spłata długu'),(NULL,'Inne')");
+		}
+		
+		$addDefaultUserExpenseCategories = $db->query("INSERT INTO expenses_categories_assigned_to_users VALUES (NULL,'$id','Jedzenie'),(NULL,'$id','Mieszkanie'),(NULL,'$id','Transport'), (NULL,'$id','Telekomunikacja'),(NULL,'$id','Opieka zdrowotna'),(NULL,'$id','Ubrania'),(NULL,'$id','Rozrywka'),(NULL,'$id','Podróże'),(NULL,'$id','Książki'),(NULL,'$id','Oszczędności'),(NULL,'$id','Spłata długu'),(NULL,'$id','Inne')");	
+	}	
+	
+	protected function addUserPaymentMethods($id)
+	{
+		$db = static::getDB();
+		$doDeafultPaymentMethodsExist = $db->query('SELECT * FROM payment_methods WHERE id=1');
+		
+		if($doDeafultPaymentMethodsExist->rowCount() == 0) {
+			$addDeafultPaymentMethods = $db->query("INSERT INTO payment_methods VALUES (NULL,'Gotówka'), (NULL,'Karta debetowa'), (NULL,'Karta kredytowa')");
+		}
+		
+		$addDefaultUserPaymentMethods = $db->query("INSERT INTO payment_methods_assigned_to_users VALUES (NULL,'$id','Gotówka'), (NULL,'$id','Karta debetowa'),(NULL,'$id','Karta kredytowa')");	
+	}
+	
+	protected function getNewUserId()
+	
+	{	$db = static::getDB();
+		$newUserIdQuery = $db->query("SELECT id FROM users WHERE email='$this->email'")->fetch();
+		$newUserId = $newUserIdQuery['id'];
 
-    /**
-     * Validate current property values, adding valiation error messages to the errors array property
-     *
-     * @return void
-     */
+		return $newUserId;
+				
+	}
+
+
     public function validate()
     {
         // Name
@@ -214,70 +262,7 @@ class User extends \Core\Model
         return $stmt->execute();
     }
 
-    /**
-     * Send password reset instructions to the user specified
-     *
-     * @param string $email The email address
-     *
-     * @return void
-     */
-    public static function sendPasswordReset($email)
-    {
-        $user = static::findByEmail($email);
 
-        if ($user) {
-
-            if ($user->startPasswordReset()) {
-
-                $user->sendPasswordResetEmail();
-
-            }
-        }
-    }
-
-    /**
-     * Start the password reset process by generating a new token and expiry
-     *
-     * @return void
-     */
-    protected function startPasswordReset()
-    {
-        $token = new Token();
-        $hashed_token = $token->getHash();
-        $this->password_reset_token = $token->getValue();
-
-        $expiry_timestamp = time() + 60 * 60 * 2;  // 2 hours from now
-
-        $sql = 'UPDATE users
-                SET password_reset_hash = :token_hash,
-                    password_reset_expires_at = :expires_at
-                WHERE id = :id';
-
-        $db = static::getDB();
-        $stmt = $db->prepare($sql);
-
-        $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
-        $stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR);
-        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-
-        return $stmt->execute();
-    }
-
-    /**
-     * Send password reset instructions in an email to the user
-     *
-     * @return void
-     */
-    protected function sendPasswordResetEmail()
-    {
-        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/password/reset/' . $this->password_reset_token;
-
-        $text = View::getTemplate('Password/reset_email.txt', ['url' => $url]);
-        $html = View::getTemplate('Password/reset_email.html', ['url' => $url]);
-
-        Mail::send($this->email, 'Password reset', $text, $html);
-    }
-	
     public function updateProfile($data)
     {
         $this->name = $data['name'];
