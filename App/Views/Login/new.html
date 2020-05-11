@@ -7,14 +7,14 @@
 	<div class="row vertical-center">
 		<div class="main-container col-md-8 offset-md-2 col-lg-6 offset-lg-3 my-5">
 		
-			<h1 class="mb-xl-4 text-center brand-logo"><img class="img-fluid" src="img/favicon-white.ico" alt="Logo Dreamchaser"> Dreamchaser</h1>
+			<h1 class="mb-xl-4 text-center brand-logo"><img class="img-fluid" src="../img/favicon-white.ico" alt="Logo Dreamchaser"> Dreamchaser</h1>
 			
 			<form action="/login/create" method="post">
 				<div class="input-group mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
 					</div>
-					<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" required autofocus>
+					<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" value="{{ user.email }}" required autofocus>
 				</div>
 				<div class="input-group">
 					<div class="input-group-prepend">
@@ -22,6 +22,8 @@
 					</div>
 					<input type="password" class="form-control" placeholder="Hasło" aria-label="hasło" name="password"  required>
 				</div>
+				
+				<span class="error">{{ user.errors.login }}</span>
 
 				<div class="custom-control custom-checkbox mr-sm-2 mb-3 mt-3">
 					<input type="checkbox" class="custom-control-input" id="rememberMeCheckbox" name="rememberMe">
