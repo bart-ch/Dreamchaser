@@ -226,7 +226,6 @@ class User extends \Core\Model
             }
         }
 		
-		$this->errors['login'] = "Nieprawidłowy e-mail lub hasło.";
         return false;
     }
 
