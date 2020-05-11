@@ -43,6 +43,8 @@
 							</div>
 							<input type="text" class="form-control" placeholder="Imię" aria-label="imie" name="name" value="{{ user.name }}"  autofocus>
 						</div>
+						
+						<span class="error">{{ user.errors.name }}</span>
 								
 						<div class="input-group mt-3">
 							<div class="input-group-prepend">
@@ -50,6 +52,8 @@
 							</div>
 							<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" value="{{ user.email }}" >
 						</div>
+						
+						<span class="error">{{ user.errors.email }}</span>
 						
 						<div class="input-group mt-3">
 							<div class="input-group-prepend">
@@ -61,13 +65,18 @@
 									<i id="showHideIcon" class="fa fa-eye" style="cursor:pointer"></i>
 								</span>
 							</div>
-						</div>			
+						</div>	
 						
-						<div class="g-recaptcha mt-3" data-sitekey="6Lf1d-8UAAAAAM2IXxFnwi4DIyI6qBdpsa_TPCjA"></div>	
+						<span class="error">{{ user.errors.password }}</span>
+						
+						<div class="g-recaptcha mt-3" data-sitekey="6Lf7teYUAAAAAHeQuw3vG5B7MPVp-piEqupMhieo"></div>	
+						
+						<span class="error">{{ user.errors.captcha }}</span>
 		
 						<button type="submit" class="btn btn-hover color-8 btn-lg btn-block mt-3 mb-2">Zarejestruj</button>
 						Posiadasz już konto? <a href="dreamchaser-zacznij-spelniac-marzenia">Zaloguj się.</a>
 					</form>
+
 				</div>
 			</div>
 		</div>

@@ -5,6 +5,7 @@ namespace App\Models;
 use PDO;
 use \App\Token;
 use \Core\View;
+use \App\Config;
 
 /**
  * User model
@@ -122,32 +123,47 @@ class User extends \Core\Model
     {
         // Name
         if ($this->name == '') {
-            $this->errors[] = 'Name is required';
+            $this->errors['name'] = 'Wprowadź imię.';
         }
 
         // email address
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
-            $this->errors[] = 'Invalid email';
+            $this->errors['email'] = 'Podaj poprawny adres e-mail.';
         }
         if (static::emailExists($this->email, $this->id ?? null)) {
-            $this->errors[] = 'email already taken';
+            $this->errors['email'] = 'Istnieje konto o podanym adresie e-mail.';
         }
 
         // Password
 		if (isset($this->password)) {
-			if (strlen($this->password) < 6) {
-				$this->errors[] = 'Please enter at least 6 characters for the password';
+			
+			if (preg_match('/(?=.*?[0-9])(?=.*?[A-Za-z]).+/', $this->password) == 0) {
+				$this->errors['password'] = 'Hasło musi posiadać przynajmniej 1 literę i 1 cyfrę.';
+			}
+			
+			if (strlen($this->password) < 6 || strlen($this->password) > 20) {
+				$this->errors['password'] = 'Hasło musi posiadać od 6 do 20 znaków.';
 			}
 
-			if (preg_match('/.*[a-z]+.*/i', $this->password) == 0) {
-				$this->errors[] = 'Password needs at least one letter';
-			}
-
-			if (preg_match('/.*\d+.*/i', $this->password) == 0) {
-				$this->errors[] = 'Password needs at least one number';
-			}
 		}
+		
+		$resposneCaptcha = $this->validateCaptcha();
+		if(!($resposneCaptcha->success))
+		{
+			$validation_successful = false;
+			$this->errors['captcha'] = "Potwierdź, że nie jesteś botem.";
+		}
+		
     }
+	
+	protected function validateCaptcha()
+	{
+		
+		$checkCaptcha = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.Config::CAPTCHA_SECRET.'&response='.$_POST['g-recaptcha-response']);
+		
+		return json_decode($checkCaptcha);
+
+	}
 
     /**
      * See if a user record already exists with the specified email

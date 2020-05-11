@@ -37,7 +37,6 @@ class Signup extends \Core\Controller
             $this->redirect('/signup/success');
 
         } else {
-
             View::renderTemplate('Signup/new.html', [
                 'user' => $user
             ]);

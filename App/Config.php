@@ -42,4 +42,6 @@ class Config
 	
 	const SECRET_KEY = '1BDEGArLbHIRiruVJGGZCqJ6Mx7xHWgp';
 	
+	const CAPTCHA_SECRET = '6Lf7teYUAAAAAGZCgEQKBBhw15BHVOTO1gbu6_15';
+	
 }
