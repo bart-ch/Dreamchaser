@@ -30,7 +30,13 @@ class Signup extends \Core\Controller
      */
     public function createAction()
     {
+	
         $user = new User($_POST);
+
+		
+		if(!isset($_POST['email'])) {
+			$this->redirect('/signup/new');
+		}
 
         if ($user->save()) {
 

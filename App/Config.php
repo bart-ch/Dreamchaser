@@ -20,7 +20,7 @@ class Config
      * Database name
      * @var string
      */
-    const DB_NAME = 'mvclogin';
+    const DB_NAME = 'dreamchaser';
 
     /**
      * Database user
@@ -42,7 +42,6 @@ class Config
 	
 	const SECRET_KEY = '1BDEGArLbHIRiruVJGGZCqJ6Mx7xHWgp';
 	
-	const MAILGUN_API_KEY = '202feb66ae040c044cfec90f1b6a65b7-0afbfc6c-c92ed07b';
+	const CAPTCHA_SECRET = '6Lf7teYUAAAAAGZCgEQKBBhw15BHVOTO1gbu6_15';
 	
-	const MAILGUN_DOMAIN = 'sandbox49af102c30714d4fb68f1749c461839f.mailgun.org';
 }

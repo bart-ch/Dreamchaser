@@ -1,11 +1,28 @@
 {% extends 'base.html' %}
 
-{% block title %}Sign up{% endblock %}
+{% block title %}Rejestracja udana{% endblock %}
 
 {% block body %}
+	
+	<div class="row vertical-center">
+		<div class="main-container py-2 px-4 col-md-8 offset-md-2 col-lg-6 offset-lg-3 my-5">
+		
+			<div class="row">	
+			
+				<div class="welcome-message m-2 pt-2 px-4">
+					<p class="welcome-text text-justify">Dziękuję za rejestrację w serwisie. Właśnie poczyniłeś pierwszy krok w kierunku osiągniecia zamierzonych celów.</p>
+					
+					<div class="row">
+						<div class="col text-center">
+							<button type="button" class="btn btn-hover color-8  btn-md mb-2" onclick="window.location.href = 'dreamchaser-zacznij-spelniac-marzenia'">Przejdź do strony logowania</button>	
+						</div>
+					</div>
+				
+				</div>
 
-    <h1>Sign up</h1>
-
-    <p>Success! Thank you for signing up.</p>
+			</div>
+		</div>
+	</div>
+			
 
 {% endblock %}
