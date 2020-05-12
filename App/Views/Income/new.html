@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Rejestracja{% endblock %}
+{% block title %}Dodaj przychód{% endblock %}
 
 {% block footer %}
 
@@ -45,6 +45,9 @@
 							</div>				
 							<select id="category" class="custom-select" data-live-search="true" name="incomeCategory">
 			
+							{% for userIncome in userIncomes %}
+								<option>{{ userIncome.name }}</option>
+							{% endfor %}
 								
 							</select>
 						</div>
