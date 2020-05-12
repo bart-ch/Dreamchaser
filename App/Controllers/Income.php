@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\Incomes;
 use \App\Auth;
+use \App\Dates;
 use \App\Flash;
 
 /**
@@ -23,7 +24,7 @@ class Income extends Authenticated
     public function newAction()
     {
         View::renderTemplate('Income/new.html', [
-		'todaysDate' => $this->getTodaysDate(),
+		'todaysDate' => Dates::getTodaysDate(),
 		'userIncomes' => Incomes::getUserIncomeCategories()
 		]);
     }
@@ -35,15 +36,28 @@ class Income extends Authenticated
      */
     public function createAction()
     {
-  
+		if(isset($_POST['amount'])) {
+			$income = new Incomes($_POST);
+
+			if ($income->save()) {
+
+				Flash::addMessage('Sukces! Przychód został dodany.');
+
+				$this->newAction();
+
+			} else {
+					
+				View::renderTemplate('Income/new.html', [
+					'income' => $income,
+					'todaysDate' => Dates::getTodaysDate(),
+					'userIncomes' => Incomes::getUserIncomeCategories()
+				]);
+				
+			} 	
+		} else {
+			$this->redirect('/income/new');
+		}
     }
-	
-	protected function getTodaysDate()
-	{
-			$todaysDate = new \DateTime();
-			$todaysDateFormat = $todaysDate->format('Y-m-d');
-			return $todaysDateFormat;
-	}
 
 
 }
