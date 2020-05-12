@@ -225,7 +225,7 @@ class User extends \Core\Model
                 return $user;
             }
         }
-
+		
         return false;
     }
 

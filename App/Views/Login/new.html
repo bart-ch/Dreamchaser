@@ -7,14 +7,14 @@
 	<div class="row vertical-center">
 		<div class="main-container col-md-8 offset-md-2 col-lg-6 offset-lg-3 my-5">
 		
-			<h1 class="mb-xl-4 text-center brand-logo"><img class="img-fluid" src="img/favicon-white.ico" alt="Logo Dreamchaser"> Dreamchaser</h1>
+			<h1 class="mb-xl-4 text-center brand-logo"><img class="img-fluid" src="../img/favicon-white.ico" alt="Logo Dreamchaser"> Dreamchaser</h1>
 			
 			<form action="/login/create" method="post">
 				<div class="input-group mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
 					</div>
-					<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" required autofocus>
+					<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" value="{{ user.email }}" required autofocus>
 				</div>
 				<div class="input-group">
 					<div class="input-group-prepend">
@@ -24,7 +24,7 @@
 				</div>
 
 				<div class="custom-control custom-checkbox mr-sm-2 mb-3 mt-3">
-					<input type="checkbox" class="custom-control-input" id="rememberMeCheckbox" name="rememberMe">
+					<input type="checkbox" class="custom-control-input" id="rememberMeCheckbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} >
 					<label class="custom-control-label" for="rememberMeCheckbox">Zapamiętaj mnie</label>
 				</div>
 				<button type="submit" class="btn btn-hover color-8 btn-lg btn-block mb-2">Zaloguj</button>
