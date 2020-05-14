@@ -42,7 +42,7 @@ class Login extends \Core\Controller
 
             Flash::addMessage('Logowanie zakończone sukcesem.');
 
-            $this->redirect('/menu/main');
+            $this->redirect(Auth::getReturnToPage());
 
         } else {
 

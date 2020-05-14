@@ -153,11 +153,10 @@ class Balances extends \Core\Model
 				$secondDate = date("Ymd", strtotime($_POST['endDate']));  
 				
 				if($firstDate < $secondDate) {
-					$startDate = "'".$_POST['startDate']."'";
+						$firstEchoDate = $_POST['startDate'];
 				} else if($firstDate > $secondDate) {
-					$startDate = "'".$_POST['endDate']."'";
-				}
-			//	$firstEchoDate = date("d/m/Y", strtotime($startDate));   
+					$firstEchoDate = $_POST['endDate'];
+				}  
 			}
 		} else {
 			$firstEchoDate = new \DateTime('first day of this month '.date('Y'));
@@ -176,7 +175,7 @@ class Balances extends \Core\Model
 				$secondEchoDate = Dates::getTodaysDate();
 			} 
 			else if ($periodOfTime == "previousMonth") {
-				$secondEchoDate = new DateTime('last day of previous month '.date('Y'));
+				$secondEchoDate = new \DateTime('last day of previous month '.date('Y'));
 			}	
 			else if ($periodOfTime == "currentYear") {
 					$secondEchoDate = Dates::getTodaysDate();
@@ -187,11 +186,10 @@ class Balances extends \Core\Model
 				$secondDate = date("Ymd", strtotime($_POST['endDate']));  
 				
 				if($firstDate < $secondDate) {
-					$endDate = "'".$_POST['endDate']."'";
+					$secondEchoDate = $_POST['endDate'];
 				} else if($firstDate > $secondDate) {
-					$endDate = "'".$_POST['startDate']."'";
-				}
-				//$secondEchoDate = date("d/m/Y", strtotime($endDate));	
+					$secondEchoDate = $_POST['startDate'];
+				}	
 			}
 		} else {
 			$secondEchoDate = Dates::getTodaysDate();
