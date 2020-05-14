@@ -88,30 +88,17 @@ class Balances extends \Core\Model
 	}
 		
 	public static function getIncomeCategoriesAmount()
-	{	
-		$sql = 'SELECT SUM(i.amount), ica.name FROM incomes AS i, incomes_categories_assigned_to_users as ica WHERE i.user_id = :user_id AND i.income_category_assigned_to_user_id = ica.id AND i.date_of_income BETWEEN :startDate AND :endDate GROUP BY i.income_category_assigned_to_user_id';
-		
+	{			
 		$db = static::getDB();
 		$startDate = static::getStartDate();
 		$endDate = static::getEndDate();
-		
-	//	var_dump($_SESSION['user_id']);	
-	//			var_dump($startDate);	
-	//					var_dump($endDate);	
-		
-		$incomeCategoriesAmount = $db->prepare($sql);
-		
-		$incomeCategoriesAmount->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-		$incomeCategoriesAmount->bindValue(':startDate', $startDate, PDO::PARAM_STR);
-		$incomeCategoriesAmount->bindValue(':endDate', $endDate, PDO::PARAM_STR);
-		
-		$incomeCategoriesAmount->execute();
-		
-		$result = $incomeCategoriesAmount->fetchAll(PDO::FETCH_ASSOC);
-						
-		$incomeCategoriesAmount->debugDumpParams();			
 
-		//return $incomeCategoriesAmount->fetchAll(PDO::FETCH_ASSOC);
+		
+		$incomeCategoriesAmount = $db->query("SELECT SUM(i.amount) AS amount, ica.name FROM incomes AS i, incomes_categories_assigned_to_users as ica WHERE i.user_id = {$_SESSION['user_id']} AND i.income_category_assigned_to_user_id = ica.id AND i.date_of_income BETWEEN $startDate AND $endDate GROUP BY i.income_category_assigned_to_user_id")->fetchAll(PDO::FETCH_ASSOC);
+		var_dump($incomeCategoriesAmount);
+		
+		return $incomeCategoriesAmount;
+		
 	}	
 	
 	public static function getIncomeCategoriesAmuntInDetail()
