@@ -29,11 +29,25 @@ class Balance extends Authenticated
 			'expenseCategoriesAmount' => Balances::getExpenseCategoriesAmount(),	
 			'incomeCategoriesInDetail' => Balances::getIncomeCategoriesAmuntInDetail(),	
 			'expenseCategoriesInDetail' => Balances::getExpenseCategoriesAmuntInDetail(),
+			'todaysDate' => Dates::getTodaysDate(),
+			'yesterdaysDate' => Dates::getYesterdaysDate(),
+			'firstDate' => Balances::getFirstEchoDate(),
+			'secondDate' => Balances::getSecondEchoDate()
 			
 			]);
 		} else 
 		{
+			View::renderTemplate('Balance/new.html', [
+			'incomeCategoriesAmount' => Balances::getIncomeCategoriesAmount(),	
+			'expenseCategoriesAmount' => Balances::getExpenseCategoriesAmount(),	
+			'incomeCategoriesInDetail' => Balances::getIncomeCategoriesAmuntInDetail(),	
+			'expenseCategoriesInDetail' => Balances::getExpenseCategoriesAmuntInDetail(),
+			'todaysDate' => Dates::getTodaysDate(),
+			'yesterdaysDate' => Dates::getYesterdaysDate(),
+			'firstDate' => Balances::getFirstEchoDate(),
+			'secondDate' => Balances::getSecondEchoDate()
 			
+			]);
 		}
 		
 		

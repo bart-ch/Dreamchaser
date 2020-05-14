@@ -7,6 +7,7 @@
 	<script src="../js/sortTable.js"></script>
 	<script src="../js/customPeriodModal.js"></script>
 	<script src="../js/pieChartAndTotal.js"></script>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
 	<script>
 	if ( window.history.replaceState ) {
@@ -45,6 +46,9 @@
 					</select>
 				</div>
 	
+	
+	<div class='row'><div class='col-12 text-center'><h4 class='mb-xl-4 balanceDates'>Wyświetlam bilans z okresu: {{ firstDate|date('d/m/Y') }} - {{ secondDate|date('d/m/Y')}}</h4></div></div>";
+	
 				
 				<div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="okresRozliczeniowy" aria-hidden="true">
 					<div class="modal-dialog" role="document">
@@ -60,13 +64,13 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text"> <i class="fas fa-hourglass-start"></i> </span>
 									</div>
-									<input id="startDate" type="date" class="form-control" aria-label="data" name="startDate"<?= "value='$yesterdaysDateFormat'"?> required>
+									<input id="startDate" type="date" class="form-control" aria-label="data" name="startDate" value="{{ yesterdaysDate }}"required>
 								</div>	
 								<div class="input-group mb-3">
 									<div class="input-group-prepend">
 										<span class="input-group-text"> <i class="fas fa-hourglass-end"></i> </span>
 									</div>
-									<input id="endDate" type="date" class="form-control" aria-label="data" name ="endDate" <?= "value='$todaysDateFormat'"?> required>
+									<input id="endDate" type="date" class="form-control" aria-label="data" name ="endDate" value="{{ todaysDate }}" required>
 								</div>	
 							</div>
 							<div class="modal-footer">

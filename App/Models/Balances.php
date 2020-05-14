@@ -14,16 +14,10 @@ use \Core\View;
  */
 class Balances extends \Core\Model
 {
-
-    public function __construct($data = [])
-    {
-        foreach ($data as $key => $value) {
-            $this->$key = $value;
-        };
-    }
 	
 	private static function getStartDate()
 	{
+		
 		if(isset($_POST['periodOfTime'])) {
 			$periodOfTime = $_POST['periodOfTime'];
 
@@ -43,9 +37,9 @@ class Balances extends \Core\Model
 				$secondDate = date("Ymd", strtotime($_POST['endDate']));  
 				
 				if($firstDate < $secondDate) {
-					$startDate = $_POST['startDate'];
+					$startDate = "'".$_POST['startDate']."'";
 				} else if($firstDate > $secondDate) {
-					$startDate = $_POST['endDate'];
+					$startDate = "'".$_POST['endDate']."'";
 				}
 			}
 		} else {
@@ -76,9 +70,9 @@ class Balances extends \Core\Model
 				$secondDate = date("Ymd", strtotime($_POST['endDate']));  
 				
 				if($firstDate < $secondDate) {
-					$endDate = $_POST['endDate'];;
+					$endDate = "'".$_POST['endDate']."'";
 				} else if($firstDate > $secondDate) {
-					$endDate = $_POST['startDate'];
+					$endDate = "'".$_POST['startDate']."'";
 				}
 			}
 		} else {
@@ -95,6 +89,7 @@ class Balances extends \Core\Model
 
 		
 		$incomeCategoriesAmount = $db->query("SELECT SUM(i.amount) AS amount, ica.name FROM incomes AS i, incomes_categories_assigned_to_users as ica WHERE i.user_id = {$_SESSION['user_id']} AND i.income_category_assigned_to_user_id = ica.id AND i.date_of_income BETWEEN $startDate AND $endDate GROUP BY i.income_category_assigned_to_user_id")->fetchAll(PDO::FETCH_ASSOC);
+		
 
 		return $incomeCategoriesAmount;
 		
@@ -136,10 +131,72 @@ class Balances extends \Core\Model
 		return $expenseCategoriesAmountInDetail;
 	}	
 	
-	public static function getDefaultBalanceData()
+	public static function getFirstEchoDate()
 	{
-		$db = static::getDB();
 		
+		if(isset($_POST['periodOfTime'])) {
+			$periodOfTime = $_POST['periodOfTime'];
+
+			if($periodOfTime == "currentMonth")
+			{
+				$firstEchoDate = new \DateTime('first day of this month '.date('Y'));
+			} 
+			else if ($periodOfTime == "previousMonth") {
+				$firstEchoDate = new \DateTime('first day of previous month '.date('Y'));
+			}	
+			else if ($periodOfTime == "currentYear") {
+				$firstEchoDate = new \DateTime('first day of January '.date('Y'));
+			}	
+			else if ($periodOfTime == "customPeriod") { 
+			
+				$firstDate = date("Ymd", strtotime($_POST['startDate']));      
+				$secondDate = date("Ymd", strtotime($_POST['endDate']));  
+				
+				if($firstDate < $secondDate) {
+					$startDate = "'".$_POST['startDate']."'";
+				} else if($firstDate > $secondDate) {
+					$startDate = "'".$_POST['endDate']."'";
+				}
+			//	$firstEchoDate = date("d/m/Y", strtotime($startDate));   
+			}
+		} else {
+			$firstEchoDate = new \DateTime('first day of this month '.date('Y'));
+		}
+		return $firstEchoDate;
+	}	
+	
+	public static function getSecondEchoDate()
+	{
+		if(isset($_POST['periodOfTime'])) {
+			
+			$periodOfTime = $_POST['periodOfTime'];
+
+			if($periodOfTime == "currentMonth")
+			{
+				$secondEchoDate = Dates::getTodaysDate();
+			} 
+			else if ($periodOfTime == "previousMonth") {
+				$secondEchoDate = new DateTime('last day of previous month '.date('Y'));
+			}	
+			else if ($periodOfTime == "currentYear") {
+					$secondEchoDate = Dates::getTodaysDate();
+			}	
+			else if ($periodOfTime == "customPeriod") { 
+			
+				$firstDate = date("Ymd", strtotime($_POST['startDate']));      
+				$secondDate = date("Ymd", strtotime($_POST['endDate']));  
+				
+				if($firstDate < $secondDate) {
+					$endDate = "'".$_POST['endDate']."'";
+				} else if($firstDate > $secondDate) {
+					$endDate = "'".$_POST['startDate']."'";
+				}
+				//$secondEchoDate = date("d/m/Y", strtotime($endDate));	
+			}
+		} else {
+			$secondEchoDate = Dates::getTodaysDate();
+		}
+		return $secondEchoDate;
 	}
 
  
