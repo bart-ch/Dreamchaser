@@ -27,7 +27,7 @@
 		<header>
 			<nav class="navbar navbar-dark welcome-message navbar-expand-lg">
 				
-				<a class="navbar-brand" href="strona-glowna"><img src="img/favicon-white.ico" width="30" height="30" class="d-inline-block mr-1 align-bottom" alt="Logo Dreamchaser"><span class="brand-logo">Dreamchaser</span></a>
+				<a class="navbar-brand" href="strona-glowna"><img src="../img/favicon-white.ico" width="30" height="30" class="d-inline-block mr-1 align-bottom" alt="Logo Dreamchaser"><span class="brand-logo">Dreamchaser</span></a>
 				
 				<div class="menu-btn navbar-toggler" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-label="Przełącznik nawigacji">
 					<div class="menu-btn__burger"></div>
@@ -38,27 +38,27 @@
 					
 					<ul class="navbar-nav ml-auto"> 
 						
-						<li class="nav-item mr-4 active">
-							<a class="nav-link" href="strona-glowna" > Strona główna </a>					
+						<li class="nav-item mr-4 {% block nav_item_1 %}{% endblock %}">
+							<a class="nav-link" href="/menu/main" > Strona główna </a>					
 						</li>
 					
-						<li class="nav-item mr-4">
-							<a class="nav-link" href="dodaj-przychod" > Dodaj przychód </a>					
+						<li class="nav-item mr-4 {% block nav_item_2 %}{% endblock %}">
+							<a class="nav-link" href="/income/new" > Dodaj przychód </a>					
 						</li>
 
-						<li class="nav-item mr-4">
+						<li class="nav-item mr-4 {% block nav_item_3 %}{% endblock %}">
 							<a class="nav-link" href="dodaj-wydatek"> Dodaj wydatek </a>
 						</li>
 
-						<li class="nav-item mr-4">
+						<li class="nav-item mr-4 {% block nav_item_4 %}{% endblock %}">
 							<a class="nav-link" href="przegladaj-bilans"> Przeglądaj bilans </a>
 						</li>	
 
-						<li class="nav-item mr-4">
+						<li class="nav-item mr-4 {% block nav_item_5 %}{% endblock %}">
 							<a class="nav-link" href="#"> Ustawienia </a>
 						</li>
 
-						<li class="nav-item mr-4">
+						<li class="nav-item mr-4 {% block nav_item_6 %}{% endblock %}">
 							<a class="nav-link" href="/login/destroy"> Wyloguj </a>
 						</li>					
 					
@@ -92,6 +92,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<script src="https://kit.fontawesome.com/c41b73fbf8.js" crossorigin="anonymous"></script>
 	<script src="../js/bootstrap-auto-dismiss-alert.js"></script>
+	<script src="../js/toggleButton.js"></script>
 
 
     {% block footer %}

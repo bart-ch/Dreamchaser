@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Dodaj przychód{% endblock %}
+
+{% block footer %}
+
+	<script>
+	if ( window.history.replaceState ) {
+	  window.history.replaceState( null, null, window.location.href );
+	}
+	</script>
+
+{% endblock %}
+
+{% block nav_item_2 %}active{% endblock %}
+
+{% block body %}
+	
+	<div class="row vertical-center">
+		<div class="main-container py-2 px-4 col-md-8 offset-md-2 col-lg-6 offset-lg-3 my-5">
+		
+			<div class="row">	
+				<div class="welcome-message mt-2 mb-2 mx-2 py-3 px-5 w-100">
+				
+					<div class="row">
+						<div class="col-12 text-center">
+							<h2 class="mb-xl-4">Dodaj przychód</h2>
+						</div>
+					</div>
+		
+					<form action="/income/create" method="post">
+						
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
+							</div>
+							<input type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" value="{{ income.amount }}" required autofocus >
+						</div>
+					
+						<span class="error">{{ income.errors.amount }}</span>
+					
+						<div class="input-group mt-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+							</div>
+							<input id="transactionDate" type="date" class="form-control" aria-label="data" name="incomeDate"  value="{{ todaysDate }}"required>
+						</div>
+						
+						<span class="error">{{ income.errors.date }}</span>
+
+						<div class="input-group mt-3">
+							<div class="input-group-prepend">
+							<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
+							</div>				
+							<select id="category" class="custom-select" data-live-search="true" name="incomeCategory">
+			
+							{% for userIncome in userIncomes %}
+								<option>{{ userIncome.name }}</option>
+							{% endfor %}
+								
+							</select>
+						</div>
+						
+						<div class="input-group mt-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text">
+									<i class="fas fa-pen"></i>
+								</span>
+							</div>
+							<textarea class="form-control" rows="2 mt-3" maxlength="90"  placeholder="Komentarz (opcjonalne)" name="comment"></textarea>
+						</div>
+						
+						<span class="error">{{ income.errors.comment }}</span>
+
+						<div class="row">
+						
+							<div class="col-6">
+								<button type="submit" class="btn btn-hover color-8 btn-lg btn-block mt-3">Dodaj</button>
+							</div>
+							
+							<div class="col-6">
+								<button type="button" class="btn btn-hover color-11 btn-block btn-lg mt-3" onclick="window.location.href = '../menu/main';">Anuluj</button>	
+							</div>
+							
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+
+{% endblock %}

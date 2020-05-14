@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Rejestracja{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
+
+{% block nav_item_1 %}active{% endblock %}
+
+{% block body %}
+	
+	<div class="row vertical-center">
+		<div class="main-container py-2 px-4 col-md-8 offset-md-2 col-lg-6 offset-lg-3 my-5">
+			
+				<div class="row">	
+				
+					<div class="welcome-message m-2 pt-2 px-4">
+						<h2 class="text-center">Witaj {{ user.name }}!</h2><p class="welcome-text text-justify">Znajdujesz się na stronie głównej. Wybierz interesującą Cię opcję z paska nawigacyjnego. Dodaj nowy przychód, wydatek, przeglądaj bilans z interesującego Cię okresu lub spersonalizuj swoje konto w ustawieniach.</p>
+						
+					</div>
+
+				</div>
+				
+			</div>
+	</div>
+			
+
+{% endblock %}
