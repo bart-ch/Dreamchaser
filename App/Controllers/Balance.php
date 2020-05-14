@@ -25,8 +25,11 @@ class Balance extends Authenticated
     {	
 		if(!isset($_POST['periodOfTime'])){	
 			View::renderTemplate('Balance/new.html', [
-			'incomeCategoriesAmount' => Balances::getIncomeCategoriesAmount(),
-			'secondDate' => Dates::getTodaysDate(),
+			'incomeCategoriesAmount' => Balances::getIncomeCategoriesAmount(),	
+			'expenseCategoriesAmount' => Balances::getExpenseCategoriesAmount(),	
+			'incomeCategoriesInDetail' => Balances::getIncomeCategoriesAmuntInDetail(),	
+			'expenseCategoriesInDetail' => Balances::getExpenseCategoriesAmuntInDetail(),
+			
 			]);
 		} else 
 		{

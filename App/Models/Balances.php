@@ -95,8 +95,7 @@ class Balances extends \Core\Model
 
 		
 		$incomeCategoriesAmount = $db->query("SELECT SUM(i.amount) AS amount, ica.name FROM incomes AS i, incomes_categories_assigned_to_users as ica WHERE i.user_id = {$_SESSION['user_id']} AND i.income_category_assigned_to_user_id = ica.id AND i.date_of_income BETWEEN $startDate AND $endDate GROUP BY i.income_category_assigned_to_user_id")->fetchAll(PDO::FETCH_ASSOC);
-		var_dump($incomeCategoriesAmount);
-		
+
 		return $incomeCategoriesAmount;
 		
 	}	
@@ -105,36 +104,36 @@ class Balances extends \Core\Model
 	{
 		$db = static::getDB();
 		
-		$startDate = $this->getStartDate();
-		$endDate = $this->getEndDate();
+		$startDate = static::getStartDate();
+		$endDate = static::getEndDate();
 		
-		$incomeCategoriesAmountInDetailQuery = $db->query("SELECT i.amount, i.date_of_income, i.comment, ica.name FROM incomes AS i, incomes_categories_assigned_to_users as ica WHERE i.user_id={$_SESSION['user_id']} AND i.income_category_assigned_to_user_id = ica.id AND i.date_of_income BETWEEN '$startDate' AND '$endDate'")->fetchAll(PDO::FETCH_ASSOC);
+		$incomeCategoriesAmountInDetail = $db->query("SELECT i.amount, i.date_of_income, i.comment, ica.name FROM incomes AS i, incomes_categories_assigned_to_users as ica WHERE i.user_id={$_SESSION['user_id']} AND i.income_category_assigned_to_user_id = ica.id AND i.date_of_income BETWEEN $startDate AND $endDate")->fetchAll(PDO::FETCH_ASSOC);
 		
-		return $incomeCategoriesAmountInDetailQuery;
+		return $incomeCategoriesAmountInDetail;
 	}
 	
 	public static function getExpenseCategoriesAmount()
 	{
 		$db = static::getDB();
 		
-		$startDate = $this->getStartDate();
-		$endDate = $this->getEndDate();
+		$startDate = static::getStartDate();
+		$endDate = static::getEndDate();
 		
-		$expenseCategoriesAmountQuery = $db->query("SELECT SUM(e.amount), eca.name FROM expenses AS e, expenses_categories_assigned_to_users as eca WHERE e.user_id={$_SESSION['user_id']} AND e.expense_category_assigned_to_user_id = eca.id AND e.date_of_expense BETWEEN '$startDate' AND '$endDate' GROUP BY e.expense_category_assigned_to_user_id")->fetchAll(PDO::FETCH_ASSOC);
+		$expenseCategoriesAmount = $db->query("SELECT SUM(e.amount)  AS amount, eca.name FROM expenses AS e, expenses_categories_assigned_to_users as eca WHERE e.user_id={$_SESSION['user_id']} AND e.expense_category_assigned_to_user_id = eca.id AND e.date_of_expense BETWEEN $startDate AND $endDate GROUP BY e.expense_category_assigned_to_user_id")->fetchAll(PDO::FETCH_ASSOC);
 		
-		return $expenseCategoriesAmountQuery;
+		return $expenseCategoriesAmount;
 	}
 
 	public static function getExpenseCategoriesAmuntInDetail()
 	{
 		$db = static::getDB();
 		
-		$startDate = $this->getStartDate();
-		$endDate = $this->getEndDate();
+		$startDate = static::getStartDate();
+		$endDate = static::getEndDate();
 	
-		$expenseCategoriesAmountInDetailQuery = $db->query("SELECT e.amount, e.date_of_expense, e.comment, eca.name FROM expenses AS e, expenses_categories_assigned_to_users as eca WHERE e.user_id={$_SESSION['user_id']} AND e.expense_category_assigned_to_user_id = eca.id AND e.date_of_expense BETWEEN '$startDate' AND '$endDate'")->fetchAll(PDO::FETCH_ASSOC);
+		$expenseCategoriesAmountInDetail = $db->query("SELECT e.amount, e.date_of_expense, e.comment, eca.name FROM expenses AS e, expenses_categories_assigned_to_users as eca WHERE e.user_id={$_SESSION['user_id']} AND e.expense_category_assigned_to_user_id = eca.id AND e.date_of_expense BETWEEN $startDate AND $endDate")->fetchAll(PDO::FETCH_ASSOC);
 		
-		return $expenseCategoriesAmountInDetailQuery;
+		return $expenseCategoriesAmountInDetail;
 	}	
 	
 	public static function getDefaultBalanceData()
