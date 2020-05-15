@@ -41,6 +41,12 @@ class Auth
      *
      * @return void
      */
+	 public static function isLoggedIn()
+	 {
+		 return isset($_SESSION['user_id']);
+	 }
+	 
+	 
     public static function logout()
     {
         // Unset all of the session variables
@@ -84,7 +90,7 @@ class Auth
      */
     public static function getReturnToPage()
     {
-        return $_SESSION['return_to'] ?? '/';
+        return $_SESSION['return_to'] ?? '/menu/main';
     }
 
     /**

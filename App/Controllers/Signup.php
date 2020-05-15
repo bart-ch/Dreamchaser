@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Auth;
 use \App\Models\User;
 
 /**
@@ -20,7 +21,11 @@ class Signup extends \Core\Controller
      */
     public function newAction()
     {
+		if(Auth::isLoggedIn()) {
+			$this->redirect('/menu/main');
+		} else {
         View::renderTemplate('Signup/new.html');
+		}
     }
 
     /**

@@ -30,5 +30,10 @@ class Dates
 			$todaysDate = new \DateTime();
 			$todaysDateFormat = $todaysDate->format('Y-m-d');
 			return $todaysDateFormat;
+	}	
+	
+	public static function getYesterdaysDate()
+	{
+			return date('Y-m-d',strtotime("-1 days"));
 	}
 }

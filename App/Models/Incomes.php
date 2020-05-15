@@ -68,19 +68,22 @@ class Incomes extends \Core\Model
     }
 	
 	protected function getIdOfIncomeCategoryAssignedToUser()
-	{		
-		$sql = "SELECT ica.id FROM incomes_categories_assigned_to_users AS ica, incomes_categories AS ic WHERE ica.user_id= :user_id AND ic.name= :incomeName AND ic.name=ica.name";
+	{	
+		$sql = "SELECT ica.id FROM incomes_categories_assigned_to_users AS ica, incomes_categories AS ic WHERE ica.user_id = :user_id AND ic.name= :incomeName AND ic.name=ica.name";
 		
 		$db = static::getDB();
 		
 		$stmt = $db->prepare($sql);
 		
+		
 		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':incomeName', $this->incomeCategory, PDO::PARAM_STR);
 		
-		return	$stmt->execute();
+		$stmt->execute();
 		
-	
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		return $result['id'];		
 	
 	}
 	
