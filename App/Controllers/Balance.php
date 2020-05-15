@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
-use \App\Models\balances;
+use \App\Models\Balances;
 use \App\Auth;
 use \App\Dates;
 use \App\Flash;
