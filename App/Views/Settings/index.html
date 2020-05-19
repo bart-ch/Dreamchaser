@@ -10,6 +10,10 @@
 				$("i", "#"+idOfButton).toggleClass("fas fa-chevron-down fas fa-chevron-up");			
 				$('#'+idOfPanel).slideToggle("fast");
 		}
+		
+		$('#editProfileModal').on('shown.bs.modal', function () {
+			$('#name').focus();
+		})
 
 	</script>
 
@@ -111,11 +115,44 @@
 							<div class="row">
 							
 								<div class="col-6 mb-2">
-									<button class="btn btn-hover no-focus btn-sm btn-block mt-2" style="height:30px">Edytuj profil</button>
+									<button class="btn btn-hover no-focus btn-sm btn-block mt-2" data-toggle="modal" data-target="#editProfileModal" style="height:30px">Edytuj profil</button>
 								</div>
 								
+								<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="edytujProfil" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 id="edytujProfil" class="modal-title">Edytuj profil</h4>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
+												  <span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body">
+											
+												<div class="input-group">
+													<div class="input-group-prepend">
+														<span class="input-group-text"> <i class="fas fa-user-alt"></i> </span>
+													</div>
+													<input id="name" type="text" class="form-control" placeholder="Imię" aria-label="imie" name="name" value="{{ user.name }}" required autofocus>
+												</div>
+												
+												<div class="input-group mt-3">
+													<div class="input-group-prepend">
+														<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
+													</div>
+													<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" value="{{ user.email }}" required >
+												</div>												
+												
+											</div>
+											<div class="modal-footer">
+												<button id="modalCloseBtn" class="btn btn-hover color-8" data-dismiss="modal">Potwierdź</button>
+											</div>
+										</div>
+									</div>
+								</div>									
+								
 								<div class="col-6 mb-2">
-									<button class="btn btn-hover color-11 btn-sm btn-block mt-2" data-toggle="modal" data-target="#deleteUserDataModal" style="height:30px">Zresetuj przychody i wydatki</button>	
+									<button class="btn btn-hover no-focus-red btn-sm btn-block mt-2" data-toggle="modal" data-target="#deleteUserDataModal" style="height:30px">Zresetuj przychody i wydatki</button>	
 								</div>
 								
 								<div class="modal fade" id="deleteUserDataModal" tabindex="-1" role="dialog" aria-labelledby="zresetujKonto" aria-hidden="true">
@@ -186,7 +223,7 @@
 								</div>									
 								
 								<div class="col-6 mb-2">
-									<button class="btn btn-hover color-11 btn-sm btn-block mt-2" data-toggle="modal" data-target="#deleteAccountModal" style="height:30px">Usuń konto</button>	
+									<button class="btn btn-hover no-focus-red btn-sm btn-block mt-2" data-toggle="modal" data-target="#deleteAccountModal" style="height:30px">Usuń konto</button>	
 								</div>
 								
 								<div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="usunKonto" aria-hidden="true">

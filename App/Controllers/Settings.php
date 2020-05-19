@@ -7,6 +7,7 @@ use \App\Auth;
 use \App\Flash;
 use \App\Models\Incomes;
 use \App\Models\Expenses;
+use \App\Models\User;
 
 /**
  * Login controller
@@ -16,17 +17,19 @@ use \App\Models\Expenses;
 class Settings extends Authenticated
 {
 
-    /**
-     * Show the login page
-     *
-     * @return void
-     */
+	protected function before()
+	{	
+		parent::before();
+		$this->user = Auth::getUser();
+	}
+	
     public function indexAction()
     {	
 			View::renderTemplate('Settings/index.html', [
 			'userIncomes' => Incomes::getUserIncomeCategories(),
 			'userExpenses' => Expenses::getUserExpenseCategories(),
-			'paymentMethods' => Expenses::getUserPaymentMethods()
+			'paymentMethods' => Expenses::getUserPaymentMethods(),
+			'user' => $this->user
 			]);
 	}
 

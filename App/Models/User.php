@@ -250,6 +250,7 @@ class User extends \Core\Model
 
         return $stmt->fetch();
     }
+	
 
     /**
      * Remember the login by inserting a new unique token into the remembered_logins table

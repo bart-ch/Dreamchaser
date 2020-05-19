@@ -242,7 +242,11 @@ select option[disabled]:first-child {
   
 }
 
-.btn-hover.no-focus:focus {
+.btn-hover.no-focus-red {
+background-image: linear-gradient(to right, #eb3941, #f15e64, #e14e53, #e2373f);
+}
+
+.btn-hover.no-focus:focus, .btn-hover.no-focus-red:focus {
 	-webkit-box-shadow: 0px 0px 0px 0px grey;
 	-moz-box-shadow: 0px 0px 0px 0px grey;
 	box-shadow: 0px 0px 0px 0px grey; 
