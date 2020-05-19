@@ -90,6 +90,12 @@ th:first-child, th:nth-child(2){
 	width: 100%;
 }
 
+.settingTogglePanel {
+	display: none;
+	background-color: rgb(41, 43, 44, 0.8);
+	border-radius: 3px;
+}
+
 @media (max-width:1200px){
 	h1{
 		font-size: 25px;
