@@ -4,22 +4,8 @@
 
 {% block footer %}
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-	
-	<script>
-		function myFunction() {
-			var password = document.getElementById("password");
-			
-			if (password.type === "password") {
-				password.type = "text";
-				$('#showHideIcon').removeClass('fa-eye');
-				$('#showHideIcon').addClass('fa-eye-slash');
-				
-			} else {
-				password.type = "password";
-				$('#showHideIcon').removeClass('fa-eye-slash');
-				$('#showHideIcon').addClass('fa-eye');
-			}}
-	</script>
+	<script src="../js/showHidePassword.js"></script>
+
 {% endblock %}
 
 {% block body %}
@@ -61,7 +47,7 @@
 							</div>
 							<input type="password" class="form-control" data-toggle="password" placeholder="Hasło" aria-label="hasło" id="password" name="password" required>
 							<div class="input-group-append" style="cursor:pointer">
-								<span class="input-group-text" onclick="myFunction()">
+								<span class="input-group-text" onclick="myFunction('password')">
 									<i id="showHideIcon" class="fa fa-eye"></i>
 								</span>
 							</div>
