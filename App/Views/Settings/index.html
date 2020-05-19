@@ -7,13 +7,9 @@
 
 	<script>
 		function toggleSettingPanel(idOfButton, idOfPanel) {
-				$("i", this).toggleClass("fas fa-chevron-down fas fa-chevron-up");			
+				$("i", "#"+idOfButton).toggleClass("fas fa-chevron-down fas fa-chevron-up");			
 				$('#'+idOfPanel).slideToggle("slow");
 		}
-		$(document).ready(function(){
-
-		});
-		
 
 	</script>
 
@@ -33,7 +29,7 @@
 						<div class="col-12 text-center">
 							<h2 class="mb-xl-4">Ustawienia</h2>
 						</div>
-						<button id="settingButton1" class="btn btn-hover color-8 btn-block mt-2" onClick="toggleSettingPanel(this.id,'settingTogglePanel1')">Kategorie przychodów <i class="fas fa-chevron-down ml-2"></i></button>
+						<button id="settingButton1" class="btn btn-hover no-focus btn-block mt-2" onClick="toggleSettingPanel(this.id,'settingTogglePanel1')">Kategorie przychodów <i class="fas fa-chevron-down ml-2 setting-icon"></i></button>
 
 						<div id="settingTogglePanel1" class="settingTogglePanel w-100 px-2">
 						
@@ -51,14 +47,14 @@
 							
 							<div class="row">
 								<div class="col mb-2">
-									<button type="submit" class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
+									<button class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
 								</div>						
 							</div>
 							
 						</div>					
 				
 
-						<button id="settingButton2" class="btn btn-hover color-8  btn-block mt-2 settingButton" onClick="toggleSettingPanel(this.id,'settingTogglePanel2')">Kategorie wydatków <i class="fas fa-chevron-down ml-2"></i></button>
+						<button id="settingButton2" class="btn btn-hover no-focus  btn-block mt-2" onClick="toggleSettingPanel(this.id,'settingTogglePanel2')">Kategorie wydatków <i class="fas fa-chevron-down ml-2 setting-icon"></i></button>
 						
 						<div id="settingTogglePanel2" class="settingTogglePanel w-100 px-2">
 						
@@ -77,43 +73,68 @@
 							
 							<div class="row">
 								<div class="col mb-2">
-									<button type="submit" class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
+									<button class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
 								</div>						
 							</div>
 							
 						</div>
 						
-						<button id="settingButton3" class="btn btn-hover color-8 btn-block mt-2 settingButton" onClick="toggleSettingPanel(this.id,'settingTogglePanel3')">Sposoby płatności <i class="fas fa-chevron-down ml-2"></i></button>
+						<button id="settingButton3" class="btn btn-hover no-focus btn-block mt-2" onClick="toggleSettingPanel(this.id,'settingTogglePanel3')">Sposoby płatności <i class="fas fa-chevron-down ml-2 setting-icon"></i></button>
 
 						<div id="settingTogglePanel3" class="settingTogglePanel w-100 px-2">
 						
-						<div class="input-group mt-3">
-							<div class="input-group-prepend">
-							<label class="input-group-text"><i class="fas fa-money-check"></i></label>
-							</div>				
-							<select id="category" class="custom-select" data-live-search="true" name="paymentMethod">
-							
-							{% for paymentMethod in paymentMethods %}
-								<option>{{ paymentMethod.name }}</option>
-							{% endfor %}
-							
-							</select>
-						</div>
+							<div class="input-group mt-2">
+								<div class="input-group-prepend">
+								<label class="input-group-text"><i class="fas fa-money-check"></i></label>
+								</div>				
+								<select id="category" class="custom-select" data-live-search="true" name="paymentMethod">
+								
+								{% for paymentMethod in paymentMethods %}
+									<option>{{ paymentMethod.name }}</option>
+								{% endfor %}
+								
+								</select>
+							</div>
 							
 							<div class="row">
 								<div class="col mb-2">
-									<button type="submit" class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
+									<button class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
 								</div>						
 							</div>
 							
 						</div>						
 						
-						<button class="btn btn-hover color-8 btn-block mt-2 settingButton">Zarządzaj kontem <i class="fas fa-chevron-down ml-2"></i></button>
-			
+						<button id="settingButton4" class="btn btn-hover no-focus btn-block mt-2" onClick="toggleSettingPanel(this.id,'settingTogglePanel4')">Zarządzaj kontem <i class="fas fa-chevron-down ml-2 setting-icon"></i></button>
+						
+						<div id="settingTogglePanel4" class="settingTogglePanel w-100 px-2">
+						
+							<div class="row">
+							
+								<div class="col-6 mb-2">
+									<button class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Edytuj profil</button>
+								</div>
+								
+								<div class="col-6 mb-2">
+									<button class="btn btn-hover color-11 btn-sm btn-block mt-3" style="height:30px">Zresetuj przychody i wydatki</button>	
+								</div>
+								
+							</div>	
+							
+							<div class="row">
+							
+								<div class="col-6 mb-2">
+									<button class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Zmień hasło</button>
+								</div>
+								
+								<div class="col-6 mb-2">
+									<button class="btn btn-hover color-11 btn-sm btn-block mt-3" style="height:30px">Usuń konto</button>	
+								</div>
+								
+							</div>	
+							
+						</div>	
+						
 					</div>				
-		
-
-	
 				</div>
 			</div>
 		</div>
