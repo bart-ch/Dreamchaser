@@ -21,6 +21,10 @@ body, html {
 	font-family: 'Monoton', cursive;
 }
 
+.editbtn {
+	cursor: pointer;
+}
+
 .vertical-center {
 	min-height: 90%;
 	min-height: 90vh;

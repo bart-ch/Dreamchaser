@@ -13,6 +13,21 @@
 	if ( window.history.replaceState ) {
 	  window.history.replaceState( null, null, window.location.href );
 	}
+	
+	$(document).ready(function() {
+		$('.editbtn').on('click',function() {
+			$('#editTransactionModal').modal('show');
+			
+			$tr = $(this).closest('tr');
+			var data = $tr.children("td").map(function() {
+				return $(this).text();
+			}).get();
+			
+			$('#modalAmount').val(data[1]);
+			
+		});
+	
+	});
 	</script>
 
 {% endblock %}
@@ -146,7 +161,7 @@
 							</thead>
 							<tbody>
 								{% for incomeCategoryInDetail in incomeCategoriesInDetail %}
-								<tr><td>{{ incomeCategoryInDetail.name }}</td>
+								<tr class="editbtn"><td >{{ incomeCategoryInDetail.name }}</td>
 								<td>{{ incomeCategoryInDetail.amount }}</td>
 								<td>{{ incomeCategoryInDetail.date_of_income }}</td>
 								<td class='wrap'>{{ incomeCategoryInDetail.comment }}</td></tr>
@@ -155,7 +170,7 @@
 						</table>									
 					
 					</div>
-					
+
 					<div class="col-lg-6 col-sm-12 mb-3">
 						<h2>Poszczególne wydatki</h2>
 						<table id="tableOfExpensesInDetail" class="table table-hover table-active text-white table-sm" style="table-layout: fixed; width: 100%">
@@ -178,6 +193,69 @@
 						</table>	
 					
 					</div>
+					
+					
+						<div class="modal fade" id="editTransactionModal" tabindex="-1" role="dialog" aria-labelledby="edytujTransakcje" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 id="edytujTransakcje" class="modal-title">Edytuj profil</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
+										  <span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+									
+										<form action="" method="post">
+											
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
+												</div>
+												<input id="modalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" required autofocus >
+											</div>
+										
+										
+											<div class="input-group mt-3">
+												<div class="input-group-prepend">
+													<span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+												</div>
+												<input id="transactionDate" type="date" class="form-control" aria-label="data" name="incomeDate"  required>
+											</div>
+											
+
+											<div class="input-group mt-3">
+												<div class="input-group-prepend">
+												<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
+												</div>				
+												<select id="category" class="custom-select" data-live-search="true" name="incomeCategory">
+								
+												{% for userIncome in userIncomes %}
+													<option>{{ userIncome.name }}</option>
+												{% endfor %}
+													
+												</select>
+											</div>
+											
+											<div class="input-group mt-3">
+												<div class="input-group-prepend">
+													<span class="input-group-text">
+														<i class="fas fa-pen"></i>
+													</span>
+												</div>
+												<textarea class="form-control" rows="2 mt-3" maxlength="90"  placeholder="Komentarz (opcjonalne)" name="comment"></textarea>
+											</div>
+												
+											</div>
+										</form>											
+										<div class="modal-footer">
+											<button id="modalCloseBtn" class="btn btn-hover color-8" data-dismiss="modal">Potwierdź</button>
+										</div>
+									</div>
+								
+								</div>
+							</div>
+						</div>					
 				
 				</div>
 				
