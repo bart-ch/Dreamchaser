@@ -15,15 +15,18 @@
 	}
 	
 	$(document).ready(function() {
-		$('.editbtn').on('click',function() {
-			$('#editTransactionModal').modal('show');
+		$('.editIncomeBtn').on('click',function() {
+			$('#editIncomeModal').modal('show');
 			
 			$tr = $(this).closest('tr');
 			var data = $tr.children("td").map(function() {
 				return $(this).text();
 			}).get();
 			
-			$('#modalAmount').val(data[1]);
+			$('#incomeCategoryModal').val(data[0]);
+			$('#incomeModalAmount').val(data[1]);
+			$('#incomeModalDate').val(data[2]);
+			$('#incomeModalComment').val(data[3]);
 			
 		});
 	
@@ -42,27 +45,27 @@
 			<div class="row">	
 				<div class="welcome-message mt-2 mb-2 mx-2 py-3 px-5 w-100">
 				
-			<div class="row">
-				<div class="col-12 text-center">
-					<h2 class="mb-xl-4">Przeglądaj bilans</h2>
-				</div>
-			</div>				
-			<form method="post" id="search_form">
-				<div class="input-group mb-4 col-sm-12 col-md-6 offset-md-3 pl-0 my-3">
-					<div class="input-group-prepend">
-					<label class="input-group-text"><i class="fas fa-calendar-alt"></i></label>
+					<div class="row">
+						<div class="col-12 text-center">
+							<h2 class="mb-xl-4">Przeglądaj bilans</h2>
+						</div>
 					</div>				
-					<select id="periodOfTime" class="custom-select" data-live-search="true" name="periodOfTime">
-						<option value="" selected disabled>Wybierz okres</option>
-						<option value="currentMonth">Obecny miesiąc</option>
-						<option value="previousMonth">Poprzedni miesiąc</option>
-						<option value="currentYear">Obecny rok</option>
-						<option value="customPeriod">Niestandardowy</option>
-					</select>
-				</div>
+					<form method="post" id="search_form">
+						<div class="input-group mb-4 col-sm-12 col-md-6 offset-md-3 pl-0 my-3">
+							<div class="input-group-prepend">
+							<label class="input-group-text"><i class="fas fa-calendar-alt"></i></label>
+							</div>				
+							<select id="periodOfTime" class="custom-select" data-live-search="true" name="periodOfTime">
+								<option value="" selected disabled>Wybierz okres</option>
+								<option value="currentMonth">Obecny miesiąc</option>
+								<option value="previousMonth">Poprzedni miesiąc</option>
+								<option value="currentYear">Obecny rok</option>
+								<option value="customPeriod">Niestandardowy</option>
+							</select>
+						</div>
 	
 	
-				<div class='row'><div class='col-12 text-center'><h4 class='mb-xl-4 balanceDates'>Wyświetlam bilans z okresu: {{ firstDate|date('d/m/Y') }} - {{ secondDate|date('d/m/Y')}}</h4></div></div>
+					<div class='row'><div class='col-12 text-center'><h4 class='mb-xl-4 balanceDates'>Wyświetlam bilans z okresu: {{ firstDate|date('d/m/Y') }} - {{ secondDate|date('d/m/Y')}}</h4></div></div>
 	
 				
 				<div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="okresRozliczeniowy" aria-hidden="true">
@@ -161,7 +164,7 @@
 							</thead>
 							<tbody>
 								{% for incomeCategoryInDetail in incomeCategoriesInDetail %}
-								<tr class="editbtn"><td >{{ incomeCategoryInDetail.name }}</td>
+								<tr class="editIncomeBtn"><td >{{ incomeCategoryInDetail.name }}</td>
 								<td>{{ incomeCategoryInDetail.amount }}</td>
 								<td>{{ incomeCategoryInDetail.date_of_income }}</td>
 								<td class='wrap'>{{ incomeCategoryInDetail.comment }}</td></tr>
@@ -193,69 +196,69 @@
 						</table>	
 					
 					</div>
-					
-					
-						<div class="modal fade" id="editTransactionModal" tabindex="-1" role="dialog" aria-labelledby="edytujTransakcje" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h4 id="edytujTransakcje" class="modal-title">Edytuj profil</h4>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
-										  <span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<div class="modal-body">
-									
-										<form action="" method="post">
-											
-											<div class="input-group">
-												<div class="input-group-prepend">
-													<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
-												</div>
-												<input id="modalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" required autofocus >
-											</div>
-										
-										
-											<div class="input-group mt-3">
-												<div class="input-group-prepend">
-													<span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
-												</div>
-												<input id="transactionDate" type="date" class="form-control" aria-label="data" name="incomeDate"  required>
-											</div>
-											
-
-											<div class="input-group mt-3">
-												<div class="input-group-prepend">
-												<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
-												</div>				
-												<select id="category" class="custom-select" data-live-search="true" name="incomeCategory">
-								
-												{% for userIncome in userIncomes %}
-													<option>{{ userIncome.name }}</option>
-												{% endfor %}
-													
-												</select>
-											</div>
-											
-											<div class="input-group mt-3">
-												<div class="input-group-prepend">
-													<span class="input-group-text">
-														<i class="fas fa-pen"></i>
-													</span>
-												</div>
-												<textarea class="form-control" rows="2 mt-3" maxlength="90"  placeholder="Komentarz (opcjonalne)" name="comment"></textarea>
-											</div>
-												
-											</div>
-										</form>											
-										<div class="modal-footer">
-											<button id="modalCloseBtn" class="btn btn-hover color-8" data-dismiss="modal">Potwierdź</button>
-										</div>
-									</div>
-								
+				
+					<div class="modal fade" id="editIncomeModal" tabindex="-1" role="dialog" aria-labelledby="edytujTransakcje" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 id="edytujTransakcje" class="modal-title">Edytuj profil</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
+									  <span aria-hidden="true">&times;</span>
+									</button>
 								</div>
+								<div class="modal-body">
+								
+									<form action="" method="post">
+										
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
+											</div>
+											<input id="incomeModalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" required autofocus >
+										</div>
+									
+									
+										<div class="input-group mt-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+											</div>
+											<input id="incomeModalDate" type="date" class="form-control" aria-label="data" name="incomeDate"  required>
+										</div>
+										
+
+										<div class="input-group mt-3">
+											<div class="input-group-prepend">
+											<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
+											</div>				
+											<select id="incomeCategoryModal" class="custom-select" data-live-search="true" name="incomeCategory">
+							
+											{% for userIncome in userIncomes %}
+												<option>{{ userIncome.name }}</option>
+											{% endfor %}
+												
+											</select>
+										</div>
+										
+										<div class="input-group mt-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">
+													<i class="fas fa-pen"></i>
+												</span>
+											</div>
+											<textarea id="incomeModalComment" class="form-control" rows="2 mt-3" maxlength="90"  placeholder="Komentarz (opcjonalne)" name="comment"></textarea>
+										</div>
+											
+								</div>
+																		
+									<div class="modal-footer">
+										<button id="modalCloseBtn" class="btn btn-hover color-8" data-dismiss="modal">Potwierdź</button>
+									</div>
+									</form>	
 							</div>
-						</div>					
+							
+						</div>
+					</div>
+
 				
 				</div>
 				
@@ -272,9 +275,8 @@
 			</div>
 			</div>
 				</div>
-			</div>
-		</div>
-	</div>
+
+	
 			
 
 {% endblock %}
