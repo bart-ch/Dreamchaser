@@ -35,5 +35,10 @@ class Dates
 	public static function getYesterdaysDate()
 	{
 			return date('Y-m-d',strtotime("-1 days"));
+	}	
+	public static function getLastDayOfNextMonth()
+	{
+			$date = new \DateTime('last day of next month '.date('Y'));
+			return $date->format('Y-m-d');
 	}
 }

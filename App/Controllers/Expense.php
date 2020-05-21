@@ -26,7 +26,8 @@ class Expense extends Authenticated
         View::renderTemplate('Expense/new.html', [
 		'todaysDate' => Dates::getTodaysDate(),
 		'userExpenses' => Expenses::getUserExpenseCategories(),
-		'paymentMethods' => Expenses::getUserPaymentMethods()
+		'paymentMethods' => Expenses::getUserPaymentMethods(),
+		'lastDate' => Dates::getLastDayOfNextMonth()
 		]);
     }
 
@@ -52,7 +53,8 @@ class Expense extends Authenticated
 					'expense' => $expense,
 					'todaysDate' => Dates::getTodaysDate(),
 					'userExpenses' => Expenses::getUserExpenseCategories(),
-					'paymentMethods' => Expenses::getUserPaymentMethods()
+					'paymentMethods' => Expenses::getUserPaymentMethods(),
+					'lastDate' => Dates::getLastDayOfNextMonth()
 				]);
 				
 			} 	

@@ -8,6 +8,10 @@ body, html {
 	color: white;
 }
 
+.alert {
+	z-index:2;
+}
+
 .main-container{
 	padding: 50px 60px;
 	-webkit-box-shadow: 1px 4px 26px 11px rgba(0,0,0,0.75);

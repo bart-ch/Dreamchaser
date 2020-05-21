@@ -32,6 +32,7 @@
 		});
 	
 	});
+	
 	</script>
 
 {% endblock %}
@@ -93,7 +94,7 @@
 								</div>	
 							</div>
 							<div class="modal-footer">
-								<button id="modalCloseBtn" onclick="form_submit()" class="btn btn-hover color-8" data-dismiss="modal">Potwierdź</button>
+								<button id="modalCloseBtn"  class="btn btn-hover color-8">Potwierdź</button>
 							</div>
 						</div>
 					</div>
@@ -109,10 +110,9 @@
 						<table id="tableOfIncomes" class="table table-hover table-active text-white table-sm">
 							
 							<thead>	
-									<tr>
-									<th onclick="sortTableAlphabetically('tableOfIncomes')" scope="col">Kategoria <i class="fas fa-sort"></i></th>
-									<th onclick="sortTableNumerically('tableOfIncomes')" scope="col">Kwota <i class="fas fa-sort"></i></th>
-								</tr>
+								<tr>
+								<th onclick="sortTableAlphabetically('tableOfIncomes')" scope="col">Kategoria <i class="fas fa-sort"></i></th>
+								<th onclick="sortTableNumerically('tableOfIncomes')" scope="col">Kwota <i class="fas fa-sort"></i></th></tr>
 							</thead>
 							<tbody>
 							{% for incomeCategoryAmount in incomeCategoriesAmount %}
@@ -200,16 +200,16 @@
 					
 					</div>
 				
-					<div class="modal fade" id="editIncomeModal" tabindex="-1" role="dialog" aria-labelledby="edytujTransakcje" aria-hidden="true">
+					<div class="modal fade" id="editIncomeModal" tabindex="-1" role="dialog" aria-labelledby="edytujPrzychod" aria-hidden="true" >
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h4 id="edytujTransakcje" class="modal-title">Edytuj przychód</h4>
+									<h4 id="edytujPrzychod" class="modal-title">Edytuj przychód</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
 									  <span aria-hidden="true">&times;</span>
 									</button>
 								</div>
-								<form action="/income/update" method="post">
+								<form action="" method="post">
 								<div class="modal-body">
 										
 									<input type="hidden" id="incomeModalId" name="incomeId">
@@ -219,16 +219,19 @@
 										</div>
 										<input id="incomeModalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" required autofocus >
 									</div>
-								
+									
+									<span class="error">{{ income.errors.amount }}</span>
 								
 									<div class="input-group mt-3">
 										<div class="input-group-prepend">
 											<span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
 										</div>
-										<input id="incomeModalDate" type="date" class="form-control" aria-label="data" name="incomeDate"  required>
+										<input id="incomeModalDate" type="date" class="form-control" aria-label="data" name="incomeDate" min="2000-01-01" max="{{ lastDate }}" required>
 									</div>
 									
-
+									
+									<span class="error">{{ income.errors.date }}</span>
+									
 									<div class="input-group mt-3">
 										<div class="input-group-prepend">
 										<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
@@ -250,11 +253,14 @@
 										</div>
 										<textarea id="incomeModalComment" class="form-control" rows="2 mt-3" maxlength="90"  placeholder="Komentarz (opcjonalne)" name="comment"></textarea>
 									</div>
-											
+										
+									<span class="error">{{ income.errors.comment }}</span>
+										
 								</div>
 																		
 									<div class="modal-footer">
-										<button id="incomeModalSubmit" type="submit" class="btn btn-hover color-8">Potwierdź</button>
+										<button type="submit" formaction="/balance/deleteIncome" class="btn btn-hover color-11">Usuń przychód</button>
+										<button id="incomeModalSubmit" formaction="/balance/updateIncome" type="submit" class="btn btn-hover color-8">Potwierdź</button>
 									</div>
 									
 								</form>	

@@ -43,7 +43,7 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
 							</div>
-							<input id="transactionDate" type="date" class="form-control" aria-label="data" name="expenseDate"  value="{{ todaysDate }}"required>
+							<input id="transactionDate" type="date" class="form-control" aria-label="data" name="expenseDate"  value="{{ todaysDate }}" min="2000-01-01" max="{{ lastDate }}" required>
 						</div>
 						
 						<span class="error">{{ expense.errors.date }}</span>

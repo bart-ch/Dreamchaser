@@ -24,8 +24,7 @@ class Balance extends Authenticated
      * @return void
      */
     public function newAction()
-    {	
-			
+    {				
 			View::renderTemplate('Balance/new.html', [
 			'incomeCategoriesAmount' => Balances::getIncomeCategoriesAmount(),	
 			'expenseCategoriesAmount' => Balances::getExpenseCategoriesAmount(),	
@@ -37,13 +36,69 @@ class Balance extends Authenticated
 			'secondDate' => Balances::getSecondEchoDate(),
 			'userIncomes' => Incomes::getUserIncomeCategories(),
 			'userExpenses' => Expenses::getUserExpenseCategories(),
-			'paymentMethods' => Expenses::getUserPaymentMethods()		
+			'paymentMethods' => Expenses::getUserPaymentMethods(),
+			'lastDate' => Dates::getLastDayOfNextMonth()
 			]);
-			//jesli przyjdzie post z modala income to zmien  zredirectuj do new z flashem ze zaktualizowano
 	
     }
+	
+	public function updateIncome() 
+	{
+		if(isset($_POST['amount'])) {
+			
+			$income = new Incomes($_POST);
 
+			if ($income->update()) {
 
+				Flash::addMessage('Sukces! Przychód został zedytowany.');
 
+				$this->redirect('/balance/new');
 
+			} else {
+					
+				Flash::addMessage('Nie udało się edytować przychodu.',Flash::DANGER);	
+					
+				View::renderTemplate('Balance/new.html', [
+				'incomeCategoriesAmount' => Balances::getIncomeCategoriesAmount(),	
+				'expenseCategoriesAmount' => Balances::getExpenseCategoriesAmount(),	
+				'incomeCategoriesInDetail' => Balances::getIncomeCategoriesAmuntInDetail(),	
+				'expenseCategoriesInDetail' => Balances::getExpenseCategoriesAmuntInDetail(),
+				'todaysDate' => Dates::getTodaysDate(),
+				'yesterdaysDate' => Dates::getYesterdaysDate(),
+				'firstDate' => Balances::getFirstEchoDate(),
+				'secondDate' => Balances::getSecondEchoDate(),
+				'userIncomes' => Incomes::getUserIncomeCategories(),
+				'userExpenses' => Expenses::getUserExpenseCategories(),
+				'paymentMethods' => Expenses::getUserPaymentMethods(),
+				'income' => $income				
+				]);
+				
+			} 	
+		} else {
+			$this->redirect('/balance/new');
+		}
+		
+	}
+	
+	public function deleteIncome() 
+	{	
+		if(isset($_POST['amount'])) {
+			
+			$income = new Incomes($_POST);
+
+			$income->delete();
+
+			Flash::addMessage('Sukces! Przychód został usunięty.');
+
+			$this->redirect('/balance/new');
+			
+		} else {
+			$this->redirect('/balance/new');
+		}
+
+	}
+	
+	
 }
+
+

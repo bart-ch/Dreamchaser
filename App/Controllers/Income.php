@@ -25,7 +25,8 @@ class Income extends Authenticated
     {
         View::renderTemplate('Income/new.html', [
 		'todaysDate' => Dates::getTodaysDate(),
-		'userIncomes' => Incomes::getUserIncomeCategories()
+		'userIncomes' => Incomes::getUserIncomeCategories(),
+		'lastDate' => Dates::getLastDayOfNextMonth()
 		]);
     }
 
@@ -50,7 +51,8 @@ class Income extends Authenticated
 				View::renderTemplate('Income/new.html', [
 					'income' => $income,
 					'todaysDate' => Dates::getTodaysDate(),
-					'userIncomes' => Incomes::getUserIncomeCategories()
+					'userIncomes' => Incomes::getUserIncomeCategories(),
+					'lastDate' => Dates::getLastDayOfNextMonth()
 				]);
 				
 			} 	
@@ -59,30 +61,6 @@ class Income extends Authenticated
 		}
     }
 	
-	public function update() 
-	{
-		if(isset($_POST['amount'])) {
-			
-			$income = new Incomes($_POST);
-
-			if ($income->update()) {
-
-				Flash::addMessage('Sukces! Przychód został zedytowany.');
-			//	var_dump($this->incomeId);
-			//	exit();
-
-				$this->redirect('/balance/new');
-
-			} else {
-					
-				//view z edytowanymi danymi ktore byly zle
-				
-			} 	
-		} else {
-			$this->redirect('/balance/new');
-		}
-		
-	}
 
 
 }

@@ -89,6 +89,16 @@ class Incomes extends \Core\Model
 		return false;
 	}
 	
+	public function delete() 
+	{
+		$sql = "DELETE FROM incomes WHERE id = $this->incomeId";
+								
+		$db = static::getDB();
+		
+		return $db->query($sql);
+
+	}
+	
 	
 	protected function getIdOfIncomeCategoryAssignedToUser()
 	{	
