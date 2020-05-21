@@ -43,7 +43,7 @@ class Income extends Authenticated
 
 				Flash::addMessage('Sukces! Przychód został dodany.');
 
-				$this->newAction();
+				$this->redirect('/income/new');
 
 			} else {
 					
@@ -58,6 +58,31 @@ class Income extends Authenticated
 			$this->redirect('/income/new');
 		}
     }
+	
+	public function update() 
+	{
+		if(isset($_POST['amount'])) {
+			
+			$income = new Incomes($_POST);
+
+			if ($income->update()) {
+
+				Flash::addMessage('Sukces! Przychód został zedytowany.');
+			//	var_dump($this->incomeId);
+			//	exit();
+
+				$this->redirect('/balance/new');
+
+			} else {
+					
+				//view z edytowanymi danymi ktore byly zle
+				
+			} 	
+		} else {
+			$this->redirect('/balance/new');
+		}
+		
+	}
 
 
 }

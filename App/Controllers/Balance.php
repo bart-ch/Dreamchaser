@@ -39,16 +39,10 @@ class Balance extends Authenticated
 			'userExpenses' => Expenses::getUserExpenseCategories(),
 			'paymentMethods' => Expenses::getUserPaymentMethods()		
 			]);
-
-		
-		
+			//jesli przyjdzie post z modala income to zmien  zredirectuj do new z flashem ze zaktualizowano
+	
     }
 
-    /**
-     * Log in a user
-     *
-     * @return void
-     */
 
 
 

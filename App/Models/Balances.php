@@ -102,7 +102,7 @@ class Balances extends \Core\Model
 		$startDate = static::getStartDate();
 		$endDate = static::getEndDate();
 		
-		$incomeCategoriesAmountInDetail = $db->query("SELECT i.amount, i.date_of_income, i.comment, ica.name FROM incomes AS i, incomes_categories_assigned_to_users as ica WHERE i.user_id={$_SESSION['user_id']} AND i.income_category_assigned_to_user_id = ica.id AND i.date_of_income BETWEEN $startDate AND $endDate")->fetchAll(PDO::FETCH_ASSOC);
+		$incomeCategoriesAmountInDetail = $db->query("SELECT i.id, i.amount, i.date_of_income, i.comment, ica.name FROM incomes AS i, incomes_categories_assigned_to_users as ica WHERE i.user_id={$_SESSION['user_id']} AND i.income_category_assigned_to_user_id = ica.id AND i.date_of_income BETWEEN $startDate AND $endDate")->fetchAll(PDO::FETCH_ASSOC);
 		
 		return $incomeCategoriesAmountInDetail;
 	}
@@ -126,7 +126,7 @@ class Balances extends \Core\Model
 		$startDate = static::getStartDate();
 		$endDate = static::getEndDate();
 	
-		$expenseCategoriesAmountInDetail = $db->query("SELECT e.amount, e.date_of_expense, e.comment, eca.name FROM expenses AS e, expenses_categories_assigned_to_users as eca WHERE e.user_id={$_SESSION['user_id']} AND e.expense_category_assigned_to_user_id = eca.id AND e.date_of_expense BETWEEN $startDate AND $endDate")->fetchAll(PDO::FETCH_ASSOC);
+		$expenseCategoriesAmountInDetail = $db->query("SELECT e.id, e.amount, e.date_of_expense, e.comment, eca.name FROM expenses AS e, expenses_categories_assigned_to_users as eca WHERE e.user_id={$_SESSION['user_id']} AND e.expense_category_assigned_to_user_id = eca.id AND e.date_of_expense BETWEEN $startDate AND $endDate")->fetchAll(PDO::FETCH_ASSOC);
 		
 		return $expenseCategoriesAmountInDetail;
 	}	

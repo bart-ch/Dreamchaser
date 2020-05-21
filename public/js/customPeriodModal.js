@@ -1,4 +1,4 @@
-$('select').change(function(){
+$('#periodOfTime').change(function(){
     if (this.value == "customPeriod"){
 		document.getElementById("periodOfTime").setAttribute("onclick","");
         $('#dateModal').modal({

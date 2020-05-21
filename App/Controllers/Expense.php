@@ -44,7 +44,7 @@ class Expense extends Authenticated
 
 				Flash::addMessage('Sukces! Wydatek został dodany.');
 
-				$this->newAction();
+				$this->redirect('/expense/new');
 
 			} else {
 					
