@@ -41,7 +41,7 @@
 			
 			$('#expenseCategoryModal').val(data[0]);
 			$('#expenseModalAmount').val(data[1]);
-			$('#expenseCategoryModal').val(data[2]);
+			$('#expensePaymentCategoryModal').val(data[2]);
 			$('#expenseModalDate').val(data[3]);
 			$('#expenseModalComment').val(data[4]);
 			$('#expenseModalId').val(data[5]);
@@ -254,7 +254,7 @@
 										<div class="input-group-prepend">
 										<label class="input-group-text"><i class="fas fa-money-check"></i></label>
 										</div>				
-										<select id="expenseCategoryModal" class="custom-select" data-live-search="true" name="paymentMethod">
+										<select id="expensePaymentCategoryModal" class="custom-select" data-live-search="true" name="paymentMethod">
 										
 										{% for paymentMethod in paymentMethods %}
 											<option>{{ paymentMethod.name }}</option>
