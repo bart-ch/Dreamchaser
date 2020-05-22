@@ -50,7 +50,7 @@ class Balance extends Authenticated
 
 			if ($income->update()) {
 
-				Flash::addMessage('Sukces! Przychód został zedytowany.');
+				Flash::addMessage('Przychód został zedytowany.');
 
 				$this->redirect('/balance/new');
 
@@ -88,7 +88,7 @@ class Balance extends Authenticated
 
 			$income->delete();
 
-			Flash::addMessage('Sukces! Przychód został usunięty.');
+			Flash::addMessage('Przychód został usunięty.');
 
 			$this->redirect('/balance/new');
 			
