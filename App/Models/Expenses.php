@@ -113,6 +113,15 @@ class Expenses extends \Core\Model
 
 	}
 	
+	public static function deleteAllUserExpenses()
+	{
+		$sql = "DELETE FROM expenses WHERE user_id = {$_SESSION['user_id']}";
+								
+		$db = static::getDB();
+		
+		return $db->query($sql);
+	}
+	
 	protected function getIdOfExpenseCategoryAssignedToUser()
 	{		
 		$sql = "SELECT eca.id FROM expenses_categories_assigned_to_users AS eca, expenses_categories AS ec WHERE eca.user_id = :user_id AND ec.name= :expenseName AND ec.name=eca.name";

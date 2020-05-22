@@ -308,6 +308,19 @@ class User extends \Core\Model
         }
 
         return false;
+    }	
+	
+	public function deleteAccount()
+    {
+        	$sql = 'DELETE FROM users WHERE id = :user_id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+			$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+			
+			$stmt->execute();
+			
     }
 
 

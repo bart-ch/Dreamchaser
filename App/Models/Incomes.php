@@ -99,6 +99,15 @@ class Incomes extends \Core\Model
 
 	}
 	
+	public static function deleteAllUserIncomes()
+	{
+		$sql = "DELETE FROM incomes WHERE user_id = {$_SESSION['user_id']}";
+								
+		$db = static::getDB();
+		
+		return $db->query($sql);
+	}
+	
 	
 	protected function getIdOfIncomeCategoryAssignedToUser()
 	{	

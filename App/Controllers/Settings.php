@@ -60,6 +60,38 @@ class Settings extends Authenticated
 		} else {
 			$this->redirect('/settings/index');
 		}
+	}	
+	
+	public function deleteAccount()
+	{
+		if(isset($_POST['deleteAccount'])) {
+			
+		$user = new User();
+		$user->deleteAccount();
+
+		Auth::logout();
+		
+		$this->redirect('/login/new');
+		} else {
+			$this->redirect('/settings/index');
+		}
+	
+	}	
+	
+	public function resetAccountTransactions()
+	{
+		if(isset($_POST['resetAccount'])) {
+			
+		Incomes::deleteAllUserIncomes();
+		Expenses::deleteAllUserExpenses();
+		
+		Flash::addMessage('Wszystkie Twoje transakcje zostały usunięte.');
+
+		$this->redirect('/settings/index');
+		} else {
+			$this->redirect('/settings/index');
+		}
+	
 	}
 
 
