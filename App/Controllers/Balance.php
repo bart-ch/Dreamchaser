@@ -98,6 +98,62 @@ class Balance extends Authenticated
 
 	}
 	
+	public function updateExpense() 
+	{
+		if(isset($_POST['amount'])) {
+			
+			$expense = new Expenses($_POST);
+
+			if ($expense->update()) {
+
+				Flash::addMessage('Wydatek został zedytowany.');
+
+				$this->redirect('/balance/new');
+
+			} else {
+					
+				Flash::addMessage('Nie udało się edytować wydatku.',Flash::DANGER);	
+					
+				View::renderTemplate('Balance/new.html', [
+				'incomeCategoriesAmount' => Balances::getIncomeCategoriesAmount(),	
+				'expenseCategoriesAmount' => Balances::getExpenseCategoriesAmount(),	
+				'incomeCategoriesInDetail' => Balances::getIncomeCategoriesAmuntInDetail(),	
+				'expenseCategoriesInDetail' => Balances::getExpenseCategoriesAmuntInDetail(),
+				'todaysDate' => Dates::getTodaysDate(),
+				'yesterdaysDate' => Dates::getYesterdaysDate(),
+				'firstDate' => Balances::getFirstEchoDate(),
+				'secondDate' => Balances::getSecondEchoDate(),
+				'userIncomes' => Incomes::getUserIncomeCategories(),
+				'userExpenses' => Expenses::getUserExpenseCategories(),
+				'paymentMethods' => Expenses::getUserPaymentMethods(),
+				'expense' => $expense				
+				]);
+				
+			} 	
+		} else {
+			$this->redirect('/balance/new');
+		}
+		
+	}
+	
+	public function deleteExpense() 
+	{	
+		if(isset($_POST['amount'])) {
+			
+			$expense = new Expenses($_POST);
+
+			$expense->delete();
+
+			Flash::addMessage('Wydatek został usunięty.');
+
+			$this->redirect('/balance/new');
+			
+		} else {
+			$this->redirect('/balance/new');
+		}
+
+	}
+	
 	
 }
 

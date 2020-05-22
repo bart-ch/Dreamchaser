@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Dodaj wydatek{% endblock %}
+{% block title %}Bilans{% endblock %}
 
 {% block footer %}
 
@@ -41,10 +41,12 @@
 			
 			$('#expenseCategoryModal').val(data[0]);
 			$('#expenseModalAmount').val(data[1]);
-			$('#expenseModalDate').val(data[2]);
-			$('#expenseModalComment').val(data[3]);
-			$('#expenseModalId').val(data[4]);
-			
+			$('#expenseCategoryModal').val(data[2]);
+			$('#expenseModalDate').val(data[3]);
+			$('#expenseModalComment').val(data[4]);
+			$('#expenseModalId').val(data[5]);
+		
+		
 		});		
 	
 	});
@@ -172,7 +174,7 @@
 	
 							<thead>	
 								<tr>
-									<th style="width: 35%" onclick="sortTableAlphabetically('tableOfIncomesInDetail')" scope="col">Kategoria <i class="fas fa-sort"></i></th>
+									<th onclick="sortTableAlphabetically('tableOfIncomesInDetail')" scope="col">Kategoria <i class="fas fa-sort"></i></th>
 									<th onclick="sortTableNumerically('tableOfIncomesInDetail')" scope="col">Kwota <i class="fas fa-sort"></i></th>					
 									<th scope="col">Data</th>
 									<th scope="col">Komentarz</th>
@@ -224,7 +226,7 @@
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h4 id="edytujWydatek" class="modal-title">Edytuj przychód</h4>
+									<h4 id="edytujWydatek" class="modal-title">Edytuj wydatek</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
 									  <span aria-hidden="true">&times;</span>
 									</button>
@@ -245,15 +247,27 @@
 										<div class="input-group-prepend">
 											<span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
 										</div>
-										<input id="expenseModalDate" type="date" class="form-control" aria-label="data" name="incomeDate" min="2000-01-01" max="{{ lastDate }}" required>
+										<input id="expenseModalDate" type="date" class="form-control" aria-label="data" name="expenseDate" min="2000-01-01" max="{{ lastDate }}" required>
 									</div>				
-									
+												
+									<div class="input-group mt-3">
+										<div class="input-group-prepend">
+										<label class="input-group-text"><i class="fas fa-money-check"></i></label>
+										</div>				
+										<select id="expenseCategoryModal" class="custom-select" data-live-search="true" name="paymentMethod">
+										
+										{% for paymentMethod in paymentMethods %}
+											<option>{{ paymentMethod.name }}</option>
+										{% endfor %}
+										
+										</select>
+									</div>
 									
 									<div class="input-group mt-3">
 										<div class="input-group-prepend">
 										<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
 										</div>				
-										<select id="expenseCategoryModal" class="custom-select" data-live-search="true" name="incomeCategory">
+										<select id="expenseCategoryModal" class="custom-select" data-live-search="true" name="expenseCategory">
 						
 										{% for userExpense in userExpenses %}
 											<option>{{ userExpense.name }}</option>
@@ -275,8 +289,8 @@
 								</div>
 																		
 									<div class="modal-footer">
-										<button id="incomeModalSubmit" formaction="/balance/updateIncome" type="submit" class="btn btn-hover color-8">Potwierdź</button>
-										<button type="submit" formaction="/balance/deleteIncome" class="btn btn-hover color-11">Usuń wydatek</button>
+										<button id="incomeModalSubmit" formaction="/balance/updateExpense" type="submit" class="btn btn-hover color-8">Potwierdź</button>
+										<button type="submit" formaction="/balance/deleteExpense" class="btn btn-hover color-11">Usuń wydatek</button>
 									</div>
 									
 								</form>	

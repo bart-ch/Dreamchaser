@@ -80,6 +80,39 @@ class Expenses extends \Core\Model
         return false;
     }
 	
+	public function update() 
+	{	
+		$this->amount = $this->validateAndConvertPriceFormat();
+        $this->validate();
+
+        if (empty($this->errors)) {
+			$sql = "UPDATE expenses SET expense_category_assigned_to_user_id = :idOfExpenseCategoryAssignedToUser, payment_method_assigned_to_user_id = :payment_method_assigned_to_user_id, amount = :convertedPrice, date_of_expense = :date, comment = :comment WHERE id = $this->expenseId";
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+			
+			$stmt->bindValue(':idOfExpenseCategoryAssignedToUser', $this->getIdOfExpenseCategoryAssignedToUser(), PDO::PARAM_INT);
+			$stmt->bindValue(':payment_method_assigned_to_user_id', $this->getIdOfPaymentMethodAssignedToUser(), PDO::PARAM_INT);
+            $stmt->bindValue(':convertedPrice', $this->amount, PDO::PARAM_STR);
+            $stmt->bindValue(':date', $this->expenseDate, PDO::PARAM_STR);
+            $stmt->bindValue(':comment', $this->comment, PDO::PARAM_STR);
+
+            return $stmt->execute();
+		}
+		return false;
+	}
+	
+	public function delete() 
+	{
+		var_dump($this->expenseId);
+		$sql = "DELETE FROM expenses WHERE id = $this->expenseId";
+								
+		$db = static::getDB();
+		
+		return $db->query($sql);
+
+	}
+	
 	protected function getIdOfExpenseCategoryAssignedToUser()
 	{		
 		$sql = "SELECT eca.id FROM expenses_categories_assigned_to_users AS eca, expenses_categories AS ec WHERE eca.user_id = :user_id AND ec.name= :expenseName AND ec.name=eca.name";
