@@ -30,6 +30,22 @@
 			$('#incomeModalId').val(data[4]);
 			
 		});
+		
+		$('.editExpenseBtn').on('click',function() {
+			$('#editExpenseModal').modal('show');
+			
+			$tr = $(this).closest('tr');
+			var data = $tr.children("td").map(function() {
+				return $(this).text();
+			}).get();
+			
+			$('#expenseCategoryModal').val(data[0]);
+			$('#expenseModalAmount').val(data[1]);
+			$('#expenseModalDate').val(data[2]);
+			$('#expenseModalComment').val(data[3]);
+			$('#expenseModalId').val(data[4]);
+			
+		});		
 	
 	});
 	
@@ -42,10 +58,10 @@
 {% block body %}
 	
 	<div class="row mt-3">
-		<div class="main-container py-2 px-4 col my-5">
+		<div class="main-container py-2 px-3 col my-5">
 		
 			<div class="row">	
-				<div class="welcome-message mt-2 mb-2 mx-2 py-3 px-5 w-100">
+				<div class="welcome-message mt-2 mb-2 mx-2 py-2 px-4 w-100">
 				
 					<div class="row">
 						<div class="col-12 text-center">
@@ -105,7 +121,7 @@
 				
 				<div class="row">
 				
-					<div class="col-md-6 col-sm-12 mb-3">
+					<div class="col-md-6 col-sm-12 mb-3 table-text">
 						<h2>Przychody</h2>
 						<table id="tableOfIncomes" class="table table-hover table-active text-white table-sm">
 							
@@ -124,7 +140,7 @@
 					
 					</div>
 					
-					<div class="col-md-6 col-sm-12 mb-3">
+					<div class="col-md-6 col-sm-12 mb-3 table-text">
 						<h2>Wydatki</h2>
 						<table id="tableOfExpenses" class="table table-hover table-active text-white table-sm">
 							<thead>
@@ -150,13 +166,13 @@
 			
 				<div class="row">
 				
-					<div class="col-lg-6 col-sm-12 mb-3">
+					<div class="table-responsive mb-3 table-text">
 						<h2>Poszczególne przychody</h2>
 						<table id="tableOfIncomesInDetail" class="table table-hover table-active text-white table-sm" style="table-layout: fixed; width: 100%">
 	
 							<thead>	
 								<tr>
-									<th onclick="sortTableAlphabetically('tableOfIncomesInDetail')" scope="col">Kategoria <i class="fas fa-sort"></i></th>
+									<th style="width: 35%" onclick="sortTableAlphabetically('tableOfIncomesInDetail')" scope="col">Kategoria <i class="fas fa-sort"></i></th>
 									<th onclick="sortTableNumerically('tableOfIncomesInDetail')" scope="col">Kwota <i class="fas fa-sort"></i></th>					
 									<th scope="col">Data</th>
 									<th scope="col">Komentarz</th>
@@ -170,36 +186,105 @@
 								<td>{{ incomeCategoryInDetail.amount }}</td>
 								<td>{{ incomeCategoryInDetail.date_of_income }}</td>
 								<td class='wrap'>{{ incomeCategoryInDetail.comment }}</td>
-								<td style="display:none;">{{ incomeCategoryInDetail.id }}</td></tr>
+								<td style="display:none;" >{{ incomeCategoryInDetail.id }}</td></tr>
 								{% endfor %}						
 							</tbody>
 						</table>									
 					
 					</div>
 
-					<div class="col-lg-6 col-sm-12 mb-3">
+					<div class="table-responsive mb-3 table-text">
 						<h2>Poszczególne wydatki</h2>
 						<table id="tableOfExpensesInDetail" class="table table-hover table-active text-white table-sm" style="table-layout: fixed; width: 100%">
 							<thead>
 									<tr>
 									<th onclick="sortTableAlphabetically('tableOfExpensesInDetail')" scope="col">Kategoria <i class="fas fa-sort"></i></th>
 									<th onclick="sortTableNumerically('tableOfExpensesInDetail')" scope="col">Kwota <i class="fas fa-sort"></i></th>
+									<th scope="col">Metoda płatności</th>
 									<th scope="col">Data</th>
 									<th scope="col">Komentarz</th>
+									<th style="display:none;"> id</th>
 								</tr>
 							</thead>
 							<tbody>
 								{% for expenseCategoryInDetail in expenseCategoriesInDetail %}
-								<tr><td>{{ expenseCategoryInDetail.name }}</td>
+								<tr class="editExpenseBtn"><td>{{ expenseCategoryInDetail.name }}</td>
 								<td>{{ expenseCategoryInDetail.amount }}</td>
+								<td>{{ expenseCategoryInDetail.payment }}</td>
 								<td>{{ expenseCategoryInDetail.date_of_expense }}</td>
-								<td class='wrap'>{{ expenseCategoryInDetail.comment }}</td></tr>
+								<td class='wrap'>{{ expenseCategoryInDetail.comment }}</td>
+								<td style="display:none;">{{ expenseCategoryInDetail.id }}</td></tr>
 								{% endfor %}
 							</tbody>
 						</table>	
 					
 					</div>
 				
+					<div class="modal fade" id="editExpenseModal" tabindex="-1" role="dialog" aria-labelledby="edytujWydatek" aria-hidden="true" >
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 id="edytujWydatek" class="modal-title">Edytuj przychód</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
+									  <span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<form action="" method="post">
+								<div class="modal-body">
+										
+									<input type="hidden" id="expenseModalId" name="expenseId">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
+										</div>
+										<input id="expenseModalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" required autofocus >
+									</div>
+									
+								
+									<div class="input-group mt-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+										</div>
+										<input id="expenseModalDate" type="date" class="form-control" aria-label="data" name="incomeDate" min="2000-01-01" max="{{ lastDate }}" required>
+									</div>				
+									
+									
+									<div class="input-group mt-3">
+										<div class="input-group-prepend">
+										<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
+										</div>				
+										<select id="expenseCategoryModal" class="custom-select" data-live-search="true" name="incomeCategory">
+						
+										{% for userExpense in userExpenses %}
+											<option>{{ userExpense.name }}</option>
+										{% endfor %}
+											
+										</select>
+									</div>
+									
+									<div class="input-group mt-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text">
+												<i class="fas fa-pen"></i>
+											</span>
+										</div>
+										<textarea id="expenseModalComment" class="form-control" rows="2 mt-3" maxlength="90"  placeholder="Komentarz (opcjonalne)" name="comment"></textarea>
+									</div>
+										
+										
+								</div>
+																		
+									<div class="modal-footer">
+										<button id="incomeModalSubmit" formaction="/balance/updateIncome" type="submit" class="btn btn-hover color-8">Potwierdź</button>
+										<button type="submit" formaction="/balance/deleteIncome" class="btn btn-hover color-11">Usuń wydatek</button>
+									</div>
+									
+								</form>	
+							</div>
+							
+						</div>
+					</div>
+					
 					<div class="modal fade" id="editIncomeModal" tabindex="-1" role="dialog" aria-labelledby="edytujPrzychod" aria-hidden="true" >
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
@@ -220,7 +305,6 @@
 										<input id="incomeModalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" required autofocus >
 									</div>
 									
-									<span class="error">{{ income.errors.amount }}</span>
 								
 									<div class="input-group mt-3">
 										<div class="input-group-prepend">
@@ -230,7 +314,6 @@
 									</div>
 									
 									
-									<span class="error">{{ income.errors.date }}</span>
 									
 									<div class="input-group mt-3">
 										<div class="input-group-prepend">
@@ -254,7 +337,6 @@
 										<textarea id="incomeModalComment" class="form-control" rows="2 mt-3" maxlength="90"  placeholder="Komentarz (opcjonalne)" name="comment"></textarea>
 									</div>
 										
-									<span class="error">{{ income.errors.comment }}</span>
 										
 								</div>
 																		
@@ -267,7 +349,8 @@
 							</div>
 							
 						</div>
-					</div>
+					</div>					
+					
 
 				
 				</div>
