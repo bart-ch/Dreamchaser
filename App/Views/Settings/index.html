@@ -127,26 +127,28 @@
 												  <span aria-hidden="true">&times;</span>
 												</button>
 											</div>
-											<div class="modal-body">
-											
-												<div class="input-group">
-													<div class="input-group-prepend">
-														<span class="input-group-text"> <i class="fas fa-user-alt"></i> </span>
+											<form action="/settings/updateProfileData" method="post" id='editProfileForm'>
+												<div class="modal-body">
+												
+													<div class="input-group">
+														<div class="input-group-prepend">
+															<span class="input-group-text"> <i class="fas fa-user-alt"></i> </span>
+														</div>
+														<input id="name" type="text" class="form-control" placeholder="Imię" aria-label="imie" name="name" value="{{ user.name }}" required autofocus>
 													</div>
-													<input id="name" type="text" class="form-control" placeholder="Imię" aria-label="imie" name="name" value="{{ user.name }}" required autofocus>
+													
+													<div class="input-group mt-3">
+														<div class="input-group-prepend">
+															<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
+														</div>
+														<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" value="{{ user.email }}" required >
+													</div>												
+													
 												</div>
-												
-												<div class="input-group mt-3">
-													<div class="input-group-prepend">
-														<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
-													</div>
-													<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" value="{{ user.email }}" required >
-												</div>												
-												
-											</div>
-											<div class="modal-footer">
-												<button id="modalCloseBtn" class="btn btn-hover color-8" data-dismiss="modal">Potwierdź</button>
-											</div>
+												<div class="modal-footer">
+													<button type="submit" class="btn btn-hover color-8" >Potwierdź</button>
+												</div>
+											</form>
 										</div>
 									</div>
 								</div>									

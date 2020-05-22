@@ -121,19 +121,8 @@ class User extends \Core\Model
 
     public function validate()
     {
-        // Name
-        if ($this->name == '') {
-            $this->errors['name'] = 'Wprowadź imię.';
-        }
 
-        // email address
-        if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
-            $this->errors['email'] = 'Podaj poprawny adres e-mail.';
-        }
-        if (static::emailExists($this->email, $this->id ?? null)) {
-            $this->errors['email'] = 'Istnieje konto o podanym adresie e-mail.';
-        }
-
+		$this->validateNameAndEmail();
         // Password
 		if (isset($this->password)) {
 			
@@ -155,6 +144,22 @@ class User extends \Core\Model
 		}
 		
     }
+	
+	protected function validateNameAndEmail() 
+	{
+        // Name
+        if ($this->name == '') {
+            $this->errors['name'] = 'Wprowadź imię.';
+        }
+
+        // email address
+        if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
+            $this->errors['email'] = 'Podaj poprawny adres e-mail.';
+        }
+        if (static::emailExists($this->email, $this->id ?? null)) {
+            $this->errors['email'] = 'Istnieje konto o podanym adresie e-mail.';
+        }		
+	}
 	
 	protected function validateCaptcha()
 	{
@@ -277,6 +282,32 @@ class User extends \Core\Model
         $stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $this->expiry_timestamp), PDO::PARAM_STR);
 
         return $stmt->execute();
+    }   
+	
+	public function updateProfile()
+    {
+        $this->validateNameAndEmail();
+		
+		var_dump($this->errors);
+
+        if (empty($this->errors)) {
+			
+
+			$sql = 'UPDATE users SET name = :name, email = :email WHERE id = :user_id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+			$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+			
+			$results = $stmt->execute();
+
+            return $results;
+        }
+
+        return false;
     }
 
 

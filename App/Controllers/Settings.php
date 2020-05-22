@@ -32,6 +32,35 @@ class Settings extends Authenticated
 			'user' => $this->user
 			]);
 	}
+	
+	public function updateProfileData()
+	{
+		if(isset($_POST['name'])) {
+			
+			$user = new User($_POST);
+
+			if ($user->updateProfile()) {
+
+				Flash::addMessage('Profil został zedytowany.');
+
+				$this->redirect('/settings/index');
+
+			} else {
+					
+				Flash::addMessage('Nie udało się edytować profilu.',Flash::DANGER);	
+					
+				View::renderTemplate('Settings/index.html', [
+				'userIncomes' => Incomes::getUserIncomeCategories(),
+				'userExpenses' => Expenses::getUserExpenseCategories(),
+				'paymentMethods' => Expenses::getUserPaymentMethods(),
+				'user' => $user
+				]);
+					
+			} 	
+		} else {
+			$this->redirect('/settings/index');
+		}
+	}
 
 
 }

@@ -47,8 +47,18 @@
 			$('#expenseModalId').val(data[5]);
 		
 		
-		});		
+		});
+
+	//	$('#incomeModalSubmit').on('click', function(){
+	//		$('#editIncomeForm').submit(function(event) {
+	//		event.preventDefault();
+	//		$.post('/balance/updateIncome', {
+			
+	//		})
+	//	});
 	
+	//	}
+
 	});
 	
 	</script>
@@ -308,54 +318,54 @@
 									  <span aria-hidden="true">&times;</span>
 									</button>
 								</div>
-								<form action="" method="post">
-								<div class="modal-body">
-										
-									<input type="hidden" id="incomeModalId" name="incomeId">
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
-										</div>
-										<input id="incomeModalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" required autofocus >
-									</div>
-									
-								
-									<div class="input-group mt-3">
-										<div class="input-group-prepend">
-											<span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
-										</div>
-										<input id="incomeModalDate" type="date" class="form-control" aria-label="data" name="incomeDate" min="2000-01-01" max="{{ lastDate }}" required>
-									</div>
-									
-									
-									
-									<div class="input-group mt-3">
-										<div class="input-group-prepend">
-										<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
-										</div>				
-										<select id="incomeCategoryModal" class="custom-select" data-live-search="true" name="incomeCategory">
-						
-										{% for userIncome in userIncomes %}
-											<option>{{ userIncome.name }}</option>
-										{% endfor %}
+								<form action="" method="post" id='editIncomeForm'>
+									<div class="modal-body">
 											
-										</select>
-									</div>
-									
-									<div class="input-group mt-3">
-										<div class="input-group-prepend">
-											<span class="input-group-text">
-												<i class="fas fa-pen"></i>
-											</span>
+										<input type="hidden" id="incomeModalId" name="incomeId">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
+											</div>
+											<input id="incomeModalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" required autofocus >
 										</div>
-										<textarea id="incomeModalComment" class="form-control" rows="2 mt-3" maxlength="90"  placeholder="Komentarz (opcjonalne)" name="comment"></textarea>
+										
+									
+										<div class="input-group mt-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+											</div>
+											<input id="incomeModalDate" type="date" class="form-control" aria-label="data" name="incomeDate" min="2000-01-01" max="{{ lastDate }}" required>
+										</div>
+										
+										
+										
+										<div class="input-group mt-3">
+											<div class="input-group-prepend">
+											<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
+											</div>				
+											<select id="incomeCategoryModal" class="custom-select" data-live-search="true" name="incomeCategory">
+							
+											{% for userIncome in userIncomes %}
+												<option>{{ userIncome.name }}</option>
+											{% endfor %}
+												
+											</select>
+										</div>
+										
+										<div class="input-group mt-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">
+													<i class="fas fa-pen"></i>
+												</span>
+											</div>
+											<textarea id="incomeModalComment" class="form-control" rows="2 mt-3" maxlength="90"  placeholder="Komentarz (opcjonalne)" name="comment"></textarea>
+										</div>
+											
+											
 									</div>
-										
-										
-								</div>
 																		
 									<div class="modal-footer">
-										<button id="incomeModalSubmit" formaction="/balance/updateIncome" type="submit" class="btn btn-hover color-8">Potwierdź</button>
+										<button id="incomeModalSubmit" formaction="/balance/updateIncome"  type="submit" class="btn btn-hover color-8">Potwierdź</button>
 										<button type="submit" formaction="/balance/deleteIncome" class="btn btn-hover color-11">Usuń przychód</button>
 									</div>
 									
