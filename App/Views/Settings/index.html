@@ -142,6 +142,7 @@
 															<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
 														</div>
 														<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" value="{{ user.email }}" required >
+														<input type="hidden" value="{{ user.id }}" name ="id" required >
 													</div>												
 													
 												</div>
@@ -199,32 +200,33 @@
 												  <span aria-hidden="true">&times;</span>
 												</button>
 											</div>
-											<div class="modal-body">
-											
-												<div class="input-group mt-3">
-													<div class="input-group-prepend">
-														<span class="input-group-text"> <i class="fa fa-lock"></i></span>
-													</div>
-													<input type="password" class="form-control" data-toggle="password" placeholder="Stare hasło" aria-label="hasło" id="oldPassword" name="oldPassword" required>
+											<form method="post" action="/settings/changePassword">
+												<div class="modal-body">
+													<div class="input-group mt-3">
+														<div class="input-group-prepend">
+															<span class="input-group-text"> <i class="fa fa-lock"></i></span>
+														</div>
+														<input type="password" class="form-control" data-toggle="password" placeholder="Stare hasło" aria-label="Stare hasło" id="oldPassword" name="oldPassword" required>
 
-												</div>	
-												
-												<div class="input-group mt-3">
-													<div class="input-group-prepend">
-														<span class="input-group-text"> <i class="fa fa-lock"></i></span>
-													</div>
-													<input type="password" class="form-control" data-toggle="password" placeholder="Nowe hasło" aria-label="hasło" id="newPassword" name="newPassword" required>
-													<div class="input-group-append" style="cursor:pointer">
-														<span class="input-group-text" onclick="myFunction('newPassword')">
-															<i id="showHideIcon" class="fa fa-eye"></i>
-														</span>
-													</div>
-												</div>													
-												
-											</div>
-											<div class="modal-footer">
-												<button  class="btn btn-hover color-8" data-dismiss="modal">Potwierdź</button>
-											</div>
+													</div>	
+													
+													<div class="input-group mt-3">
+														<div class="input-group-prepend">
+															<span class="input-group-text"> <i class="fa fa-lock"></i></span>
+														</div>
+														<input type="password" class="form-control" data-toggle="password" placeholder="Nowe hasło" aria-label="Nowe hasło" id="password" name="password" required>
+														<div class="input-group-append" style="cursor:pointer">
+															<span class="input-group-text" onclick="myFunction('password')">
+																<i id="showHideIcon" class="fa fa-eye"></i>
+															</span>
+														</div>
+													</div>													
+													
+												</div>
+												<div class="modal-footer">
+													<button type="submit" class="btn btn-hover color-8">Potwierdź</button>
+												</div>
+											</form>
 										</div>
 									</div>
 								</div>									

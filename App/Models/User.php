@@ -121,18 +121,13 @@ class User extends \Core\Model
 
     public function validate()
     {
-
+		if(isset($this->name)) {
 		$this->validateNameAndEmail();
+		}
         // Password
 		if (isset($this->password)) {
 			
-			if (preg_match('/(?=.*?[0-9])(?=.*?[A-Za-z]).+/', $this->password) == 0) {
-				$this->errors['password'] = 'Hasło musi posiadać przynajmniej 1 literę i 1 cyfrę.';
-			}
-			
-			if (strlen($this->password) < 6 || strlen($this->password) > 20) {
-				$this->errors['password'] = 'Hasło musi posiadać od 6 do 20 znaków.';
-			}
+			$this->validatePassword();
 
 		}
 		
@@ -144,6 +139,17 @@ class User extends \Core\Model
 		}
 		
     }
+	
+	protected function validatePassword() 
+	{
+		if (preg_match('/(?=.*?[0-9])(?=.*?[A-Za-z]).+/', $this->password) == 0) {
+			$this->errors['password'] = 'Hasło musi posiadać przynajmniej 1 literę i 1 cyfrę.';
+		}
+		
+		if (strlen($this->password) < 6 || strlen($this->password) > 20) {
+			$this->errors['password'] = 'Hasło musi posiadać od 6 do 20 znaków.';
+		}
+	}
 	
 	protected function validateNameAndEmail() 
 	{
@@ -288,7 +294,6 @@ class User extends \Core\Model
     {
         $this->validateNameAndEmail();
 		
-		var_dump($this->errors);
 
         if (empty($this->errors)) {
 			
@@ -321,6 +326,35 @@ class User extends \Core\Model
 			
 			$stmt->execute();
 			
+    }	
+	
+	public function changeUserPassword()
+    {
+        $this->validatePassword();
+		
+		//sprawdzic jak on to robil na udemy
+		
+		//w tym miejscu sprawdzic czy podane stare hasło odpowiada staremu hasłu!!!!!!!!! mozna tez dopsac do tamtej funckj iisset(oldpassword i sprawdz wtedy)
+
+        if (empty($this->errors)) {
+
+            $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+
+            $sql = 'UPDATE users SET password = :new_password_hash WHERE id = :id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+
+            $stmt->bindValue(':new_password_hash', $password_hash, PDO::PARAM_STR);
+			$stmt->bindValue(':id', $_SESSION['user_id'], PDO::PARAM_INT);
+			
+			$results = $stmt->execute();
+			
+            return $results;
+        }
+
+        return false;
     }
 
 

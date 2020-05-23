@@ -92,6 +92,30 @@ class Settings extends Authenticated
 			$this->redirect('/settings/index');
 		}
 	
+	}	
+	
+	public function changePassword()
+	{
+		if(isset($_POST['password'])) {
+			
+			$user = new User($_POST);
+
+			if ($user->changeUserPassword()) {
+
+				Flash::addMessage('Twoje hasło zostało zmienione.');
+
+				$this->redirect('/settings/index');
+
+			} else {
+					
+				Flash::addMessage('Nie udało się zmienić hasła.',Flash::DANGER);	
+					
+				$this->redirect('/settings/index');	
+			} 	
+		} else {
+			$this->redirect('/settings/index');
+		}
+	
 	}
 
 
