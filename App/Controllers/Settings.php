@@ -126,7 +126,7 @@ class Settings extends Authenticated
 
 			if ($income->updateCategory()) {
 
-				Flash::addMessage('Kategoria przychodu została zedytowana.');
+				Flash::addMessage('Kategoria przychodów została zedytowana.');
 
 				$this->redirect('/settings/index');
 
@@ -150,7 +150,7 @@ class Settings extends Authenticated
 
 			$income->deleteCategory();
 
-			Flash::addMessage('Kategoria przychodu oraz należące do niej transakcje zostały usunięte.');
+			Flash::addMessage('Kategoria przychodów oraz należące do niej transakcje zostały usunięte.');
 
 			$this->redirect('/settings/index');
 			
@@ -168,7 +168,7 @@ class Settings extends Authenticated
 
 			if($income->addIncomeCategory()) {
 
-			Flash::addMessage('Nowa kategoria przychodu została dodana.');
+			Flash::addMessage('Nowa kategoria przychodów została dodana.');
 
 			$this->redirect('/settings/index');
 			} else {
@@ -183,6 +183,32 @@ class Settings extends Authenticated
 		}
 
 	}	
+	
+	public function updateExpenseCategory() 
+	{
+		if(isset($_POST['expenseCategory'])) {
+			
+			$expense = new Expenses($_POST);
+
+			if ($expense->updateCategory()) {
+
+				Flash::addMessage('Kategoria wydatków została zedytowana.');
+
+				$this->redirect('/settings/index');
+
+			} else {
+					
+				Flash::addMessage('Podana kategoria już istnieje.',Flash::DANGER);	
+					
+				$this->redirect('/settings/index');
+			} 	
+		} else {
+			$this->redirect('/settings/index');
+		}
+		
+	}
+		
+	
 
 
 }

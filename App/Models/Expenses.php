@@ -28,7 +28,7 @@ class Expenses extends \Core\Model
 	
 	public static function getUserExpenseCategories()
 	{
-		$sql = "SELECT name FROM expenses_categories_assigned_to_users WHERE user_id = :user_id";
+		$sql = "SELECT name,id FROM expenses_categories_assigned_to_users WHERE user_id = :user_id";
 	
 		$db = static::getDB();
 		$incomeCategories = $db->prepare($sql);
@@ -174,8 +174,6 @@ class Expenses extends \Core\Model
 		
     }
 	
-	
-	
 	protected function validateAndConvertPriceFormat() 
 	{
 		if(preg_match("/^\-?[0-9]*\.?[0-9]+\z/", $this->amount)) {
@@ -210,6 +208,45 @@ class Expenses extends \Core\Model
 			$this->errors['amount'] = 'Podana kwota musi być liczbą w poprawnym formacie i być mniejsza niż 1 milion.';
 		}
 		
+		return false;
+	}
+
+	public function updateCategory() 
+	{	
+        if(strlen($this->expenseCategory)<1 || strlen($this->expenseCategory)>40) {
+		$this->errors['expenseCategory'] = "Kategoria przychodu musi zawierać od 1 do 40 znaków.";
+		//zwalidować jeszcze czy już taka przypisana nie istnieje
+		}
+		
+		$sql = "SELECT * FROM expenses_categories_assigned_to_users WHERE user_id = :user_id AND name = :expenseName AND id <> :id";
+		
+		$db = static::getDB();
+
+		$stmt = $db->prepare($sql);
+
+
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':id', $this->expenseCategoryId, PDO::PARAM_INT);
+		$stmt->bindValue(':expenseName', $this->expenseCategory, PDO::PARAM_STR);
+
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(count($result)==1){
+		$this->errors['newExpenseCategory'] = "Podana kategoria już istnieje.";	
+		}
+
+        if (empty($this->errors)) {
+			$sql = "UPDATE expenses_categories_assigned_to_users SET name = :name WHERE id = :id";
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+			
+			$stmt->bindValue(':id', $this->expenseCategoryId, PDO::PARAM_INT);
+            $stmt->bindValue(':name', $this->expenseCategory, PDO::PARAM_STR);
+
+            return $stmt->execute();
+		}
 		return false;
 	}	
 
