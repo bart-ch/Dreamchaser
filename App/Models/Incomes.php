@@ -179,6 +179,18 @@ class Incomes extends \Core\Model
 			
 		}
 		return false;
+	}	
+	
+	public function deleteCategory()
+	{		
+			$sql = "DELETE FROM incomes_categories_assigned_to_users WHERE id = :id";
+									
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $this->incomeCategoryId, PDO::PARAM_INT);
+
+            return $stmt->execute();		
 	}
 
 	public function delete() 

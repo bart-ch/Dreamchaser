@@ -144,13 +144,13 @@ class Settings extends Authenticated
 	
 	public function deleteIncomeCategory() 
 	{	
-		if(isset($_POST['amount'])) {
+		if(isset($_POST['incomeCategoryId'])) {
 			
 			$income = new Incomes($_POST);
 
-			$income->delete();
+			$income->deleteCategory();
 
-			Flash::addMessage('Przychód został usunięty.');
+			Flash::addMessage('Kategoria przychodu oraz należące do niej transakcje zostały usunięte.');
 
 			$this->redirect('/settings/index');
 			
