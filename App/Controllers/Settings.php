@@ -117,6 +117,48 @@ class Settings extends Authenticated
 		}
 	
 	}
+	
+	public function updateIncomeCategory() 
+	{
+		if(isset($_POST['incomeCategory'])) {
+			
+			$income = new Incomes($_POST);
+
+			if ($income->updateCategory()) {
+
+				Flash::addMessage('Kategoria przychodu została zedytowana.');
+
+				$this->redirect('/settings/index');
+
+			} else {
+					
+		//		Flash::addMessage('Nie udało się edytować przychodu.',Flash::DANGER);	
+					
+				$this->redirect('/settings/index');
+			} 	
+		} else {
+			$this->redirect('/settings/index');
+		}
+		
+	}
+	
+	public function deleteIncomeCategory() 
+	{	
+		if(isset($_POST['amount'])) {
+			
+			$income = new Incomes($_POST);
+
+			$income->delete();
+
+			Flash::addMessage('Przychód został usunięty.');
+
+			$this->redirect('/balance/new');
+			
+		} else {
+			$this->redirect('/balance/new');
+		}
+
+	}	
 
 
 }

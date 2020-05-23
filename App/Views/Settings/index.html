@@ -4,6 +4,7 @@
 
 {% block footer %}
 	<script src="../js/showHidePassword.js"></script>
+	<script src="../js/sortTable.js"></script>
 
 	<script>
 		function toggleSettingPanel(idOfButton, idOfPanel) {
@@ -14,6 +15,26 @@
 		$('#editProfileModal').on('shown.bs.modal', function () {
 			$('#name').focus();
 		})
+		
+			if ( window.history.replaceState ) {
+	  window.history.replaceState( null, null, window.location.href );
+	}
+	
+	$(document).ready(function() {
+		$('.editIncomeBtn').on('click',function() {
+			$('#editIncomeModal').modal('show');
+			
+			$tr = $(this).closest('tr');
+			var data = $tr.children("td").map(function() {
+				return $(this).text();
+			}).get();
+			
+			$('#incomeCategoryModal').val(data[0]);
+			$('#incomeCategoryIdModal').val(data[2]);
+			
+		});
+		
+	});
 
 	</script>
 
@@ -37,25 +58,94 @@
 
 						<div id="settingTogglePanel1" class="settingTogglePanel w-100 px-2">
 						
-							<div class="input-group mt-2">
-								<div class="input-group-prepend">
-									<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
-								</div>				
-								<select id="category" class="custom-select" data-live-search="true" name="incomeCategory" >
-									<option value="" selected disabled>Wybierz istniejącą kategorię</option>
-									{% for userIncome in userIncomes %}
-										<option>{{ userIncome.name }}</option>
-									{% endfor %}									
-								</select>
-							</div>
+						<table id="tableOfIncomesCategories" class="table table-hover table-active text-white table-sm table-text">
 							
-							<div class="row">
-								<div class="col mb-2">
-									<button class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
-								</div>						
-							</div>
+							<thead>	
+								<tr>
+								<th onclick="sortTableAlphabetically('tableOfIncomesCategories')" scope="col">Kategoria <i class="fas fa-sort"></i></th>
+								<th scope="col"></th>
+								<th scope="col" style="display:none;">ID</th></tr>
+							</thead>
+							<tbody>
+								{% for userIncome in userIncomes %}
+								<tr class="editIncomeBtn"><td>{{ userIncome.name }}</td>
+								<td><i class="fas fa-edit"></i></td>
+								<td style="display:none;">{{ userIncome.id }}</td></tr>
+							{% endfor %}
+							</tbody>
+						</table>								
 							
-						</div>					
+						<div class="row">
+							<div class="col mb-2">
+								<button class="btn btn-hover no-focus btn-sm btn-block mt-1" style="height:30px" data-toggle="modal" data-target="#addIncomeCategoryModal">Dodaj nową kategorię</button>
+							</div>						
+						</div>
+							
+						</div>	
+
+						<div class="modal fade" id="addIncomeCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addIncomeCategory" aria-hidden="true" >
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 id="addIncomeCategory" class="modal-title">Dodaj kategorię przychodu</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
+										  <span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<form action="" method="post" id='editIncomeForm'>
+										<div class="modal-body">
+												
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"><i class="fas fa-shopping-cart"></i></span>
+												</div>
+												<input id="incomeCategoryModal" type="text" class="form-control"  placeholder="Kategoria przychodu" maxlength="40" step="any" aria-label="KategoriaPrzychodu" name="newIncomeCategory" required >
+											</div>
+		
+										</div>
+																			
+										<div class="modal-footer">
+											<button id="incomeCategorySubmit" formaction="/settings/addIncomeCategory"  type="submit" class="btn btn-hover color-8">Potwierdź</button>
+										</div>
+										
+									</form>	
+								</div>
+								
+							</div>
+						</div>			
+
+						<div class="modal fade" id="editIncomeModal" tabindex="-1" role="dialog" aria-labelledby="edytujKategoriePrzychodu" aria-hidden="true" >
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 id="edytujKategoriePrzychodu" class="modal-title">Edytuj kategorię przychodu</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
+										  <span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<form action="" method="post" id='editIncomeForm'>
+										<div class="modal-body">
+												
+											<input type="hidden" id="incomeCategoryIdModal" name="incomeCategoryId">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"><i class="fas fa-shopping-cart"></i></span>
+												</div>
+												<input id="incomeCategoryModal" type="text" class="form-control"  placeholder="Kategoria przychodu" maxlength="40" step="any" aria-label="KategoriaPrzychodu" name="incomeCategory" required >
+											</div>
+		
+										</div>
+																			
+										<div class="modal-footer">
+											<button id="incomeModalSubmit" formaction="/settings/updateIncomeCategory"  type="submit" class="btn btn-hover color-8">Potwierdź</button>
+											<button type="submit" formaction="/settings/deleteIncomeCategory" class="btn btn-hover color-11">Usuń kategorię</button>
+										</div>
+										
+									</form>	
+								</div>
+								
+							</div>
+						</div>												
 				
 
 						<button id="settingButton2" class="btn btn-hover no-focus  btn-block mt-2" onClick="toggleSettingPanel(this.id,'settingTogglePanel2')">Kategorie wydatków <i class="fas fa-chevron-down setting-icon"></i></button>
@@ -77,7 +167,7 @@
 							
 							<div class="row">
 								<div class="col mb-2">
-									<button class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
+									<button class="btn btn-hover no-focus btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
 								</div>						
 							</div>
 							
@@ -102,7 +192,7 @@
 							
 							<div class="row">
 								<div class="col mb-2">
-									<button class="btn btn-hover color-8 btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
+									<button class="btn btn-hover no-focus btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
 								</div>						
 							</div>
 							

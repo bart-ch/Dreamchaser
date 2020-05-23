@@ -6,6 +6,7 @@ use PDO;
 use \App\Auth;
 use \App\Dates;
 use \Core\View;
+use \App\Flash;
 
 /**
  * User model
@@ -28,7 +29,7 @@ class Incomes extends \Core\Model
 	
 	public static function getUserIncomeCategories()
 	{
-		$sql = "SELECT name FROM incomes_categories_assigned_to_users WHERE user_id = :user_id";
+		$sql = "SELECT name, id FROM incomes_categories_assigned_to_users WHERE user_id = :user_id";
 	
 		$db = static::getDB();
 		$incomeCategories = $db->prepare($sql);
@@ -87,6 +88,54 @@ class Incomes extends \Core\Model
             return $stmt->execute();
 		}
 		return false;
+	}	
+	
+	public function updateCategory() 
+	{	
+        $this->validateCategoryName();
+
+        if (empty($this->errors)) {
+			$sql = "UPDATE incomes_categories_assigned_to_users SET name = :name WHERE id = :id";
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+			
+			$stmt->bindValue(':id', $this->incomeCategoryId, PDO::PARAM_INT);
+            $stmt->bindValue(':name', $this->incomeCategory, PDO::PARAM_STR);
+
+            return $stmt->execute();
+		}
+		return false;
+	}
+	
+	protected function validateCategoryName()
+	{
+		if(strlen($this->incomeCategory)<1 || strlen($this->incomeCategory)>40) {
+		$this->errors['incomeCategory'] = "Kategoria przychodu musi zawierać od 1 do 40 znaków.";
+		//zwalidować jeszcze czy już taka przypisana nie istnieje
+		}
+		
+	//	$sql = "SELECT name FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name = :incomeName";
+		
+	//	$db = static::getDB();
+		
+	//	$stmt = $db->prepare($sql);
+		
+		
+	//	$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+	//	$stmt->bindValue(':incomeName', $this->incomeCategory, PDO::PARAM_STR);
+		
+	//	$stmt->execute();
+	//	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	//	if(count($result)==1 && $result[0]['name']!=$this->incomeCategory){
+	//		$this->errors['incomeCategory'] = "Podana kategoria już istnieje.";
+	
+			
+	//		Flash::addMessage('Podana kategoria już istnieje.',Flash::DANGER);	
+	//	}
+
+		
 	}
 	
 	public function delete() 

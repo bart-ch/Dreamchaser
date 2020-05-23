@@ -189,6 +189,7 @@
 									<th scope="col">Data</th>
 									<th scope="col">Komentarz</th>
 									<th style="display:none;"> id</th>
+									<th width="5%"></th>
 
 								</tr>
 							</thead>
@@ -198,7 +199,8 @@
 								<td>{{ incomeCategoryInDetail.amount }}</td>
 								<td>{{ incomeCategoryInDetail.date_of_income }}</td>
 								<td class='wrap'>{{ incomeCategoryInDetail.comment }}</td>
-								<td style="display:none;" >{{ incomeCategoryInDetail.id }}</td></tr>
+								<td style="display:none;" >{{ incomeCategoryInDetail.id }}</td>
+								<td><i class="fas fa-edit"></i></td></tr>
 								{% endfor %}						
 							</tbody>
 						</table>									
@@ -216,6 +218,7 @@
 									<th scope="col">Data</th>
 									<th scope="col">Komentarz</th>
 									<th style="display:none;"> id</th>
+									<th width="5%"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -225,7 +228,8 @@
 								<td>{{ expenseCategoryInDetail.payment }}</td>
 								<td>{{ expenseCategoryInDetail.date_of_expense }}</td>
 								<td class='wrap'>{{ expenseCategoryInDetail.comment }}</td>
-								<td style="display:none;">{{ expenseCategoryInDetail.id }}</td></tr>
+								<td style="display:none;">{{ expenseCategoryInDetail.id }}</td>
+								<td><i class="fas fa-edit"></i></td></tr>
 								{% endfor %}
 							</tbody>
 						</table>	
