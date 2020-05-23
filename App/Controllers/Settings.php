@@ -47,7 +47,7 @@ class Settings extends Authenticated
 
 			} else {
 					
-				Flash::addMessage('Nie udało się edytować profilu.',Flash::DANGER);	
+				Flash::addMessage('Podany e-mail jest już zajęty lub jest w niepoprawnym formacie.',Flash::DANGER);	
 					
 				View::renderTemplate('Settings/index.html', [
 				'userIncomes' => Incomes::getUserIncomeCategories(),
@@ -173,7 +173,7 @@ class Settings extends Authenticated
 			$this->redirect('/settings/index');
 			} else {
 				
-				Flash::addMessage('Nie udało się dodać kategorii.',Flash::DANGER);	
+				Flash::addMessage('Podana kategoria już istnieje.',Flash::DANGER);	
 					
 				$this->redirect('/settings/index');	
 			}

@@ -16,25 +16,26 @@
 			$('#name').focus();
 		})
 		
-			if ( window.history.replaceState ) {
-	  window.history.replaceState( null, null, window.location.href );
-	}
+		if ( window.history.replaceState ) {
+		  window.history.replaceState( null, null, window.location.href );
+		}
 	
-	$(document).ready(function() {
-		$('.editIncomeBtn').on('click',function() {
-			$('#editIncomeModal').modal('show');
+		$(document).ready(function() {
+			$('.editIncomeBtn').on('click',function() {
+				$('#editIncomeModal').modal('show');
+				
+				$tr = $(this).closest('tr');
+				var data = $tr.children("td").map(function() {
+					return $(this).text();
+				}).get();
+				
+				$('#incomeCategoryModal').val(data[0]);
+				$('#incomeCategoryIdModal').val(data[2]);
+				
+			});
 			
-			$tr = $(this).closest('tr');
-			var data = $tr.children("td").map(function() {
-				return $(this).text();
-			}).get();
-			
-			$('#incomeCategoryModal').val(data[0]);
-			$('#incomeCategoryIdModal').val(data[2]);
 			
 		});
-		
-	});
 
 	</script>
 
@@ -92,7 +93,7 @@
 										  <span aria-hidden="true">&times;</span>
 										</button>
 									</div>
-									<form action="/settings/addIncomeCategory" method="post">
+									<form action="/settings/addIncomeCategory" method="post" id="newIncomeCategoryForm">
 										<div class="modal-body">
 												
 											<div class="input-group">
