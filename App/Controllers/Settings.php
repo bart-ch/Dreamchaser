@@ -207,6 +207,48 @@ class Settings extends Authenticated
 		}
 		
 	}
+	
+	public function deleteExpenseCategory() 
+	{	
+		if(isset($_POST['expenseCategoryId'])) {
+			
+			$expense = new Expenses($_POST);
+
+			$expense->deleteCategory();
+
+			Flash::addMessage('Kategoria wydatków oraz należące do niej transakcje zostały usunięte.');
+
+			$this->redirect('/settings/index');
+			
+		} else {
+			$this->redirect('/settings/index');
+		}
+
+	}
+
+	public function addExpenseCategory() 
+	{	
+		if(isset($_POST['newExpenseCategory'])) {
+			
+			$expense = new Expenses($_POST);
+
+			if($expense->addExpenseCategory()) {
+
+			Flash::addMessage('Nowa kategoria wydatków została dodana.');
+
+			$this->redirect('/settings/index');
+			} else {
+				
+				Flash::addMessage('Podana kategoria już istnieje.',Flash::DANGER);	
+					
+				$this->redirect('/settings/index');	
+			}
+			
+		} else {
+			$this->redirect('/settings/index');
+		}
+
+	}		
 		
 	
 

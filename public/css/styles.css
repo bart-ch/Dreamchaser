@@ -27,7 +27,7 @@ body, html {
 	font-family: 'Monoton', cursive;
 }
 
-.editIncomeBtn, .editExpenseBtn {
+.editIncomeBtn, .editExpenseBtn, .editPaymentBtn {
 	cursor: pointer;
 }
 
@@ -58,8 +58,7 @@ padding:20px;
 height: 150px;
 }
 
-.error
-{
+.error{
 	color: #ff1a1a;
 	font-weight:700;
 	font-size: 14px;

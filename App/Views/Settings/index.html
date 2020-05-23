@@ -45,9 +45,49 @@
 				$('#expenseCategoryModal').val(data[0]);
 				$('#expenseCategoryIdModal').val(data[2]);
 				
+			});			
+			
+			$('.editPaymentBtn').on('click',function() {
+				$('#editPaymentModal').modal('show');
+				
+				$tr = $(this).closest('tr');
+				var data = $tr.children("td").map(function() {
+					return $(this).text();
+				}).get();
+				
+				$('#paymentModal').val(data[0]);
+				$('#paymentIdModal').val(data[2]);
+				
 			});
 			
-			
+			$('#editProfileForm').validate( {
+				rules: {
+					email: {
+						required: true,
+						email: true
+					},
+					name: {
+						maxlength: 20
+					}
+				
+				},
+				messages: {
+				email: {
+					required: "Pole nie może być puste.",
+					email: "Prosze wpisać poprawny adres e-mail."
+				}, 
+				name: {
+					required: "Pole nie może być puste",
+					maxlength: "Imię może mieć długość maksymalnie 20 znaków."
+				}
+				},
+				errorPlacement: function ($error, $element) {
+					var name = $element.attr("name");
+
+					$("#error" + name).append($error);
+				}
+
+			});
 		});
 
 	</script>
@@ -260,23 +300,28 @@
 						<button id="settingButton3" class="btn btn-hover no-focus btn-block mt-2" onClick="toggleSettingPanel(this.id,'settingTogglePanel3')">Sposoby płatności <i class="fas fa-chevron-down setting-icon"></i></button>
 
 						<div id="settingTogglePanel3" class="settingTogglePanel w-100 px-2">
-						
-							<div class="input-group mt-2">
-								<div class="input-group-prepend">
-								<label class="input-group-text"><i class="fas fa-money-check"></i></label>
-								</div>				
-								<select id="category" class="custom-select" data-live-search="true" name="paymentMethod">
-								<option value="" selected disabled>Wybierz istniejącą metodę płatności</option>
-								{% for paymentMethod in paymentMethods %}
-									<option>{{ paymentMethod.name }}</option>
-								{% endfor %}
+							
+							<table id="tableOfPayment" class="table table-hover table-active text-white table-sm table-text">
 								
-								</select>
-							</div>
+								<thead>	
+									<tr>
+									<th onclick="sortTableAlphabetically('tableOfPayment')" scope="col">Sposób płatności <i class="fas fa-sort"></i></th>
+									<th scope="col" width="5%"></th>
+									<th scope="col" style="display:none;">ID</th></tr>
+								</thead>
+								<tbody>
+									{% for paymentMethod in paymentMethods %}
+									<tr class="editPaymentBtn"><td>{{ paymentMethod.name }}</td>
+									<td><i class="fas fa-edit"></i></td>
+									<td style="display:none;">{{ paymentMethod.id }}</td></tr>
+								{% endfor %}
+								</tbody>
+							</table>								
+							
 							
 							<div class="row">
 								<div class="col mb-2">
-									<button class="btn btn-hover no-focus btn-sm btn-block mt-3" style="height:30px">Dodaj nową kategorię</button>
+									<button class="btn btn-hover no-focus btn-sm btn-block" style="height:30px">Dodaj nową kategorię</button>
 								</div>						
 							</div>
 							
@@ -310,14 +355,15 @@
 														</div>
 														<input id="name" type="text" class="form-control" placeholder="Imię" aria-label="imie" name="name" value="{{ user.name }}" required autofocus>
 													</div>
-													
+													<div id="errorname" class="error"></div>	
 													<div class="input-group mt-3">
 														<div class="input-group-prepend">
 															<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
 														</div>
-														<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" value="{{ user.email }}" required >
+														<input type="email" class="form-control" placeholder="E-mail" aria-label="email" id ="email" name="email" value="{{ user.email }}" required >
 														<input type="hidden" value="{{ user.id }}" name ="id" required >
-													</div>												
+													</div>	
+													<div id="erroremail" class="error"></div>													
 													
 												</div>
 												<div class="modal-footer">
