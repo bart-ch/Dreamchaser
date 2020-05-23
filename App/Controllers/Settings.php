@@ -132,7 +132,7 @@ class Settings extends Authenticated
 
 			} else {
 					
-		//		Flash::addMessage('Nie udało się edytować przychodu.',Flash::DANGER);	
+				Flash::addMessage('Nie udało się edytować przychodu.',Flash::DANGER);	
 					
 				$this->redirect('/settings/index');
 			} 	
@@ -152,10 +152,34 @@ class Settings extends Authenticated
 
 			Flash::addMessage('Przychód został usunięty.');
 
-			$this->redirect('/balance/new');
+			$this->redirect('/settings/index');
 			
 		} else {
-			$this->redirect('/balance/new');
+			$this->redirect('/settings/index');
+		}
+
+	}		
+	
+	public function addIncomeCategory() 
+	{	
+		if(isset($_POST['newIncomeCategory'])) {
+			
+			$income = new Incomes($_POST);
+
+			if($income->addIncomeCategory()) {
+
+			Flash::addMessage('Nowa kategoria przychodu została dodana.');
+
+			$this->redirect('/settings/index');
+			} else {
+				
+				Flash::addMessage('Nie udało się dodać kategorii.',Flash::DANGER);	
+					
+				$this->redirect('/settings/index');	
+			}
+			
+		} else {
+			$this->redirect('/settings/index');
 		}
 
 	}	

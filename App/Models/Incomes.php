@@ -92,7 +92,10 @@ class Incomes extends \Core\Model
 	
 	public function updateCategory() 
 	{	
-        $this->validateCategoryName();
+        if(strlen($this->incomeCategory)<1 || strlen($this->incomeCategory)>40) {
+		$this->errors['incomeCategory'] = "Kategoria przychodu musi zawierać od 1 do 40 znaków.";
+		//zwalidować jeszcze czy już taka przypisana nie istnieje
+		}
 
         if (empty($this->errors)) {
 			$sql = "UPDATE incomes_categories_assigned_to_users SET name = :name WHERE id = :id";
@@ -108,12 +111,31 @@ class Incomes extends \Core\Model
 		return false;
 	}
 	
-	protected function validateCategoryName()
+	protected function validateNewCategoryName()
 	{
-		if(strlen($this->incomeCategory)<1 || strlen($this->incomeCategory)>40) {
+		if(strlen($this->newIncomeCategory)<1 || strlen($this->newIncomeCategory)>40) {
 		$this->errors['incomeCategory'] = "Kategoria przychodu musi zawierać od 1 do 40 znaków.";
 		//zwalidować jeszcze czy już taka przypisana nie istnieje
 		}
+
+		$sql = "SELECT * FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name = :incomeName";
+		
+		$db = static::getDB();
+
+		$stmt = $db->prepare($sql);
+
+
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':incomeName', $this->newIncomeCategory, PDO::PARAM_STR);
+
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(count($result)==1){
+		$this->errors['newIncomeCategory'] = "Podana kategoria już istnieje.";	
+		}
+			
+	}
 		
 	//	$sql = "SELECT name FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name = :incomeName";
 		
@@ -134,10 +156,31 @@ class Incomes extends \Core\Model
 			
 	//		Flash::addMessage('Podana kategoria już istnieje.',Flash::DANGER);	
 	//	}
-
-		
-	}
 	
+	
+
+	public function addIncomeCategory()
+	{	
+		$this->validateNewCategoryName();
+		
+		if (empty($this->errors)) {
+			
+			$sql = "INSERT INTO incomes_categories_assigned_to_users VALUES (NULL, :user_id, :name)";
+									
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+
+	
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':name', $this->newIncomeCategory, PDO::PARAM_STR);
+
+            return $stmt->execute();		
+			
+		}
+		return false;
+	}
+
 	public function delete() 
 	{
 		$sql = "DELETE FROM incomes WHERE id = $this->incomeId";

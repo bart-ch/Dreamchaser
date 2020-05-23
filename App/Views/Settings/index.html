@@ -92,20 +92,20 @@
 										  <span aria-hidden="true">&times;</span>
 										</button>
 									</div>
-									<form action="" method="post" id='editIncomeForm'>
+									<form action="/settings/addIncomeCategory" method="post">
 										<div class="modal-body">
 												
 											<div class="input-group">
 												<div class="input-group-prepend">
 													<span class="input-group-text"><i class="fas fa-shopping-cart"></i></span>
 												</div>
-												<input id="incomeCategoryModal" type="text" class="form-control"  placeholder="Kategoria przychodu" maxlength="40" step="any" aria-label="KategoriaPrzychodu" name="newIncomeCategory" required >
+												<input type="text" class="form-control"  placeholder="Kategoria przychodu" maxlength="40" step="any" aria-label="KategoriaPrzychodu" name="newIncomeCategory" required >
 											</div>
 		
 										</div>
 																			
 										<div class="modal-footer">
-											<button id="incomeCategorySubmit" formaction="/settings/addIncomeCategory"  type="submit" class="btn btn-hover color-8">Potwierdź</button>
+											<button type="submit" class="btn btn-hover color-8">Potwierdź</button>
 										</div>
 										
 									</form>	
@@ -131,7 +131,7 @@
 												<div class="input-group-prepend">
 													<span class="input-group-text"><i class="fas fa-shopping-cart"></i></span>
 												</div>
-												<input id="incomeCategoryModal" type="text" class="form-control"  placeholder="Kategoria przychodu" maxlength="40" step="any" aria-label="KategoriaPrzychodu" name="incomeCategory" required >
+												<input type="text" id="incomeCategoryModal" class="form-control"  placeholder="Kategoria przychodu" maxlength="40" step="any" aria-label="KategoriaPrzychodu" name="incomeCategory" required >
 											</div>
 		
 										</div>
