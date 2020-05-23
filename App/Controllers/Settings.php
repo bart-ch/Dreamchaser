@@ -132,7 +132,7 @@ class Settings extends Authenticated
 
 			} else {
 					
-				Flash::addMessage('Nie udało się edytować przychodu.',Flash::DANGER);	
+				Flash::addMessage('Podana kategoria już istnieje.',Flash::DANGER);	
 					
 				$this->redirect('/settings/index');
 			} 	

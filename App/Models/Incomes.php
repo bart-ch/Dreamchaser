@@ -96,6 +96,24 @@ class Incomes extends \Core\Model
 		$this->errors['incomeCategory'] = "Kategoria przychodu musi zawierać od 1 do 40 znaków.";
 		//zwalidować jeszcze czy już taka przypisana nie istnieje
 		}
+		
+		$sql = "SELECT * FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name = :incomeName AND id <> :id";
+		
+		$db = static::getDB();
+
+		$stmt = $db->prepare($sql);
+
+
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':id', $this->incomeCategoryId, PDO::PARAM_INT);
+		$stmt->bindValue(':incomeName', $this->incomeCategory, PDO::PARAM_STR);
+
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(count($result)==1){
+		$this->errors['newIncomeCategory'] = "Podana kategoria już istnieje.";	
+		}
 
         if (empty($this->errors)) {
 			$sql = "UPDATE incomes_categories_assigned_to_users SET name = :name WHERE id = :id";
@@ -136,27 +154,6 @@ class Incomes extends \Core\Model
 		}
 			
 	}
-		
-	//	$sql = "SELECT name FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name = :incomeName";
-		
-	//	$db = static::getDB();
-		
-	//	$stmt = $db->prepare($sql);
-		
-		
-	//	$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-	//	$stmt->bindValue(':incomeName', $this->incomeCategory, PDO::PARAM_STR);
-		
-	//	$stmt->execute();
-	//	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-	//	if(count($result)==1 && $result[0]['name']!=$this->incomeCategory){
-	//		$this->errors['incomeCategory'] = "Podana kategoria już istnieje.";
-	
-			
-	//		Flash::addMessage('Podana kategoria już istnieje.',Flash::DANGER);	
-	//	}
-	
 	
 
 	public function addIncomeCategory()
