@@ -248,9 +248,48 @@ class Settings extends Authenticated
 			$this->redirect('/settings/index');
 		}
 
-	}		
-		
-	
+	}	
 
+	public function updatePaymentMethod() 
+	{
+		if(isset($_POST['paymentId'])) {
+			
+			$expense = new Expenses($_POST);
+
+			if ($expense->updatePaymentMethod()) {
+
+				Flash::addMessage('Sposób płatności został zedytowany.');
+
+				$this->redirect('/settings/index');
+
+			} else {
+					
+				Flash::addMessage('Podany sposób płatności już istnieje.',Flash::DANGER);	
+					
+				$this->redirect('/settings/index');
+			} 	
+		} else {
+			$this->redirect('/settings/index');
+		}
+		
+	}	
+	
+	public function deletePaymentMethod() 
+	{	
+		if(isset($_POST['paymentId'])) {
+			
+			$expense = new Expenses($_POST);
+
+			$expense->deletePaymentMethod();
+
+			Flash::addMessage('Metoda płatności oraz należące do niej transakcje zostały usunięte.');
+
+			$this->redirect('/settings/index');
+			
+		} else {
+			$this->redirect('/settings/index');
+		}
+
+	}
 
 }

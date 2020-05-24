@@ -40,7 +40,7 @@ class Expenses extends \Core\Model
 	
 	public static function getUserPaymentMethods()
 	{
-		$sql = "SELECT name FROM payment_methods_assigned_to_users WHERE user_id = :user_id";
+		$sql = "SELECT name, id FROM payment_methods_assigned_to_users WHERE user_id = :user_id";
 	
 		$db = static::getDB();
 		$paymentMethods = $db->prepare($sql);
@@ -249,6 +249,40 @@ class Expenses extends \Core\Model
 		}
 		return false;
 	}
+	
+	public function updatePaymentMethod() 
+	{	
+        if(strlen($this->paymentCategory)<1 || strlen($this->paymentCategory)>30) {
+			return false;
+		}
+
+		$sql = "SELECT * FROM payment_methods_assigned_to_users WHERE user_id = :user_id AND name = :paymentName AND id <> :id";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':id', $this->paymentId, PDO::PARAM_INT);
+		$stmt->bindValue(':paymentName', $this->paymentCategory, PDO::PARAM_STR);
+
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(count($result)==1){
+			return false;
+		}
+
+		$sql = "UPDATE payment_methods_assigned_to_users SET name = :name WHERE id = :id";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);	
+		
+		$stmt->bindValue(':id', $this->paymentId, PDO::PARAM_INT);
+		$stmt->bindValue(':name', $this->paymentCategory, PDO::PARAM_STR);
+
+		return $stmt->execute();
+
+	}	
 
 	public function deleteCategory()
 	{		
@@ -258,6 +292,18 @@ class Expenses extends \Core\Model
             $stmt = $db->prepare($sql);
 
             $stmt->bindValue(':id', $this->expenseCategoryId, PDO::PARAM_INT);
+
+            return $stmt->execute();		
+	}	
+	
+	public function deletePaymentMethod()
+	{		
+			$sql = "DELETE FROM payment_methods_assigned_to_users WHERE id = :id";
+									
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $this->paymentId, PDO::PARAM_INT);
 
             return $stmt->execute();		
 	}	

@@ -63,6 +63,7 @@
 			var userId = '{{ user.id }}';
 			
 			$('#editProfileForm').validate( {
+				errorClass: 'text-muted',
 				rules: {
 					email: {
 						required: true,
@@ -350,19 +351,20 @@
 									<form action="" method="post" id='editIncomeForm'>
 										<div class="modal-body">
 												
-											<input type="hidden" id="paymentIdModal" name="expenseCategoryId">
+											<input type="hidden" id="paymentIdModal" name="paymentId">
 											<div class="input-group">
 												<div class="input-group-prepend">
 													<span class="input-group-text"><i class="fas fa-money-check"></i></span>
 												</div>
-												<input type="text" id="paymentModal" class="form-control"  placeholder="Metoda płatności" maxlength="40" step="any" aria-label="MetodaPlatnosci" name="paymentCategory" required >
+												<input type="text" id="paymentModal" class="form-control"  placeholder="Metoda płatności" maxlength="30" step="any" aria-label="MetodaPlatnosci" name="paymentCategory" required >
 											</div>
 		
 										</div>
 																			
 										<div class="modal-footer">
 											<button id="incomeModalSubmit" formaction="/settings/updatePaymentCategory"  type="submit" class="btn btn-hover color-8">Potwierdź</button>
-											<button type="submit" formaction="/settings/deletePaymentCategory" class="btn btn-hover color-11">Usuń metodę</button>
+											<button type="submit" formaction="/settings/deletePaymentMethod" class="btn btn-hover color-11">Usuń metodę</button>
+											<span class="help-block">chuj</span>
 										</div>
 										
 									</form>	
@@ -400,7 +402,7 @@
 														</div>
 														<input id="name" type="text" class="form-control" placeholder="Imię" aria-label="imie" name="name" value="{{ user.name }}" required autofocus>
 													</div>
-													<div id="errorname" class="error"></div>	
+													<div id="errorname"></div>	
 													<div class="input-group mt-3">
 														<div class="input-group-prepend">
 															<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
@@ -408,7 +410,7 @@
 														<input type="email" class="form-control" placeholder="E-mail" aria-label="email" id ="email" name="email" value="{{ user.email }}" required >
 														<input type="hidden" value="{{ user.id }}" name ="id" required >
 													</div>	
-													<div id="erroremail" class="error"></div>													
+													<div id="erroremail"></div>													
 													
 												</div>
 												<div class="modal-footer">
