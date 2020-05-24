@@ -60,11 +60,21 @@
 				
 			});
 			
+			var userId = '{{ user.id }}';
+			
 			$('#editProfileForm').validate( {
 				rules: {
 					email: {
 						required: true,
-						email: true
+						email: true,
+						remote: {
+							url: '/account/validate-email',
+							data: {
+								ignore_id: function() {
+									return userId;
+								}
+							}
+						}
 					},
 					name: {
 						maxlength: 20
@@ -74,7 +84,8 @@
 				messages: {
 				email: {
 					required: "Pole nie może być puste.",
-					email: "Prosze wpisać poprawny adres e-mail."
+					email: "Prosze wpisać poprawny adres e-mail.",
+					remote: "Podany adres e-mail jest zajęty."
 				}, 
 				name: {
 					required: "Pole nie może być puste.",
