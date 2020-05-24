@@ -291,5 +291,29 @@ class Settings extends Authenticated
 		}
 
 	}
+	
+	public function addPaymentMethod() 
+	{	
+		if(isset($_POST['paymentId'])) {
+			
+			$expense = new Expenses($_POST);
+
+			if($expense->addPaymentMethod()) {
+
+			Flash::addMessage('Nowa metoda płatności została dodana.');
+
+			$this->redirect('/settings/index');
+			} else {
+				
+				Flash::addMessage('Podana metoda płatności już istnieje.',Flash::DANGER);	
+					
+				$this->redirect('/settings/index');	
+			}
+			
+		} else {
+			$this->redirect('/settings/index');
+		}
+
+	}	
 
 }

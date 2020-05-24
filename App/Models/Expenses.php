@@ -309,10 +309,8 @@ class Expenses extends \Core\Model
 	}	
 	
 	public function addExpenseCategory()
-	{	
-		$this->validateNewCategoryName();
-		
-		if (empty($this->errors)) {
+	{		
+		if ($this->validateNewCategoryName()) {
 			
 			$sql = "INSERT INTO expenses_categories_assigned_to_users VALUES (NULL, :user_id, :name)";
 									
@@ -326,21 +324,36 @@ class Expenses extends \Core\Model
 			
 		}
 		return false;
+	}	
+	
+	public function addPaymentMethod()
+	{	
+		if ($this->validateNewPaymentMethodName()) {
+			
+			$sql = "INSERT INTO payment_methods_assigned_to_users VALUES (NULL, :user_id, :name)";
+									
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+	
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':name', $this->paymentCategory, PDO::PARAM_STR);
+
+            return $stmt->execute();		
+			
+		}
+		return false;
 	}		
 	
 	protected function validateNewCategoryName()
 	{
 		if(strlen($this->newExpenseCategory)<1 || strlen($this->newExpenseCategory)>40) {
-		$this->errors['expenseCategory'] = "Kategoria wydatków musi zawierać od 1 do 40 znaków.";
-		//zwalidować jeszcze czy już taka przypisana nie istnieje
+			return false;
 		}
 
 		$sql = "SELECT * FROM expenses_categories_assigned_to_users WHERE user_id = :user_id AND name = :expenseName";
 		
 		$db = static::getDB();
-
 		$stmt = $db->prepare($sql);
-
 
 		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':expenseName', $this->newExpenseCategory, PDO::PARAM_STR);
@@ -349,8 +362,35 @@ class Expenses extends \Core\Model
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
 		if(count($result)==1){
-		$this->errors['newExpenseCategory'] = "Podana kategoria już istnieje.";	
+			return false;
 		}
+		return true;
+	}		
+	
+	protected function validateNewPaymentMethodName()
+	{
+		if(strlen($this->paymentCategory)<1 || strlen($this->paymentCategory)>30) {
+			return false;	
+		}
+
+		$sql = "SELECT * FROM payment_methods_assigned_to_users WHERE user_id = :user_id AND name = :paymentCategoryName";
+		
+		$db = static::getDB();
+
+		$stmt = $db->prepare($sql);
+
+
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':paymentCategoryName', $this->paymentCategory, PDO::PARAM_STR);
+
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(count($result)==1){
+			return false;
+		}
+		
+		return true;
 			
 	}	
 	

@@ -333,7 +333,7 @@
 							
 							<div class="row">
 								<div class="col mb-2">
-									<button class="btn btn-hover no-focus btn-sm btn-block" style="height:30px">Dodaj nową kategorię</button>
+									<button class="btn btn-hover no-focus btn-sm btn-block" style="height:30px" data-toggle="modal" data-target="#addPaymentModal">Dodaj nową metodę płatności</button>
 								</div>						
 							</div>
 							
@@ -362,9 +362,40 @@
 										</div>
 																			
 										<div class="modal-footer">
-											<button id="incomeModalSubmit" formaction="/settings/updatePaymentCategory"  type="submit" class="btn btn-hover color-8">Potwierdź</button>
+											<button formaction="/settings/updatePaymentMethod"  type="submit" class="btn btn-hover color-8">Potwierdź</button>
 											<button type="submit" formaction="/settings/deletePaymentMethod" class="btn btn-hover color-11">Usuń metodę</button>
-											<span class="help-block">chuj</span>
+										</div>
+										
+									</form>	
+								</div>
+								
+							</div>
+						</div>							
+						
+						<div class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="dodajMetodePlatnosci" aria-hidden="true" >
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 id="dodajMetodePlatnosci" class="modal-title">Dodaj metodę płatności</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
+										  <span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<form action="" method="post" id='addIncomeForm'>
+										<div class="modal-body">
+												
+											<input type="hidden" id="paymentIdModal" name="paymentId">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"><i class="fas fa-money-check"></i></span>
+												</div>
+												<input type="text" class="form-control"  placeholder="Metoda płatności" maxlength="30" step="any" aria-label="MetodaPlatnosci" name="paymentCategory" required >
+											</div>
+		
+										</div>
+																			
+										<div class="modal-footer">
+											<button formaction="/settings/addPaymentMethod"  type="submit" class="btn btn-hover color-8">Potwierdź</button>
 										</div>
 										
 									</form>	
