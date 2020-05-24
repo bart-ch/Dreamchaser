@@ -95,11 +95,6 @@
 					},
 					name: {
 						maxlength: 20
-					},
-					password: {
-						required: true,
-						minlength: 6,
-						maxlength: 20
 					}	
 				},
 				messages: {
@@ -111,9 +106,6 @@
 					name: {
 						required: "Pole nie może być puste.",
 						maxlength: "Imię może mieć długość maksymalnie 20 znaków."
-					},
-					password: {
-						required: "Pole nie może być puste."
 					}
 				},
 				errorPlacement: function ($error, $element) {
@@ -133,7 +125,17 @@
 						minlength: 6,
 						maxlength: 20,
 						validPassword: true
-					}	
+					},
+					oldPassword: {
+						remote: {
+							url: '/account/validate-password',
+							data: {
+								user_id: function() {
+									return userId;
+								}								
+							}
+						}
+					}
 				},
 				messages: {
 					password: {
@@ -142,7 +144,8 @@
 						maxlength: "Hasło musi składać się z maksymalnie 20 znaków."
 					},					
 					oldPassword: {
-						required: "Pole nie może być puste."
+						required: "Pole nie może być puste.",
+						remote: "Wprowadzone hasło jest niepoprawne."
 					}
 				},
 				errorPlacement: function ($error, $element) {

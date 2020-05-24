@@ -238,6 +238,19 @@ class User extends \Core\Model
         }
 		
         return false;
+    }    
+	
+	public static function validateOldPassword($password,$userId)
+    {
+		$user = static::findByID($userId);
+
+        if ($user) {
+            if (password_verify($password, $user->password)) {
+                return true;
+            }
+        }
+		
+        return false;
     }
 
     /**
