@@ -19,6 +19,22 @@
 		if ( window.history.replaceState ) {
 		  window.history.replaceState( null, null, window.location.href );
 		}
+		
+		$.validator.addMethod('validPassword',
+            function(value, element, param) {
+                if (value != '') {
+                    if (value.match(/.*[a-z]+.*/i) == null) {
+                        return false;
+                    }
+                    if (value.match(/.*\d+.*/) == null) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            'Hasło musi zawierać co najmniej 1 literę i 1 cyfrę.'
+        );
 	
 		$(document).ready(function() {
 			$('.editIncomeBtn').on('click',function() {
@@ -79,19 +95,26 @@
 					},
 					name: {
 						maxlength: 20
-					}
-				
+					},
+					password: {
+						required: true,
+						minlength: 6,
+						maxlength: 20
+					}	
 				},
 				messages: {
-				email: {
-					required: "Pole nie może być puste.",
-					email: "Prosze wpisać poprawny adres e-mail.",
-					remote: "Podany adres e-mail jest zajęty."
-				}, 
-				name: {
-					required: "Pole nie może być puste.",
-					maxlength: "Imię może mieć długość maksymalnie 20 znaków."
-				}
+					email: {
+						required: "Pole nie może być puste.",
+						email: "Prosze wpisać poprawny adres e-mail.",
+						remote: "Podany adres e-mail jest zajęty."
+					}, 
+					name: {
+						required: "Pole nie może być puste.",
+						maxlength: "Imię może mieć długość maksymalnie 20 znaków."
+					},
+					password: {
+						required: "Pole nie może być puste."
+					}
 				},
 				errorPlacement: function ($error, $element) {
 					var name = $element.attr("name");
@@ -99,7 +122,38 @@
 					$("#error" + name).append($error);
 				}
 
-			});
+			});	
+			
+			$('#editPasswordForm').validate( {
+				errorClass: 'text-muted',
+				rules: {
+
+					password: {
+						required: true,
+						minlength: 6,
+						maxlength: 20,
+						validPassword: true
+					}	
+				},
+				messages: {
+					password: {
+						required: "Pole nie może być puste.",
+						minlength: "Hasło musi składać się z co najmniej 6 znaków.",
+						maxlength: "Hasło musi składać się z maksymalnie 20 znaków."
+					},					
+					oldPassword: {
+						required: "Pole nie może być puste."
+					}
+				},
+				errorPlacement: function ($error, $element) {
+					var name = $element.attr("name");
+
+					$("#error" + name).append($error);
+				}
+
+			});			
+			
+			
 		});
 
 	</script>
@@ -111,10 +165,10 @@
 {% block body %}
 	
 	<div class="row">
-		<div class="main-container py-2 px-4 col-md-8 offset-md-2 col-lg-6 offset-lg-3 my-5">
+		<div class="main-container py-2 px-3 col-md-8 offset-md-2 col-lg-6 offset-lg-3 my-5">
 		
 			<div class="row">	
-				<div class="welcome-message mt-2 mb-2 mx-2 py-3 px-5 w-100">
+				<div class="welcome-message mt-2 mb-2 mx-2 py-3 px-4 w-100">
 				
 					<div class="row">
 						<div class="col-12 text-center">
@@ -453,14 +507,14 @@
 								</div>									
 								
 								<div class="col-6 mb-2">
-									<button class="btn btn-hover no-focus-red btn-sm btn-block mt-2" data-toggle="modal" data-target="#deleteUserDataModal" style="height:30px">Zresetuj przychody i wydatki</button>	
+									<button class="btn btn-hover no-focus-red btn-sm btn-block mt-2" data-toggle="modal" data-target="#deleteUserDataModal" style="height:30px">Zresetuj transakcje</button>	
 								</div>
 								
 								<div class="modal fade" id="deleteUserDataModal" tabindex="-1" role="dialog" aria-labelledby="zresetujKonto" aria-hidden="true">
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">
 											<div class="modal-header">
-												<h4 id="zresetujKonto" class="modal-title">Zresetuj przychody i wydatki</h4>
+												<h4 id="zresetujKonto" class="modal-title">Zresetuj wszystkie transakcje</h4>
 												<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
 												  <span aria-hidden="true">&times;</span>
 												</button>
@@ -498,15 +552,17 @@
 												  <span aria-hidden="true">&times;</span>
 												</button>
 											</div>
-											<form method="post" action="/settings/changePassword">
+											<form method="post" action="/settings/changePassword" id="editPasswordForm">
 												<div class="modal-body">
 													<div class="input-group mt-3">
 														<div class="input-group-prepend">
 															<span class="input-group-text"> <i class="fa fa-lock"></i></span>
 														</div>
-														<input type="password" class="form-control" data-toggle="password" placeholder="Stare hasło" aria-label="Stare hasło" id="oldPassword" name="oldPassword" required>
+														<input type="password" class="form-control" data-toggle="password" placeholder="Stare hasło" aria-label="Stare hasło" id="oldPassword" name="oldPassword" required>	
 
-													</div>	
+													</div>
+													
+													<div id="erroroldPassword"></div>														
 													
 													<div class="input-group mt-3">
 														<div class="input-group-prepend">
@@ -518,7 +574,9 @@
 																<i id="showHideIcon" class="fa fa-eye"></i>
 															</span>
 														</div>
-													</div>													
+													</div>	
+													
+													<div id="errorpassword"></div>													
 													
 												</div>
 												<div class="modal-footer">
