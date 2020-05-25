@@ -59,7 +59,8 @@
 				}).get();
 				
 				$('#expenseCategoryModal').val(data[0]);
-				$('#expenseCategoryIdModal').val(data[2]);
+				$('#expenseLimitModal').val(data[1]);
+				$('#expenseCategoryIdModal').val(data[3]);
 				
 			});			
 			
@@ -280,12 +281,14 @@
 								<thead>	
 									<tr>
 									<th onclick="sortTableAlphabetically('tableOfExpensesCategories')" scope="col">Kategoria <i class="fas fa-sort"></i></th>
+									<th scope="col" onclick="sortTableNumerically('tableOfExpensesCategories')">Limit <i class="fas fa-sort"></i></th>
 									<th scope="col"  width="5%"></th>
 									<th scope="col" style="display:none;">ID</th></tr>
 								</thead>
 								<tbody>
 									{% for userExpense in userExpenses %}
 									<tr class="editExpenseBtn"><td>{{ userExpense.name }}</td>
+									<td>{{ userExpense.categoryLimit }}</td>
 									<td><i class="fas fa-edit"></i></td>
 									<td style="display:none;">{{ userExpense.id }}</td></tr>
 								{% endfor %}
@@ -345,11 +348,18 @@
 										<div class="modal-body">
 												
 											<input type="hidden" id="expenseCategoryIdModal" name="expenseCategoryId">
-											<div class="input-group">
+											<div class="input-group mb-3">
 												<div class="input-group-prepend">
 													<span class="input-group-text"><i class="fas fa-shopping-cart"></i></span>
 												</div>
 												<input type="text" id="expenseCategoryModal" class="form-control"  placeholder="Kategoria wydatków" maxlength="40" step="any" aria-label="KategoriaWydatków" name="expenseCategory" required >
+											</div>											
+											
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text"><i class="fas fa-angle-double-up"></i></span>
+												</div>
+												<input type="number" id="expenseLimitModal" class="form-control" min="0" max="999999.99"  placeholder="Limit (opcjonalne)" aria-label="limitKategorii" name="expenseLimit" >
 											</div>
 		
 										</div>

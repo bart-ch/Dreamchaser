@@ -28,7 +28,7 @@ class Expenses extends \Core\Model
 	
 	public static function getUserExpenseCategories()
 	{
-		$sql = "SELECT name,id FROM expenses_categories_assigned_to_users WHERE user_id = :user_id";
+		$sql = "SELECT * FROM expenses_categories_assigned_to_users WHERE user_id = :user_id";
 	
 		$db = static::getDB();
 		$incomeCategories = $db->prepare($sql);
@@ -40,7 +40,7 @@ class Expenses extends \Core\Model
 	
 	public static function getUserPaymentMethods()
 	{
-		$sql = "SELECT name, id FROM payment_methods_assigned_to_users WHERE user_id = :user_id";
+		$sql = "SELECT name,id FROM payment_methods_assigned_to_users WHERE user_id = :user_id";
 	
 		$db = static::getDB();
 		$paymentMethods = $db->prepare($sql);
@@ -62,7 +62,7 @@ class Expenses extends \Core\Model
 
         if (empty($this->errors)) {
 
-			$sql = "INSERT INTO expenses VALUES (NULL, :user_id, :idOfIncomeCategoryAssignedToUser, :idOfPaymentMethodAssignedToUser, :convertedPrice, :date, :comment)";
+			$sql = "INSERT INTO expenses VALUES (NULL,:user_id, :idOfIncomeCategoryAssignedToUser, :idOfPaymentMethodAssignedToUser, :convertedPrice, :date, :comment)";
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -215,7 +215,6 @@ class Expenses extends \Core\Model
 	{	
         if(strlen($this->expenseCategory)<1 || strlen($this->expenseCategory)>40) {
 		$this->errors['expenseCategory'] = "Kategoria przychodu musi zawierać od 1 do 40 znaków.";
-		//zwalidować jeszcze czy już taka przypisana nie istnieje
 		}
 		
 		$sql = "SELECT * FROM expenses_categories_assigned_to_users WHERE user_id = :user_id AND name = :expenseName AND id <> :id";
