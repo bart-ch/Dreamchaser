@@ -30,13 +30,15 @@ class Account extends \Core\Controller
     }   
 	
 	public function validatePasswordAction()
-    {
+    {	
+		if(isset($_GET['oldPassword'])) {
         $is_valid = User::validateOldPassword($_GET['oldPassword'],$_GET['user_id']);
         
         header('Content-Type: application/json');
         echo json_encode($is_valid);
-
-    }
-	
+		} else {
+			$this->redirect('/settings/index');
+		}
+    }	
 
 }

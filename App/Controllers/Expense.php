@@ -68,7 +68,9 @@ class Expense extends Authenticated
 		 if(isset($_POST["expenseCategory"]))  
 		 {  $expense = new Expenses($_POST);
 			$expense->showExpenseLimit();
-		 }  
+		 } else {
+			$this->redirect('/expense/new');
+		 }			 
 	}	
 	
 	public function  getFinalValueAction()
@@ -77,10 +79,9 @@ class Expense extends Authenticated
 		 { 	
 			$expense = new Expenses($_POST);
 			$value = $expense->getFinalValue();
-		 } 
-
-		 
+		 } else {
+			$this->redirect('/expense/new');
+		 }
 	}
-
 
 }
