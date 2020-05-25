@@ -8,6 +8,42 @@
 	if ( window.history.replaceState ) {
 	  window.history.replaceState( null, null, window.location.href );
 	}
+	
+	 $(document).ready(function(){  
+		  $('#amount').keyup(function(){  
+			   var expenseCategory = $('#expenseCategory').val();  
+			   var amount = $(this).val();
+			   $.ajax({  
+					url:"/expense/check-limit",  
+					method:"POST",  
+					data:{
+						expenseCategory:expenseCategory,
+						amount:amount
+					},  
+					success:function(data){  
+						 $('#categoryLimit').html(data);  
+					}  
+			   });  
+		  });		  
+		  
+		  $('#expenseCategory').change(function(){  
+			   var expenseCategory = $(this).val();  
+			   var amount = $('#amount').val();
+			   $.ajax({  
+					url:"/expense/check-limit",  
+					method:"POST",  
+					data:{
+						expenseCategory:expenseCategory,
+						amount:amount
+					},  
+					success:function(data){  
+						 $('#categoryLimit').html(data);  
+					}  
+			   });  
+		  });  
+	 });	
+	
+	
 	</script>
 
 {% endblock %}
@@ -29,12 +65,14 @@
 					</div>
 		
 					<form action="/expense/create" method="post">
+					
+						<div class="alert-danger mb-2 rounded" id="categoryLimit"></div>
 						
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
 							</div>
-							<input type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" value="{{ expense.amount }}" required autofocus >
+							<input type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" id="amount" name="amount" value="{{ expense.amount }}" required autofocus >
 						</div>
 					
 						<span class="error">{{ expense.errors.amount }}</span>
@@ -52,7 +90,7 @@
 							<div class="input-group-prepend">
 							<label class="input-group-text"><i class="fas fa-money-check"></i></label>
 							</div>				
-							<select id="category" class="custom-select" data-live-search="true" name="paymentMethod">
+							<select id="paymentCategory" class="custom-select" data-live-search="true" name="paymentMethod">
 							
 							{% for paymentMethod in paymentMethods %}
 								<option>{{ paymentMethod.name }}</option>
@@ -65,7 +103,7 @@
 							<div class="input-group-prepend">
 							<label class="input-group-text"><i class="fas fa-shopping-cart"></i></label>
 							</div>				
-							<select id="category" class="custom-select" data-live-search="true" name="expenseCategory">
+							<select id="expenseCategory" class="custom-select" data-live-search="true" name="expenseCategory">
 			
 							{% for userExpense in userExpenses %}
 								<option>{{ userExpense.name }}</option>

@@ -396,7 +396,56 @@ class Expenses extends \Core\Model
 		
 		return true;
 			
+	}
+	
+	public function showExpenseLimit() 
+	{
+		$limit = $this->getLimitOfIncomeCategory();
+		$spentAmount = $this->getCategorySpentAmount();
+		$diff = $limit - $spentAmount;
+		$possibleSpentAmount = $spentAmount + $this->amount;
+		if($limit != null) {
+			echo "Limit: ".$limit."<br>";
+			echo "Wydatki w tym miesiącu: ".$spentAmount."<br>";
+			echo "Różnica: ".$diff."<br>";
+			echo "Wydatki + wpisana kwota: ".$possibleSpentAmount;
+		}
+	}
+
+	protected function getLimitOfIncomeCategory()
+	{		
+		$sql = "SELECT categoryLimit FROM expenses_categories_assigned_to_users WHERE user_id = :user_id AND name= :expenseName";
+
+		$db = static::getDB();
+		
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':expenseName', $this->expenseCategory, PDO::PARAM_STR);
+		$stmt->execute();	
+		
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		return $result['categoryLimit'];
+
 	}	
+	
+	protected function getCategorySpentAmount()
+	{	
+			
+		$sql = "SELECT SUM(amount) as amount FROM expenses WHERE expense_category_assigned_to_user_id = :id AND date_of_expense BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW()";
+
+		$db = static::getDB();	
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':id', $this->getIdOfExpenseCategoryAssignedToUser(), PDO::PARAM_INT);
+		$stmt->execute();
+		
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		return $result['amount'];
+
+	}
 	
 
  

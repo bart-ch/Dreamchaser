@@ -22,7 +22,7 @@ class Expense extends Authenticated
      * @return void
      */
     public function newAction()
-    {
+    {	
         View::renderTemplate('Expense/new.html', [
 		'todaysDate' => Dates::getTodaysDate(),
 		'userExpenses' => Expenses::getUserExpenseCategories(),
@@ -62,6 +62,14 @@ class Expense extends Authenticated
 			$this->redirect('/expense/new');
 		}
     }
+	
+	public function  checkLimitAction()
+	{
+		 if(isset($_POST["expenseCategory"]))  
+		 {  $expense = new Expenses($_POST);
+			$expense->showExpenseLimit();
+		 }  
+	}
 
 
 }
