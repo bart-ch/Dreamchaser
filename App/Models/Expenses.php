@@ -403,12 +403,37 @@ class Expenses extends \Core\Model
 		$limit = $this->getLimitOfIncomeCategory();
 		$spentAmount = $this->getCategorySpentAmount();
 		$diff = $limit - $spentAmount;
-		$possibleSpentAmount = $spentAmount + $this->amount;
+		$this->amount = $this->validateAndConvertPriceFormat();
+		if($this->amount != "") {
+			$possibleSpentAmount = $spentAmount + $this->amount;
+		}
 		if($limit != null) {
-			echo "Limit: ".$limit."<br>";
-			echo "Wydatki w tym miesiącu: ".$spentAmount."<br>";
+			echo "Miesięczny limit: ".$limit."<br>";
+			if($spentAmount != "") {
+				echo "Wydatki w tym miesiącu: ".$spentAmount."<br>";
+			} else {
+				echo "Wydatki w tym miesiącu: 0<br>";
+			}
 			echo "Różnica: ".$diff."<br>";
-			echo "Wydatki + wpisana kwota: ".$possibleSpentAmount;
+			if($this->amount != "") {
+				echo "Wydatki + wpisana kwota: ".$possibleSpentAmount;
+			}
+		}
+	}	
+	
+	public function getFinalValue() 
+	{
+
+		if($this->amount != "") {
+			$limit = $this->getLimitOfIncomeCategory();
+			$spentAmount = $this->getCategorySpentAmount();
+			$possibleSpentAmount = $spentAmount + $this->amount;
+			if($possibleSpentAmount <= $limit) {
+				echo false;
+			} else {
+				echo true;
+			}
+			
 		}
 	}
 

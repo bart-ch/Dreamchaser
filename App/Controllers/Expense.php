@@ -69,6 +69,17 @@ class Expense extends Authenticated
 		 {  $expense = new Expenses($_POST);
 			$expense->showExpenseLimit();
 		 }  
+	}	
+	
+	public function  getFinalValueAction()
+	{
+		 if(isset($_POST["amount"]))  
+		 { 	
+			$expense = new Expenses($_POST);
+			$value = $expense->getFinalValue();
+		 } 
+
+		 
 	}
 
 

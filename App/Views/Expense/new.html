@@ -4,47 +4,7 @@
 
 {% block footer %}
 
-	<script>
-	if ( window.history.replaceState ) {
-	  window.history.replaceState( null, null, window.location.href );
-	}
-	
-	 $(document).ready(function(){  
-		  $('#amount').keyup(function(){  
-			   var expenseCategory = $('#expenseCategory').val();  
-			   var amount = $(this).val();
-			   $.ajax({  
-					url:"/expense/check-limit",  
-					method:"POST",  
-					data:{
-						expenseCategory:expenseCategory,
-						amount:amount
-					},  
-					success:function(data){  
-						 $('#categoryLimit').html(data);  
-					}  
-			   });  
-		  });		  
-		  
-		  $('#expenseCategory').change(function(){  
-			   var expenseCategory = $(this).val();  
-			   var amount = $('#amount').val();
-			   $.ajax({  
-					url:"/expense/check-limit",  
-					method:"POST",  
-					data:{
-						expenseCategory:expenseCategory,
-						amount:amount
-					},  
-					success:function(data){  
-						 $('#categoryLimit').html(data);  
-					}  
-			   });  
-		  });  
-	 });	
-	
-	
-	</script>
+<script src="../js/showLimit.js"></script>
 
 {% endblock %}
 
@@ -66,7 +26,7 @@
 		
 					<form action="/expense/create" method="post">
 					
-						<div class="alert-danger mb-2 rounded" id="categoryLimit"></div>
+						<div class="mb-2 rounded" id="categoryLimit"></div>
 						
 						<div class="input-group">
 							<div class="input-group-prepend">
