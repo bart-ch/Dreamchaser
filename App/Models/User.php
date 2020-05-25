@@ -345,11 +345,10 @@ class User extends \Core\Model
     {
         $this->validatePassword();
 		
-		//sprawdzic jak on to robil na udemy
+		$is_valid = static::validateOldPassword($this->oldPassword,$_SESSION['user_id']);
 		
-		//w tym miejscu sprawdzic czy podane stare hasło odpowiada staremu hasłu!!!!!!!!! mozna tez dopsac do tamtej funckj iisset(oldpassword i sprawdz wtedy)
 
-        if (empty($this->errors)) {
+        if (empty($this->errors) && $is_valid) {
 
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
 
