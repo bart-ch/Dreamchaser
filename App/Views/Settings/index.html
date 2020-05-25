@@ -359,8 +359,9 @@
 												<div class="input-group-prepend">
 													<span class="input-group-text"><i class="fas fa-angle-double-up"></i></span>
 												</div>
-												<input type="number" id="expenseLimitModal" class="form-control" min="0" max="999999.99"  placeholder="Limit (opcjonalne)" aria-label="limitKategorii" name="expenseLimit" >
+												<input type="number" id="expenseLimitModal" class="form-control" step="any" min="0" max="999999.99"  placeholder="Limit (opcjonalne)" aria-label="limitKategorii" name="amount" >
 											</div>
+											<small class="text-muted">Pozostaw puste, by pozbyć się limitu.</small>
 		
 										</div>
 																			
@@ -500,7 +501,7 @@
 														</div>
 														<input id="name" type="text" class="form-control" placeholder="Imię" aria-label="imie" name="name" value="{{ user.name }}" required autofocus>
 													</div>
-													<div id="errorname"></div>	
+													<small id="errorname"></small>	
 													<div class="input-group mt-3">
 														<div class="input-group-prepend">
 															<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
@@ -508,7 +509,7 @@
 														<input type="email" class="form-control" placeholder="E-mail" aria-label="email" id ="email" name="email" value="{{ user.email }}" required >
 														<input type="hidden" value="{{ user.id }}" name ="id" required >
 													</div>	
-													<div id="erroremail"></div>													
+													<small id="erroremail"></small>													
 													
 												</div>
 												<div class="modal-footer">
@@ -575,7 +576,7 @@
 
 													</div>
 													
-													<div id="erroroldPassword"></div>														
+													<small id="erroroldPassword"></small>														
 													
 													<div class="input-group mt-3">
 														<div class="input-group-prepend">
@@ -589,7 +590,7 @@
 														</div>
 													</div>	
 													
-													<div id="errorpassword"></div>													
+													<small id="errorpassword"></small>													
 													
 												</div>
 												<div class="modal-footer">

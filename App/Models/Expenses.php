@@ -214,15 +214,13 @@ class Expenses extends \Core\Model
 	public function updateCategory() 
 	{	
         if(strlen($this->expenseCategory)<1 || strlen($this->expenseCategory)>40) {
-		$this->errors['expenseCategory'] = "Kategoria przychodu musi zawierać od 1 do 40 znaków.";
+		 return false;
 		}
 		
 		$sql = "SELECT * FROM expenses_categories_assigned_to_users WHERE user_id = :user_id AND name = :expenseName AND id <> :id";
 		
 		$db = static::getDB();
-
 		$stmt = $db->prepare($sql);
-
 
 		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':id', $this->expenseCategoryId, PDO::PARAM_INT);
@@ -232,21 +230,28 @@ class Expenses extends \Core\Model
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
 		if(count($result)==1){
-		$this->errors['newExpenseCategory'] = "Podana kategoria już istnieje.";	
+			return false;
 		}
+		
 
-        if (empty($this->errors)) {
-			$sql = "UPDATE expenses_categories_assigned_to_users SET name = :name WHERE id = :id";
-			
-			$db = static::getDB();
-            $stmt = $db->prepare($sql);
-			
-			$stmt->bindValue(':id', $this->expenseCategoryId, PDO::PARAM_INT);
-            $stmt->bindValue(':name', $this->expenseCategory, PDO::PARAM_STR);
-
-            return $stmt->execute();
+		$sql = "UPDATE expenses_categories_assigned_to_users SET name = :name, categoryLimit = :limit WHERE id = :id";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$this->amount = $this->validateAndConvertPriceFormat();
+		
+		if($this->amount == "") {
+			$stmt->bindValue(':limit', NULL, PDO::PARAM_STR);
+		} else {
+			$stmt->bindValue(':limit',	$this->amount, PDO::PARAM_INT);
 		}
-		return false;
+		$stmt->bindValue(':id', $this->expenseCategoryId, PDO::PARAM_INT);
+		$stmt->bindValue(':name', $this->expenseCategory, PDO::PARAM_STR);
+		
+
+		return $stmt->execute();
+
 	}
 	
 	public function updatePaymentMethod() 
