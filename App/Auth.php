@@ -5,21 +5,10 @@ namespace App;
 use App\Models\User;
 use App\Models\RememberedLogin;
 
-/**
- * Authentication
- *
- * PHP version 7.0
- */
+
 class Auth
 {
-    /**
-     * Login the user
-     *
-     * @param User $user The user model
-     * @param boolean $remember_me Remember the login if true
-     *
-     * @return void
-     */
+
     public static function login($user, $remember_me)
     {
         session_regenerate_id(true);
@@ -90,7 +79,7 @@ class Auth
      */
     public static function getReturnToPage()
     {
-        return $_SESSION['return_to'] ?? '/menu/main';
+        return $_SESSION['return_to'] ?? '/menu/index';
     }
 
     /**

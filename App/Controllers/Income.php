@@ -21,7 +21,7 @@ class Income extends Authenticated
      *
      * @return void
      */
-    public function newAction()
+    public function indexAction()
     {
         View::renderTemplate('Income/index.html', [
 		'todaysDate' => Dates::getTodaysDate(),
@@ -44,7 +44,7 @@ class Income extends Authenticated
 
 				Flash::addMessage('Sukces! Przychód został dodany.');
 
-				$this->redirect('/income/new');
+				$this->redirect('/income/index');
 
 			} else {
 					
@@ -57,7 +57,7 @@ class Income extends Authenticated
 				
 			} 	
 		} else {
-			$this->redirect('/income/new');
+			$this->redirect('/income/index');
 		}
     }
 	

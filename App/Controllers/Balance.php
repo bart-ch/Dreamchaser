@@ -23,7 +23,7 @@ class Balance extends Authenticated
      *
      * @return void
      */
-    public function newAction()
+    public function indexAction()
     {				
 			View::renderTemplate('Balance/index.html', [
 			'incomeCategoriesAmount' => Balances::getIncomeCategoriesAmount(),	
@@ -52,7 +52,7 @@ class Balance extends Authenticated
 
 				Flash::addMessage('Przychód został zedytowany.');
 
-				$this->redirect('/balance/new');
+				$this->redirect('/balance/index');
 
 			} else {
 					
@@ -75,7 +75,7 @@ class Balance extends Authenticated
 				
 			} 	
 		} else {
-			$this->redirect('/balance/new');
+			$this->redirect('/balance/index');
 		}
 		
 	}
@@ -90,10 +90,10 @@ class Balance extends Authenticated
 
 			Flash::addMessage('Przychód został usunięty.');
 
-			$this->redirect('/balance/new');
+			$this->redirect('/balance/index');
 			
 		} else {
-			$this->redirect('/balance/new');
+			$this->redirect('/balance/index');
 		}
 
 	}
@@ -108,7 +108,7 @@ class Balance extends Authenticated
 
 				Flash::addMessage('Wydatek został zedytowany.');
 
-				$this->redirect('/balance/new');
+				$this->redirect('/balance/index');
 
 			} else {
 					
@@ -131,7 +131,7 @@ class Balance extends Authenticated
 				
 			} 	
 		} else {
-			$this->redirect('/balance/new');
+			$this->redirect('/balance/index');
 		}
 		
 	}
@@ -146,10 +146,10 @@ class Balance extends Authenticated
 
 			Flash::addMessage('Wydatek został usunięty.');
 
-			$this->redirect('/balance/new');
+			$this->redirect('/balance/index');
 			
 		} else {
-			$this->redirect('/balance/new');
+			$this->redirect('/balance/index');
 		}
 
 	}

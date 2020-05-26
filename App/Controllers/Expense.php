@@ -21,7 +21,7 @@ class Expense extends Authenticated
      *
      * @return void
      */
-    public function newAction()
+    public function indexAction()
     {	
         View::renderTemplate('Expense/index.html', [
 		'todaysDate' => Dates::getTodaysDate(),
@@ -45,7 +45,7 @@ class Expense extends Authenticated
 
 				Flash::addMessage('Sukces! Wydatek został dodany.');
 
-				$this->redirect('/expense/new');
+				$this->redirect('/expense/index');
 
 			} else {
 					
@@ -59,7 +59,7 @@ class Expense extends Authenticated
 				
 			} 	
 		} else {
-			$this->redirect('/expense/new');
+			$this->redirect('/expense/index');
 		}
     }
 	
@@ -69,7 +69,7 @@ class Expense extends Authenticated
 		 {  $expense = new Expenses($_POST);
 			$expense->showExpenseLimit();
 		 } else {
-			$this->redirect('/expense/new');
+			$this->redirect('/expense/index');
 		 }			 
 	}	
 	
@@ -80,7 +80,7 @@ class Expense extends Authenticated
 			$expense = new Expenses($_POST);
 			$value = $expense->getFinalValue();
 		 } else {
-			$this->redirect('/expense/new');
+			$this->redirect('/expense/index');
 		 }
 	}
 

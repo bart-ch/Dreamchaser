@@ -19,10 +19,10 @@ class Signup extends \Core\Controller
      *
      * @return void
      */
-    public function newAction()
+    public function indexAction()
     {
 		if(Auth::isLoggedIn()) {
-			$this->redirect('/menu/main');
+			$this->redirect('/menu/index');
 		} else {
         View::renderTemplate('Signup/index.html');
 		}
@@ -40,7 +40,7 @@ class Signup extends \Core\Controller
 
 		
 		if(!isset($_POST['email'])) {
-			$this->redirect('/signup/new');
+			$this->redirect('/signup/index');
 		}
 
         if ($user->save()) {

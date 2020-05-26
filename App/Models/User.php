@@ -93,7 +93,7 @@ class User extends \Core\Model
 			$addDeafultExpenseCategories = $db->query("INSERT INTO expenses_categories VALUES (NULL,'Jedzenie'),(NULL,'Mieszkanie'),(NULL,'Transport'), (NULL,'Telekomunikacja'),(NULL,'Opieka zdrowotna'),(NULL,'Ubrania'),(NULL,'Rozrywka'),(NULL,'Podróże'),(NULL,'Książki'),(NULL,'Oszczędności'),(NULL,'Spłata długu'),(NULL,'Inne')");
 		}
 		
-		$addDefaultUserExpenseCategories = $db->query("INSERT INTO expenses_categories_assigned_to_users VALUES (NULL,'$id','Jedzenie'),(NULL,'$id','Mieszkanie'),(NULL,'$id','Transport'), (NULL,'$id','Telekomunikacja'),(NULL,'$id','Opieka zdrowotna'),(NULL,'$id','Ubrania'),(NULL,'$id','Rozrywka'),(NULL,'$id','Podróże'),(NULL,'$id','Książki'),(NULL,'$id','Oszczędności'),(NULL,'$id','Spłata długu'),(NULL,'$id','Inne')");	
+		$addDefaultUserExpenseCategories = $db->query("INSERT INTO expenses_categories_assigned_to_users VALUES (NULL,'$id','Jedzenie',NULL),(NULL,'$id','Mieszkanie',NULL),(NULL,'$id','Transport',NULL), (NULL,'$id','Telekomunikacja',NULL),(NULL,'$id','Opieka zdrowotna',NULL),(NULL,'$id','Ubrania',NULL),(NULL,'$id','Rozrywka',NULL),(NULL,'$id','Podróże',NULL),(NULL,'$id','Książki',NULL),(NULL,'$id','Oszczędności',NULL),(NULL,'$id','Spłata długu',NULL),(NULL,'$id','Inne',NULL)");	
 	}	
 	
 	protected function addUserPaymentMethods($id)
