@@ -1,4 +1,4 @@
-$('select').change(function(){
+$('#periodOfTime').change(function(){
     if (this.value == "customPeriod"){
 		document.getElementById("periodOfTime").setAttribute("onclick","");
         $('#dateModal').modal({
@@ -11,6 +11,3 @@ $('select').change(function(){
 	}
 });
 
-function form_submit() {
-    document.getElementById("search_form").submit();
-   }    

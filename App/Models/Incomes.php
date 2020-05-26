@@ -6,6 +6,7 @@ use PDO;
 use \App\Auth;
 use \App\Dates;
 use \Core\View;
+use \App\Flash;
 
 /**
  * User model
@@ -28,7 +29,7 @@ class Incomes extends \Core\Model
 	
 	public static function getUserIncomeCategories()
 	{
-		$sql = "SELECT name FROM incomes_categories_assigned_to_users WHERE user_id = :user_id";
+		$sql = "SELECT name, id FROM incomes_categories_assigned_to_users WHERE user_id = :user_id";
 	
 		$db = static::getDB();
 		$incomeCategories = $db->prepare($sql);
@@ -49,12 +50,14 @@ class Incomes extends \Core\Model
         $this->validate();
 
         if (empty($this->errors)) {
-
+			
 			$sql = "INSERT INTO incomes VALUES (NULL, :user_id, :idOfIncomeCategoryAssignedToUser, :convertedPrice, :date, :comment)";
-
-            $db = static::getDB();
+									
+			$db = static::getDB();
             $stmt = $db->prepare($sql);
-		
+
+
+	
             $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
             $stmt->bindValue(':idOfIncomeCategoryAssignedToUser', $this->getIdOfIncomeCategoryAssignedToUser(), PDO::PARAM_INT);
             $stmt->bindValue(':convertedPrice', $this->amount, PDO::PARAM_STR);
@@ -63,9 +66,149 @@ class Incomes extends \Core\Model
 
             return $stmt->execute();
         }
-
         return false;
     }
+	
+	public function update() 
+	{	
+		$this->amount = $this->validateAndConvertPriceFormat();
+        $this->validate();
+
+        if (empty($this->errors)) {
+			$sql = "UPDATE incomes SET income_category_assigned_to_user_id = :idOfIncomeCategoryAssignedToUser, amount = :convertedPrice, date_of_income = :date, comment = :comment WHERE id = $this->incomeId";
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+			
+			$stmt->bindValue(':idOfIncomeCategoryAssignedToUser', $this->getIdOfIncomeCategoryAssignedToUser(), PDO::PARAM_INT);
+            $stmt->bindValue(':convertedPrice', $this->amount, PDO::PARAM_STR);
+            $stmt->bindValue(':date', $this->incomeDate, PDO::PARAM_STR);
+            $stmt->bindValue(':comment', $this->comment, PDO::PARAM_STR);
+
+            return $stmt->execute();
+		}
+		return false;
+	}	
+	
+	public function updateCategory() 
+	{	
+        if(strlen($this->incomeCategory)<1 || strlen($this->incomeCategory)>40) {
+		$this->errors['incomeCategory'] = "Kategoria przychodu musi zawierać od 1 do 40 znaków.";
+		//zwalidować jeszcze czy już taka przypisana nie istnieje
+		}
+		
+		$sql = "SELECT * FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name = :incomeName AND id <> :id";
+		
+		$db = static::getDB();
+
+		$stmt = $db->prepare($sql);
+
+
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':id', $this->incomeCategoryId, PDO::PARAM_INT);
+		$stmt->bindValue(':incomeName', $this->incomeCategory, PDO::PARAM_STR);
+
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(count($result)==1){
+		$this->errors['newIncomeCategory'] = "Podana kategoria już istnieje.";	
+		}
+
+        if (empty($this->errors)) {
+			$sql = "UPDATE incomes_categories_assigned_to_users SET name = :name WHERE id = :id";
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+			
+			$stmt->bindValue(':id', $this->incomeCategoryId, PDO::PARAM_INT);
+            $stmt->bindValue(':name', $this->incomeCategory, PDO::PARAM_STR);
+
+            return $stmt->execute();
+		}
+		return false;
+	}
+	
+	protected function validateNewCategoryName()
+	{
+		if(strlen($this->newIncomeCategory)<1 || strlen($this->newIncomeCategory)>40) {
+		$this->errors['incomeCategory'] = "Kategoria przychodu musi zawierać od 1 do 40 znaków.";
+		//zwalidować jeszcze czy już taka przypisana nie istnieje
+		}
+
+		$sql = "SELECT * FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name = :incomeName";
+		
+		$db = static::getDB();
+
+		$stmt = $db->prepare($sql);
+
+
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':incomeName', $this->newIncomeCategory, PDO::PARAM_STR);
+
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(count($result)==1){
+		$this->errors['newIncomeCategory'] = "Podana kategoria już istnieje.";	
+		}
+			
+	}
+	
+
+	public function addIncomeCategory()
+	{	
+		$this->validateNewCategoryName();
+		
+		if (empty($this->errors)) {
+			
+			$sql = "INSERT INTO incomes_categories_assigned_to_users VALUES (NULL, :user_id, :name)";
+									
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+
+	
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':name', $this->newIncomeCategory, PDO::PARAM_STR);
+
+            return $stmt->execute();		
+			
+		}
+		return false;
+	}	
+	
+	public function deleteCategory()
+	{		
+			$sql = "DELETE FROM incomes_categories_assigned_to_users WHERE id = :id";
+									
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $this->incomeCategoryId, PDO::PARAM_INT);
+
+            return $stmt->execute();		
+	}
+
+	public function delete() 
+	{
+		$sql = "DELETE FROM incomes WHERE id = $this->incomeId";
+								
+		$db = static::getDB();
+		
+		return $db->query($sql);
+
+	}
+	
+	public static function deleteAllUserIncomes()
+	{
+		$sql = "DELETE FROM incomes WHERE user_id = {$_SESSION['user_id']}";
+								
+		$db = static::getDB();
+		
+		return $db->query($sql);
+	}
+	
 	
 	protected function getIdOfIncomeCategoryAssignedToUser()
 	{	

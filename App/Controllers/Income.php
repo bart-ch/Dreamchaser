@@ -21,11 +21,12 @@ class Income extends Authenticated
      *
      * @return void
      */
-    public function newAction()
+    public function indexAction()
     {
-        View::renderTemplate('Income/new.html', [
+        View::renderTemplate('Income/index.html', [
 		'todaysDate' => Dates::getTodaysDate(),
-		'userIncomes' => Incomes::getUserIncomeCategories()
+		'userIncomes' => Incomes::getUserIncomeCategories(),
+		'lastDate' => Dates::getLastDayOfNextMonth()
 		]);
     }
 
@@ -43,21 +44,23 @@ class Income extends Authenticated
 
 				Flash::addMessage('Sukces! Przychód został dodany.');
 
-				$this->newAction();
+				$this->redirect('/income/index');
 
 			} else {
 					
-				View::renderTemplate('Income/new.html', [
+				View::renderTemplate('Income/index.html', [
 					'income' => $income,
 					'todaysDate' => Dates::getTodaysDate(),
-					'userIncomes' => Incomes::getUserIncomeCategories()
+					'userIncomes' => Incomes::getUserIncomeCategories(),
+					'lastDate' => Dates::getLastDayOfNextMonth()
 				]);
 				
 			} 	
 		} else {
-			$this->redirect('/income/new');
+			$this->redirect('/income/index');
 		}
     }
+	
 
 
 }

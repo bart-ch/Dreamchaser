@@ -21,12 +21,13 @@ class Expense extends Authenticated
      *
      * @return void
      */
-    public function newAction()
-    {
-        View::renderTemplate('Expense/new.html', [
+    public function indexAction()
+    {	
+        View::renderTemplate('Expense/index.html', [
 		'todaysDate' => Dates::getTodaysDate(),
 		'userExpenses' => Expenses::getUserExpenseCategories(),
-		'paymentMethods' => Expenses::getUserPaymentMethods()
+		'paymentMethods' => Expenses::getUserPaymentMethods(),
+		'lastDate' => Dates::getLastDayOfNextMonth()
 		]);
     }
 
@@ -44,22 +45,43 @@ class Expense extends Authenticated
 
 				Flash::addMessage('Sukces! Wydatek został dodany.');
 
-				$this->newAction();
+				$this->redirect('/expense/index');
 
 			} else {
 					
-				View::renderTemplate('Expense/new.html', [
+				View::renderTemplate('Expense/index.html', [
 					'expense' => $expense,
 					'todaysDate' => Dates::getTodaysDate(),
 					'userExpenses' => Expenses::getUserExpenseCategories(),
-					'paymentMethods' => Expenses::getUserPaymentMethods()
+					'paymentMethods' => Expenses::getUserPaymentMethods(),
+					'lastDate' => Dates::getLastDayOfNextMonth()
 				]);
 				
 			} 	
 		} else {
-			$this->redirect('/expense/new');
+			$this->redirect('/expense/index');
 		}
     }
-
+	
+	public function  checkLimitAction()
+	{
+		 if(isset($_POST["expenseCategory"]))  
+		 {  $expense = new Expenses($_POST);
+			$expense->showExpenseLimit();
+		 } else {
+			$this->redirect('/expense/index');
+		 }			 
+	}	
+	
+	public function  getFinalValueAction()
+	{
+		 if(isset($_POST["amount"]))  
+		 { 	
+			$expense = new Expenses($_POST);
+			$value = $expense->getFinalValue();
+		 } else {
+			$this->redirect('/expense/index');
+		 }
+	}
 
 }

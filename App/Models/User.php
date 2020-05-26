@@ -93,7 +93,7 @@ class User extends \Core\Model
 			$addDeafultExpenseCategories = $db->query("INSERT INTO expenses_categories VALUES (NULL,'Jedzenie'),(NULL,'Mieszkanie'),(NULL,'Transport'), (NULL,'Telekomunikacja'),(NULL,'Opieka zdrowotna'),(NULL,'Ubrania'),(NULL,'Rozrywka'),(NULL,'Podróże'),(NULL,'Książki'),(NULL,'Oszczędności'),(NULL,'Spłata długu'),(NULL,'Inne')");
 		}
 		
-		$addDefaultUserExpenseCategories = $db->query("INSERT INTO expenses_categories_assigned_to_users VALUES (NULL,'$id','Jedzenie'),(NULL,'$id','Mieszkanie'),(NULL,'$id','Transport'), (NULL,'$id','Telekomunikacja'),(NULL,'$id','Opieka zdrowotna'),(NULL,'$id','Ubrania'),(NULL,'$id','Rozrywka'),(NULL,'$id','Podróże'),(NULL,'$id','Książki'),(NULL,'$id','Oszczędności'),(NULL,'$id','Spłata długu'),(NULL,'$id','Inne')");	
+		$addDefaultUserExpenseCategories = $db->query("INSERT INTO expenses_categories_assigned_to_users VALUES (NULL,'$id','Jedzenie',NULL),(NULL,'$id','Mieszkanie',NULL),(NULL,'$id','Transport',NULL), (NULL,'$id','Telekomunikacja',NULL),(NULL,'$id','Opieka zdrowotna',NULL),(NULL,'$id','Ubrania',NULL),(NULL,'$id','Rozrywka',NULL),(NULL,'$id','Podróże',NULL),(NULL,'$id','Książki',NULL),(NULL,'$id','Oszczędności',NULL),(NULL,'$id','Spłata długu',NULL),(NULL,'$id','Inne',NULL)");	
 	}	
 	
 	protected function addUserPaymentMethods($id)
@@ -121,29 +121,13 @@ class User extends \Core\Model
 
     public function validate()
     {
-        // Name
-        if ($this->name == '') {
-            $this->errors['name'] = 'Wprowadź imię.';
-        }
-
-        // email address
-        if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
-            $this->errors['email'] = 'Podaj poprawny adres e-mail.';
-        }
-        if (static::emailExists($this->email, $this->id ?? null)) {
-            $this->errors['email'] = 'Istnieje konto o podanym adresie e-mail.';
-        }
-
+		if(isset($this->name)) {
+		$this->validateNameAndEmail();
+		}
         // Password
 		if (isset($this->password)) {
 			
-			if (preg_match('/(?=.*?[0-9])(?=.*?[A-Za-z]).+/', $this->password) == 0) {
-				$this->errors['password'] = 'Hasło musi posiadać przynajmniej 1 literę i 1 cyfrę.';
-			}
-			
-			if (strlen($this->password) < 6 || strlen($this->password) > 20) {
-				$this->errors['password'] = 'Hasło musi posiadać od 6 do 20 znaków.';
-			}
+			$this->validatePassword();
 
 		}
 		
@@ -155,6 +139,33 @@ class User extends \Core\Model
 		}
 		
     }
+	
+	protected function validatePassword() 
+	{
+		if (preg_match('/(?=.*?[0-9])(?=.*?[A-Za-z]).+/', $this->password) == 0) {
+			$this->errors['password'] = 'Hasło musi posiadać przynajmniej 1 literę i 1 cyfrę.';
+		}
+		
+		if (strlen($this->password) < 6 || strlen($this->password) > 20) {
+			$this->errors['password'] = 'Hasło musi posiadać od 6 do 20 znaków.';
+		}
+	}
+	
+	protected function validateNameAndEmail() 
+	{
+        // Name
+        if ($this->name == '') {
+            $this->errors['name'] = 'Wprowadź imię.';
+        }
+
+        // email address
+        if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
+            $this->errors['email'] = 'Podaj poprawny adres e-mail.';
+        }
+        if (static::emailExists($this->email, $this->id ?? null)) {
+            $this->errors['email'] = 'Istnieje konto o podanym adresie e-mail.';
+        }		
+	}
 	
 	protected function validateCaptcha()
 	{
@@ -227,6 +238,19 @@ class User extends \Core\Model
         }
 		
         return false;
+    }    
+	
+	public static function validateOldPassword($password,$userId)
+    {
+		$user = static::findByID($userId);
+
+        if ($user) {
+            if (password_verify($password, $user->password)) {
+                return true;
+            }
+        }
+		
+        return false;
     }
 
     /**
@@ -250,6 +274,7 @@ class User extends \Core\Model
 
         return $stmt->fetch();
     }
+	
 
     /**
      * Remember the login by inserting a new unique token into the remembered_logins table
@@ -276,6 +301,72 @@ class User extends \Core\Model
         $stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $this->expiry_timestamp), PDO::PARAM_STR);
 
         return $stmt->execute();
+    }   
+	
+	public function updateProfile()
+    {
+        $this->validateNameAndEmail();
+		
+
+        if (empty($this->errors)) {
+			
+
+			$sql = 'UPDATE users SET name = :name, email = :email WHERE id = :user_id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+			$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+			
+			$results = $stmt->execute();
+
+            return $results;
+        }
+
+        return false;
+    }	
+	
+	public function deleteAccount()
+    {
+        	$sql = 'DELETE FROM users WHERE id = :user_id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+			$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+			
+			$stmt->execute();
+			
+    }	
+	
+	public function changeUserPassword()
+    {
+        $this->validatePassword();
+		
+		$is_valid = static::validateOldPassword($this->oldPassword,$_SESSION['user_id']);
+		
+
+        if (empty($this->errors) && $is_valid) {
+
+            $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+
+            $sql = 'UPDATE users SET password = :new_password_hash WHERE id = :id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+
+            $stmt->bindValue(':new_password_hash', $password_hash, PDO::PARAM_STR);
+			$stmt->bindValue(':id', $_SESSION['user_id'], PDO::PARAM_INT);
+			
+			$results = $stmt->execute();
+			
+            return $results;
+        }
+
+        return false;
     }
 
 

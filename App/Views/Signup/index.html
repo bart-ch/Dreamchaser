@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Rejestracja{% endblock %}
+
+{% block footer %}
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<script src="../js/showHidePassword.js"></script>
+	
+	<script>
+		$.validator.addMethod('validPassword',
+            function(value, element, param) {
+                if (value != '') {
+                    if (value.match(/.*[a-z]+.*/i) == null) {
+                        return false;
+                    }
+                    if (value.match(/.*\d+.*/) == null) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            'Hasło musi zawierać co najmniej 1 literę i 1 cyfrę.'
+        );
+	
+		$(document).ready(function() {	
+			var userId = '{{ user.id }}';
+			
+			$('#formSignup').validate( {
+				errorClass: 'text-danger',
+				rules: {
+					email: {
+						required: true,
+						email: true,
+						remote: {
+							url: '/account/validate-email',
+							data: {
+								ignore_id: function() {
+									return userId;
+								}
+							}
+						}
+					},
+					password: {
+						required: true,
+						minlength: 6,
+						maxlength: 20,
+						validPassword: true
+					},
+					name: {
+						maxlength: 20
+					}	
+				},
+				messages: {
+					email: {
+						required: "Pole nie może być puste.",
+						email: "Prosze wpisać poprawny adres e-mail.",
+						remote: "Podany adres e-mail jest zajęty."
+					}, 
+					name: {
+						required: "Pole nie może być puste.",
+						maxlength: "Imię może mieć długość maksymalnie 20 znaków."
+					},
+					password: {
+						required: "Pole nie może być puste.",
+						minlength: "Hasło musi składać się z co najmniej 6 znaków.",
+						maxlength: "Hasło musi składać się z maksymalnie 20 znaków."
+					}
+				},
+				errorPlacement: function ($error, $element) {
+					var name = $element.attr("name");
+
+					$("#error" + name).append($error);
+				}
+
+			});		
+			
+			
+		});
+		
+	</script>
+
+{% endblock %}
+
+{% block body %}
+	
+	<div class="row vertical-center">
+		<div class="main-container px-4 py-2 col-md-10 offset-md-1 my-5">
+			
+			<h1 class="mb-xl-4 text-center brand-logo"><img class="img-fluid" src="../img/favicon-white.ico" alt="Logo Dreamchaser"> Dreamchaser</h1>
+			
+				<div class="row">	
+				
+					<div class="welcome-message col-md-12 col-lg-6 mb-3 mb-lg-0 py-2 px-4">
+						<h2>Drogi użytkowniku,</h2><p class="welcome-text text-justify">doskonale zdaję sobie spraw z tego, jak ważne jest dla Ciebie spełnianie własnych marzeń i osiąganie zamierzonych celów. Oprócz silnej woli, którą na pewno posiadasz, wymaga to niestety często dużych nakładów finansowych. Mając tę świadomość stworzyłem dla Ciebie aplikację pomagającą zarządzać budżetem domowym, dzięki czemu będziesz w stanie zaoszczędzić pieniądze na powyższe cele bardziej efektywnie. Zarejestruj się i dołącz do szerokiego grona zadowolonych użytkowników już teraz!</p>
+					</div>
+					
+					<form class="welcome-message py-2 col-md-12 col-lg-6" method="post" action="/signup/create" id="formSignup">
+							
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"> <i class="fas fa-user-alt"></i> </span>
+							</div>
+							<input type="text" class="form-control" placeholder="Imię" aria-label="imie" id="name" name="name" value="{{ user.name }}" required autofocus>
+						</div>
+						
+						<small id="errorname"></small>	
+						
+						<span class="error">{{ user.errors.name }}</span>
+								
+						<div class="input-group mt-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
+							</div>
+							<input type="email" class="form-control" placeholder="E-mail" aria-label="email" id="email" name="email" value="{{ user.email }}" required >
+						</div>
+						
+						<small id="erroremail"></small>
+						
+						<span class="error">{{ user.errors.email }}</span>
+						
+						<div class="input-group mt-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text"> <i class="fa fa-lock"></i></span>
+							</div>
+							<input type="password" class="form-control" data-toggle="password" placeholder="Hasło" aria-label="hasło" id="password" name="password" required>
+							<div class="input-group-append" style="cursor:pointer">
+								<span class="input-group-text" onclick="myFunction('password')">
+									<i id="showHideIcon" class="fa fa-eye"></i>
+								</span>
+							</div>
+						</div>	
+						
+						<small id="errorpassword"></small>
+						
+						<span class="error">{{ user.errors.password }}</span>
+						
+						<div class="g-recaptcha mt-3" data-sitekey="6Lf7teYUAAAAAHeQuw3vG5B7MPVp-piEqupMhieo"></div>	
+						
+						<small class="text-danger">{{ user.errors.captcha }}</small>
+		
+						<button type="submit" class="btn btn-hover color-8 btn-lg btn-block mt-3 mb-2">Zarejestruj</button>
+						Posiadasz już konto? <a href="/login/index">Zaloguj się.</a>
+					</form>
+
+				</div>
+			</div>
+		</div>
+			
+
+{% endblock %}

@@ -21,9 +21,9 @@ class Menu extends Authenticated
 		$this->user = Auth::getUser();
 	}
 	
-	public function mainAction()
+	public function indexAction()
 	{
-		View::renderTemplate('Menu/strona-glowna.html', [
+		View::renderTemplate('Menu/index.html', [
 			'user' => $this->user
 		]);
 	}
