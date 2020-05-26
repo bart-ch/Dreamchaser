@@ -5,6 +5,80 @@
 {% block footer %}
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<script src="../js/showHidePassword.js"></script>
+	
+	<script>
+		$.validator.addMethod('validPassword',
+            function(value, element, param) {
+                if (value != '') {
+                    if (value.match(/.*[a-z]+.*/i) == null) {
+                        return false;
+                    }
+                    if (value.match(/.*\d+.*/) == null) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            'Hasło musi zawierać co najmniej 1 literę i 1 cyfrę.'
+        );
+	
+		$(document).ready(function() {	
+			var userId = '{{ user.id }}';
+			
+			$('#formSignup').validate( {
+				errorClass: 'text-danger',
+				rules: {
+					email: {
+						required: true,
+						email: true,
+						remote: {
+							url: '/account/validate-email',
+							data: {
+								ignore_id: function() {
+									return userId;
+								}
+							}
+						}
+					},
+					password: {
+						required: true,
+						minlength: 6,
+						maxlength: 20,
+						validPassword: true
+					},
+					name: {
+						maxlength: 20
+					}	
+				},
+				messages: {
+					email: {
+						required: "Pole nie może być puste.",
+						email: "Prosze wpisać poprawny adres e-mail.",
+						remote: "Podany adres e-mail jest zajęty."
+					}, 
+					name: {
+						required: "Pole nie może być puste.",
+						maxlength: "Imię może mieć długość maksymalnie 20 znaków."
+					},
+					password: {
+						required: "Pole nie może być puste.",
+						minlength: "Hasło musi składać się z co najmniej 6 znaków.",
+						maxlength: "Hasło musi składać się z maksymalnie 20 znaków."
+					}
+				},
+				errorPlacement: function ($error, $element) {
+					var name = $element.attr("name");
+
+					$("#error" + name).append($error);
+				}
+
+			});		
+			
+			
+		});
+		
+	</script>
 
 {% endblock %}
 
@@ -27,8 +101,10 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text"> <i class="fas fa-user-alt"></i> </span>
 							</div>
-							<input type="text" class="form-control" placeholder="Imię" aria-label="imie" name="name" value="{{ user.name }}" required autofocus>
+							<input type="text" class="form-control" placeholder="Imię" aria-label="imie" id="name" name="name" value="{{ user.name }}" required autofocus>
 						</div>
+						
+						<small id="errorname"></small>	
 						
 						<span class="error">{{ user.errors.name }}</span>
 								
@@ -36,8 +112,10 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
 							</div>
-							<input type="email" class="form-control" placeholder="E-mail" aria-label="email" name="email" value="{{ user.email }}" required >
+							<input type="email" class="form-control" placeholder="E-mail" aria-label="email" id="email" name="email" value="{{ user.email }}" required >
 						</div>
+						
+						<small id="erroremail"></small>
 						
 						<span class="error">{{ user.errors.email }}</span>
 						
@@ -53,11 +131,13 @@
 							</div>
 						</div>	
 						
+						<small id="errorpassword"></small>
+						
 						<span class="error">{{ user.errors.password }}</span>
 						
 						<div class="g-recaptcha mt-3" data-sitekey="6Lf7teYUAAAAAHeQuw3vG5B7MPVp-piEqupMhieo"></div>	
 						
-						<span class="error">{{ user.errors.captcha }}</span>
+						<small class="text-danger">{{ user.errors.captcha }}</small>
 		
 						<button type="submit" class="btn btn-hover color-8 btn-lg btn-block mt-3 mb-2">Zarejestruj</button>
 						Posiadasz już konto? <a href="/login/index">Zaloguj się.</a>
