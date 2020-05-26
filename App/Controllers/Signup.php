@@ -24,7 +24,7 @@ class Signup extends \Core\Controller
 		if(Auth::isLoggedIn()) {
 			$this->redirect('/menu/main');
 		} else {
-        View::renderTemplate('Signup/new.html');
+        View::renderTemplate('Signup/index.html');
 		}
     }
 
@@ -49,7 +49,7 @@ class Signup extends \Core\Controller
 
         } else {
 
-            View::renderTemplate('Signup/new.html', [
+            View::renderTemplate('Signup/index.html', [
                 'user' => $user
             ]);
 

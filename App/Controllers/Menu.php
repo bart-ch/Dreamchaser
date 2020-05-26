@@ -23,7 +23,7 @@ class Menu extends Authenticated
 	
 	public function mainAction()
 	{
-		View::renderTemplate('Menu/strona-glowna.html', [
+		View::renderTemplate('Menu/index.html', [
 			'user' => $this->user
 		]);
 	}

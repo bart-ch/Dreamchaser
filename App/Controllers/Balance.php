@@ -25,7 +25,7 @@ class Balance extends Authenticated
      */
     public function newAction()
     {				
-			View::renderTemplate('Balance/new.html', [
+			View::renderTemplate('Balance/index.html', [
 			'incomeCategoriesAmount' => Balances::getIncomeCategoriesAmount(),	
 			'expenseCategoriesAmount' => Balances::getExpenseCategoriesAmount(),	
 			'incomeCategoriesInDetail' => Balances::getIncomeCategoriesAmuntInDetail(),	
@@ -58,7 +58,7 @@ class Balance extends Authenticated
 					
 				Flash::addMessage('Nie udało się edytować przychodu.',Flash::DANGER);	
 					
-				View::renderTemplate('Balance/new.html', [
+				View::renderTemplate('Balance/index.html', [
 				'incomeCategoriesAmount' => Balances::getIncomeCategoriesAmount(),	
 				'expenseCategoriesAmount' => Balances::getExpenseCategoriesAmount(),	
 				'incomeCategoriesInDetail' => Balances::getIncomeCategoriesAmuntInDetail(),	
@@ -114,7 +114,7 @@ class Balance extends Authenticated
 					
 				Flash::addMessage('Nie udało się edytować wydatku.',Flash::DANGER);	
 					
-				View::renderTemplate('Balance/new.html', [
+				View::renderTemplate('Balance/index.html', [
 				'incomeCategoriesAmount' => Balances::getIncomeCategoriesAmount(),	
 				'expenseCategoriesAmount' => Balances::getExpenseCategoriesAmount(),	
 				'incomeCategoriesInDetail' => Balances::getIncomeCategoriesAmuntInDetail(),	

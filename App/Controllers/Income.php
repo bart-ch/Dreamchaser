@@ -23,7 +23,7 @@ class Income extends Authenticated
      */
     public function newAction()
     {
-        View::renderTemplate('Income/new.html', [
+        View::renderTemplate('Income/index.html', [
 		'todaysDate' => Dates::getTodaysDate(),
 		'userIncomes' => Incomes::getUserIncomeCategories(),
 		'lastDate' => Dates::getLastDayOfNextMonth()
@@ -48,7 +48,7 @@ class Income extends Authenticated
 
 			} else {
 					
-				View::renderTemplate('Income/new.html', [
+				View::renderTemplate('Income/index.html', [
 					'income' => $income,
 					'todaysDate' => Dates::getTodaysDate(),
 					'userIncomes' => Incomes::getUserIncomeCategories(),

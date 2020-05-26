@@ -23,7 +23,7 @@ class Expense extends Authenticated
      */
     public function newAction()
     {	
-        View::renderTemplate('Expense/new.html', [
+        View::renderTemplate('Expense/index.html', [
 		'todaysDate' => Dates::getTodaysDate(),
 		'userExpenses' => Expenses::getUserExpenseCategories(),
 		'paymentMethods' => Expenses::getUserPaymentMethods(),
@@ -49,7 +49,7 @@ class Expense extends Authenticated
 
 			} else {
 					
-				View::renderTemplate('Expense/new.html', [
+				View::renderTemplate('Expense/index.html', [
 					'expense' => $expense,
 					'todaysDate' => Dates::getTodaysDate(),
 					'userExpenses' => Expenses::getUserExpenseCategories(),

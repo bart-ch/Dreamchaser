@@ -25,7 +25,7 @@ class Login extends \Core\Controller
         if(Auth::isLoggedIn()) {
 			$this->redirect('/menu/main');
 		} else {
-        View::renderTemplate('Login/new.html');
+        View::renderTemplate('Login/index.html');
 		}
     }
 
@@ -53,7 +53,7 @@ class Login extends \Core\Controller
 
 				Flash::addMessage('Niepoprawny e-mail lub hasło.', Flash::DANGER);
 
-				View::renderTemplate('Login/new.html', [
+				View::renderTemplate('Login/index.html', [
 					'email' => $_POST['email'],
 					'remember_me' => $remember_me
 				]);
