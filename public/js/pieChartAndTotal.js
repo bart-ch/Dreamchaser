@@ -85,7 +85,7 @@ function calculateTotalBalance() {
 	
 	var totalIncome = calculateTotalIncome();
 	var totalExpense = calculateTotalExpense();
-	var totalBalance = totalIncome - totalExpense;
+	var totalBalance = Math.round((totalIncome - totalExpense)*100)/100
 	var userMessage = "";
 
 	if(totalBalance > 0) { userMessage = "Gratulacje. Jesteś na dobrej drodze by osiągnąć wynaczone cele!"; }
@@ -106,7 +106,7 @@ function calculateTotalIncome() {
 	
 		for (var i = 1 ; i < tableOfIncomes.rows.length; i++) {
 		for (var j = 0; j < tableOfIncomes.rows[i].cells.length; j++) {
-			 if (j%2==1) { totalIncome+=parseInt(tableOfIncomes.rows[i].cells[j].innerHTML); }
+			 if (j%2==1) { totalIncome+=parseFloat(tableOfIncomes.rows[i].cells[j].innerHTML); }
 		}		
 	}
 	
@@ -120,7 +120,7 @@ function calculateTotalExpense() {
 	
 	for (var i = 1 ; i < tableOfExpenses.rows.length; i++) {
 		for (var j = 0; j < tableOfExpenses.rows[i].cells.length; j++) {
-			 if (j%2==1) { totalExpense+=parseInt(tableOfExpenses.rows[i].cells[j].innerHTML); }
+			 if (j%2==1) { totalExpense+=parseFloat(tableOfExpenses.rows[i].cells[j].innerHTML); }
 		}		
 	}
 	
