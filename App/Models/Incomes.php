@@ -29,11 +29,12 @@ class Incomes extends \Core\Model
 	
 	public static function getUserIncomeCategories()
 	{
-		$sql = "SELECT name, id FROM incomes_categories_assigned_to_users WHERE user_id = :user_id";
+		$sql = "SELECT name, id FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name != :name";
 	
 		$db = static::getDB();
 		$incomeCategories = $db->prepare($sql);
         $incomeCategories->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $incomeCategories->bindValue(':name', 'Inne', PDO::PARAM_STR);
 		$incomeCategories->execute();
 
 		return $incomeCategories->fetchAll(PDO::FETCH_ASSOC);
@@ -167,7 +168,6 @@ class Incomes extends \Core\Model
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
 
-
 	
             $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
             $stmt->bindValue(':name', $this->newIncomeCategory, PDO::PARAM_STR);
@@ -180,6 +180,9 @@ class Incomes extends \Core\Model
 	
 	public function deleteCategory()
 	{		
+	
+			$this->updateCategoryToOther();
+	
 			$sql = "DELETE FROM incomes_categories_assigned_to_users WHERE id = :id";
 									
 			$db = static::getDB();
@@ -188,6 +191,41 @@ class Incomes extends \Core\Model
             $stmt->bindValue(':id', $this->incomeCategoryId, PDO::PARAM_INT);
 
             return $stmt->execute();		
+	}
+	
+	protected function updateCategoryToOther()
+	{
+		$sql = "UPDATE incomes
+				SET income_category_assigned_to_user_id = :otherCategoryId 
+				WHERE income_category_assigned_to_user_id = :categoryId";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);		
+						
+		$stmt->bindValue(':categoryId', $this->incomeCategoryId, PDO::PARAM_INT);
+		$stmt->bindValue(':otherCategoryId', $this->getOtherCategoryId(), PDO::PARAM_INT);
+		
+		return	$stmt->execute();			
+	}
+	
+	protected function getOtherCategoryId() 
+	{
+		
+		$sql = "SELECT id FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name = :name";
+		
+		$db = static::getDB();
+		
+		$stmt = $db->prepare($sql);
+		
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':name', 'Inne', PDO::PARAM_STR);
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		return $result['id'];	
 	}
 
 	public function delete() 
@@ -212,7 +250,7 @@ class Incomes extends \Core\Model
 	
 	protected function getIdOfIncomeCategoryAssignedToUser()
 	{	
-		$sql = "SELECT ica.id FROM incomes_categories_assigned_to_users AS ica, incomes_categories AS ic WHERE ica.user_id = :user_id AND ic.name= :incomeName AND ic.name=ica.name";
+		$sql = "SELECT id FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name= :incomeName";
 		
 		$db = static::getDB();
 		

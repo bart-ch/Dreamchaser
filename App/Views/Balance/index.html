@@ -253,7 +253,7 @@
 										<div class="input-group-prepend">
 											<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
 										</div>
-										<input id="expenseModalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" required autofocus >
+										<input id="expenseModalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="0.01" aria-label="kwota" name="amount" required autofocus >
 									</div>
 									
 								
@@ -273,6 +273,7 @@
 										{% for paymentMethod in paymentMethods %}
 											<option>{{ paymentMethod.name }}</option>
 										{% endfor %}
+											<option>Inne</option>
 										
 										</select>
 									</div>
@@ -286,6 +287,7 @@
 										{% for userExpense in userExpenses %}
 											<option>{{ userExpense.name }}</option>
 										{% endfor %}
+											<option>Inne</option>
 											
 										</select>
 									</div>
@@ -330,7 +332,7 @@
 											<div class="input-group-prepend">
 												<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
 											</div>
-											<input id="incomeModalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" name="amount" required autofocus >
+											<input id="incomeModalAmount" type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="0.01" aria-label="kwota" name="amount" required autofocus >
 										</div>
 										
 									
@@ -352,6 +354,7 @@
 											{% for userIncome in userIncomes %}
 												<option>{{ userIncome.name }}</option>
 											{% endfor %}
+												<option>Inne</option>
 												
 											</select>
 										</div>
