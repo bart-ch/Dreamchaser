@@ -32,7 +32,7 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text"> <i class="fas fa-wallet"></i> </span>
 							</div>
-							<input type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="any" aria-label="kwota" id="amount" name="amount" value="{{ expense.amount }}" required autofocus >
+							<input type="number" class="form-control"  placeholder="Kwota" min="0" max="999999.99" step="0.01" aria-label="kwota" id="amount" name="amount" value="{{ expense.amount }}" required autofocus >
 						</div>
 					
 						<span class="error">{{ expense.errors.amount }}</span>
@@ -55,6 +55,7 @@
 							{% for paymentMethod in paymentMethods %}
 								<option>{{ paymentMethod.name }}</option>
 							{% endfor %}
+							<option>Inne</option>
 							
 							</select>
 						</div>
@@ -68,6 +69,7 @@
 							{% for userExpense in userExpenses %}
 								<option>{{ userExpense.name }}</option>
 							{% endfor %}
+							<option>Inne</option>
 								
 							</select>
 						</div>

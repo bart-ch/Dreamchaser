@@ -150,7 +150,7 @@ class Settings extends Authenticated
 
 			$income->deleteCategory();
 
-			Flash::addMessage('Kategoria przychodów oraz należące do niej transakcje zostały usunięte.');
+			Flash::addMessage('Kategoria przychodów została usunięta, a należące do niej transakcje przeniesiono do kategorii "Inne". Możesz edytować ich kategorię w przeglądzie bilansu.');
 
 			$this->redirect('/settings/index');
 			
@@ -187,6 +187,7 @@ class Settings extends Authenticated
 	public function updateExpenseCategory() 
 	{
 		if(isset($_POST['expenseCategory'])) {
+
 			
 			$expense = new Expenses($_POST);
 
@@ -216,7 +217,7 @@ class Settings extends Authenticated
 
 			$expense->deleteCategory();
 
-			Flash::addMessage('Kategoria wydatków oraz należące do niej transakcje zostały usunięte.');
+			Flash::addMessage('Kategoria wydatków została usunięta, a należące do niej transakcje przeniesiono do kategorii "Inne". Możesz edytować ich kategorię w przeglądzie bilansu.');
 
 			$this->redirect('/settings/index');
 			
@@ -282,7 +283,7 @@ class Settings extends Authenticated
 
 			$expense->deletePaymentMethod();
 
-			Flash::addMessage('Metoda płatności oraz należące do niej transakcje zostały usunięte.');
+			Flash::addMessage('Metoda płatności została usunięta, a należące do niej transakcje przeniesiono do metody "Inne". Metodę płątności możesz edytować w przeglądzie bilansu.'');
 
 			$this->redirect('/settings/index');
 			

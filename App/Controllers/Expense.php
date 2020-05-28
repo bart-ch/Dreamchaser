@@ -40,6 +40,7 @@ class Expense extends Authenticated
     {
 		if(isset($_POST['amount'])) {
 			$expense = new Expenses($_POST);
+			
 
 			if ($expense->save()) {
 

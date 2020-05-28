@@ -102,10 +102,10 @@ class User extends \Core\Model
 		$doDeafultPaymentMethodsExist = $db->query('SELECT * FROM payment_methods WHERE id=1');
 		
 		if($doDeafultPaymentMethodsExist->rowCount() == 0) {
-			$addDeafultPaymentMethods = $db->query("INSERT INTO payment_methods VALUES (NULL,'Gotówka'), (NULL,'Karta debetowa'), (NULL,'Karta kredytowa')");
+			$addDeafultPaymentMethods = $db->query("INSERT INTO payment_methods VALUES (NULL,'Gotówka'), (NULL,'Karta debetowa'), (NULL,'Karta kredytowa'), (NULL,'Inne')");
 		}
 		
-		$addDefaultUserPaymentMethods = $db->query("INSERT INTO payment_methods_assigned_to_users VALUES (NULL,'$id','Gotówka'), (NULL,'$id','Karta debetowa'),(NULL,'$id','Karta kredytowa')");	
+		$addDefaultUserPaymentMethods = $db->query("INSERT INTO payment_methods_assigned_to_users VALUES (NULL,'$id','Gotówka'), (NULL,'$id','Karta debetowa'),(NULL,'$id','Karta kredytowa'), (NULL,'$id','Inne')");	
 	}
 	
 	protected function getNewUserId()
