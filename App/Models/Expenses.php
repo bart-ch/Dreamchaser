@@ -292,6 +292,9 @@ class Expenses extends \Core\Model
 
 	public function deleteCategory()
 	{		
+	
+			$this->updateCategoryToOther();
+			
 			$sql = "DELETE FROM expenses_categories_assigned_to_users WHERE id = :id";
 									
 			$db = static::getDB();
@@ -302,8 +305,45 @@ class Expenses extends \Core\Model
             return $stmt->execute();		
 	}	
 	
+	protected function updateCategoryToOther()
+	{
+		$sql = "UPDATE expenses
+				SET expense_category_assigned_to_user_id = :otherCategoryId 
+				WHERE expense_category_assigned_to_user_id = :categoryId";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);		
+						
+		$stmt->bindValue(':categoryId', $this->expenseCategoryId, PDO::PARAM_INT);
+		$stmt->bindValue(':otherCategoryId', $this->getOtherCategoryId(), PDO::PARAM_INT);
+		
+		return	$stmt->execute();			
+	}
+	
+	protected function getOtherCategoryId() 
+	{
+		
+		$sql = "SELECT id FROM expenses_categories_assigned_to_users WHERE user_id = :user_id AND name = :name";
+		
+		$db = static::getDB();
+		
+		$stmt = $db->prepare($sql);
+		
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':name', 'Inne', PDO::PARAM_STR);
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		return $result['id'];	
+	}	
+	
 	public function deletePaymentMethod()
 	{		
+			$this->updateMethodToOther();
+	
 			$sql = "DELETE FROM payment_methods_assigned_to_users WHERE id = :id";
 									
 			$db = static::getDB();
@@ -313,6 +353,43 @@ class Expenses extends \Core\Model
 
             return $stmt->execute();		
 	}	
+	
+	protected function updateMethodToOther()
+	{
+		$sql = "UPDATE expenses
+				SET payment_method_assigned_to_user_id = :otherMethodId 
+				WHERE payment_method_assigned_to_user_id = :methodId";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);		
+						
+		$stmt->bindValue(':methodId', $this->paymentId, PDO::PARAM_INT);
+		$stmt->bindValue(':otherMethodId', $this->getOtherMethodId(), PDO::PARAM_INT);
+		
+		return	$stmt->execute();			
+	}
+	
+	protected function getOtherMethodId() 
+	{
+		
+		$sql = "SELECT id FROM payment_methods_assigned_to_users WHERE user_id = :user_id AND name = :name";
+		
+		$db = static::getDB();
+		
+		$stmt = $db->prepare($sql);
+		
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':name', 'Inne', PDO::PARAM_STR);
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		return $result['id'];	
+	}	
+	
+	
 	
 	public function addExpenseCategory()
 	{		

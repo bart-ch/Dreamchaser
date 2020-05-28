@@ -181,7 +181,6 @@ class Incomes extends \Core\Model
 	public function deleteCategory()
 	{		
 	
-
 			$this->updateCategoryToOther();
 	
 			$sql = "DELETE FROM incomes_categories_assigned_to_users WHERE id = :id";

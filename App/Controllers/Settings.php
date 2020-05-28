@@ -283,7 +283,7 @@ class Settings extends Authenticated
 
 			$expense->deletePaymentMethod();
 
-			Flash::addMessage('Metoda płatności została usunięta, a należące do niej transakcje przeniesiono do metody "Inne". Metodę płątności możesz edytować w przeglądzie bilansu.'');
+			Flash::addMessage('Metoda płatności została usunięta, a należące do niej transakcje przeniesiono do metody "Inne". Metodę płątności możesz edytować w przeglądzie bilansu.');
 
 			$this->redirect('/settings/index');
 			
