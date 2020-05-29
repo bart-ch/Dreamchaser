@@ -3,7 +3,7 @@ if ( window.history.replaceState ) {
 }
 	
 $(document).ready(function(){  
-	$('#amount').keyup(function(){  
+	$('#amount').on("keyup keydown change",function(){  
 	   var expenseCategory = $('#expenseCategory').val();  
 	   var amount = $(this).val();
 	   $.ajax({  
@@ -35,7 +35,7 @@ $(document).ready(function(){
 	   });  
 	}); 
 
-	$('#amount').keyup(function(){  
+	$('#amount').on("keyup keydown change",function(){  
 	   var amount = $(this).val();
 	   var expenseCategory = $('#expenseCategory').val();  
 	   $.ajax({  
