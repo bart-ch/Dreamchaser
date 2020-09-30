@@ -8,19 +8,8 @@ use \App\Auth;
 use \App\Dates;
 use \App\Flash;
 
-/**
- * Login controller
- *
- * PHP version 7.0
- */
 class Expense extends Authenticated
 {
-
-    /**
-     * Show the login page
-     *
-     * @return void
-     */
     public function indexAction()
     {	
         View::renderTemplate('Expense/index.html', [
@@ -31,11 +20,6 @@ class Expense extends Authenticated
 		]);
     }
 
-    /**
-     * Log in a user
-     *
-     * @return void
-     */
     public function createAction()
     {
 		if(isset($_POST['amount'])) {
@@ -84,5 +68,4 @@ class Expense extends Authenticated
 			$this->redirect('/expense/index');
 		 }
 	}
-
 }

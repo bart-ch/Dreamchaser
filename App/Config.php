@@ -2,14 +2,8 @@
 
 namespace App;
 
-/**
- * Application configuration
- *
- * PHP version 7.0
- */
 class Config
 {
-
     /**
      * Database host
      * @var string
@@ -40,8 +34,7 @@ class Config
      */
     const SHOW_ERRORS = true;
 	
-	const SECRET_KEY = '1BDEGArLbHIRiruVJGGZCqJ6Mx7xHWgp';
+	const SECRET_KEY = 'YOUR_CAPTCHA_KEY';
 	
-	const CAPTCHA_SECRET = '6Lf7teYUAAAAAGZCgEQKBBhw15BHVOTO1gbu6_15';
-	
+	const CAPTCHA_SECRET = 'YOUR_CAPTCHA_SECRET_KEY';
 }

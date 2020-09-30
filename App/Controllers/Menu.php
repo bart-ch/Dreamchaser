@@ -7,11 +7,6 @@ use \App\Auth;
 use \App\Flash;
 use \App\Models\User;
 
-/**
- * Signup controller
- *
- * PHP version 7.0
- */
 class Menu extends Authenticated
 {
 	
@@ -27,7 +22,5 @@ class Menu extends Authenticated
 			'user' => $this->user
 		]);
 	}
-	
-
 
 }

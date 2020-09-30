@@ -9,11 +9,6 @@ use \App\Models\Incomes;
 use \App\Models\Expenses;
 use \App\Models\User;
 
-/**
- * Login controller
- *
- * PHP version 7.0
- */
 class Settings extends Authenticated
 {
 
@@ -314,7 +309,5 @@ class Settings extends Authenticated
 		} else {
 			$this->redirect('/settings/index');
 		}
-
 	}	
-
 }
