@@ -8,17 +8,10 @@ use \App\Dates;
 use \Core\View;
 use \App\Flash;
 
-/**
- * User model
- *
- * PHP version 7.0
- */
 class Incomes extends \Core\Model
 {
 
-
     public $errors = [];
-
 
     public function __construct($data = [])
     {
@@ -40,11 +33,6 @@ class Incomes extends \Core\Model
 		return $incomeCategories->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-    /**
-     * Save the user model with the current property values
-     *
-     * @return boolean  True if the user was saved, false otherwise
-     */
     public function save()
     {
 		$this->amount = $this->validateAndConvertPriceFormat();
@@ -57,8 +45,6 @@ class Incomes extends \Core\Model
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
 
-
-	
             $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
             $stmt->bindValue(':idOfIncomeCategoryAssignedToUser', $this->getIdOfIncomeCategoryAssignedToUser(), PDO::PARAM_INT);
             $stmt->bindValue(':convertedPrice', $this->amount, PDO::PARAM_STR);
@@ -95,7 +81,6 @@ class Incomes extends \Core\Model
 	{	
         if(strlen($this->incomeCategory)<1 || strlen($this->incomeCategory)>40) {
 		$this->errors['incomeCategory'] = "Kategoria przychodu musi zawierać od 1 do 40 znaków.";
-		//zwalidować jeszcze czy już taka przypisana nie istnieje
 		}
 		
 		$sql = "SELECT * FROM incomes_categories_assigned_to_users WHERE user_id = :user_id AND name = :incomeName AND id <> :id";
@@ -143,7 +128,6 @@ class Incomes extends \Core\Model
 
 		$stmt = $db->prepare($sql);
 
-
 		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':incomeName', $this->newIncomeCategory, PDO::PARAM_STR);
 
@@ -155,7 +139,6 @@ class Incomes extends \Core\Model
 		}
 			
 	}
-	
 
 	public function addIncomeCategory()
 	{	
@@ -269,9 +252,7 @@ class Incomes extends \Core\Model
 	}
 	
 	public function validate()
-    {
-
-		
+    {	
        if($this->incomeDate < '2000-01-01' || $this->incomeDate > Dates::getDateOfLastDayOfNextMonth()) {
 
 			$this->errors['date'] = "Data musi mieścić się w przedziale od 2000-01-01 do ".Dates::getDateOfLastDayOfNextMonth().".";
@@ -280,11 +261,8 @@ class Incomes extends \Core\Model
 		
 		if(strlen($this->comment) > 100) {
 			$this->errors['comment'] = "Komentarz jest zbyt długi.";
-		}	
-		
+		}			
     }
-	
-	
 	
 	protected function validateAndConvertPriceFormat() 
 	{
@@ -322,6 +300,4 @@ class Incomes extends \Core\Model
 		
 		return false;
 	}	
-
- 
 }

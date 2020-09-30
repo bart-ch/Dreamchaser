@@ -7,11 +7,6 @@ use \App\Auth;
 use \App\Dates;
 use \Core\View;
 
-/**
- * User model
- *
- * PHP version 7.0
- */
 class Balances extends \Core\Model
 {
 	
@@ -196,6 +191,5 @@ class Balances extends \Core\Model
 		}
 		return $secondEchoDate;
 	}
-
  
 }

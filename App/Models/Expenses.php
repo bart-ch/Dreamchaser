@@ -7,11 +7,6 @@ use \App\Auth;
 use \App\Dates;
 use \Core\View;
 
-/**
- * User model
- *
- * PHP version 7.0
- */
 class Expenses extends \Core\Model
 {
 
@@ -52,11 +47,6 @@ class Expenses extends \Core\Model
 		return $paymentMethods->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-    /**
-     * Save the user model with the current property values
-     *
-     * @return boolean  True if the user was saved, false otherwise
-     */
     public function save()
     {
 		$this->amount = $this->validateAndConvertPriceFormat();
@@ -235,7 +225,6 @@ class Expenses extends \Core\Model
 			return false;
 		}
 		
-
 		$sql = "UPDATE expenses_categories_assigned_to_users SET name = :name, categoryLimit = :limit WHERE id = :id";
 		
 		$db = static::getDB();
@@ -253,7 +242,6 @@ class Expenses extends \Core\Model
 		
 
 		return $stmt->execute();
-
 	}
 	
 	public function updatePaymentMethod() 
@@ -388,8 +376,6 @@ class Expenses extends \Core\Model
 		
 		return $result['id'];	
 	}	
-	
-	
 	
 	public function addExpenseCategory()
 	{		
@@ -550,7 +536,4 @@ class Expenses extends \Core\Model
 		return $result['amount'];
 
 	}
-	
-
- 
 }

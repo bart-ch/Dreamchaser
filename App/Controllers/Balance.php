@@ -10,19 +10,9 @@ use \App\Auth;
 use \App\Dates;
 use \App\Flash;
 
-/**
- * Login controller
- *
- * PHP version 7.0
- */
 class Balance extends Authenticated
 {
 
-    /**
-     * Show the login page
-     *
-     * @return void
-     */
     public function indexAction()
     {				
 			View::renderTemplate('Balance/index.html', [
@@ -153,7 +143,6 @@ class Balance extends Authenticated
 		}
 
 	}
-	
 	
 }
 
